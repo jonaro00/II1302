@@ -8,8 +8,8 @@ Grupp 5
 
 ## Medlemmar
 
-- 
-- Johan, Arkitekt
+- Alexander: Projektledare och Miljöansvarig
+- Johan: Arkitekt
 - 
 - 
 - 
