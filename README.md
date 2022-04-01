@@ -10,6 +10,4 @@ Vi bygger en IoT sensor för temperatur och luftkvalitet, och en webb-applikatio
 
 - Alexander: Projektledare och Miljöansvarig
 - Johan: Arkitekt
-- 
-- 
-- 
+- Amiran: Utvecklare
