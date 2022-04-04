@@ -1,0 +1,21 @@
+{
+  "name": "ii1302",
+  "version": "1.0.0",
+  "description": "Grupp 5",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cd web && npm run dev",
+    "build": "cd web && npm run build",
+    "start": "cd web && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonaro00/II1302.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jonaro00/II1302/issues"
+  },
+  "homepage": "https://github.com/jonaro00/II1302#readme"
+}
