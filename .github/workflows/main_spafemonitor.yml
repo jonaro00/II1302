@@ -26,7 +26,7 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
-          zip -r --symlinks deploy.zip . -x node_modules/\* *.git*
+          zip -r --symlinks deploy.zip .
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
