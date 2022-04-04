@@ -4,9 +4,12 @@
   "description": "Grupp 5",
   "main": "index.js",
   "scripts": {
-    "dev": "cd web && npm run dev",
-    "build": "cd web && npm run build",
-    "start": "cd web && npm start"
+    "dev": "npm explore web -- npm run dev",
+    "build": "npm explore web -- npm run build",
+    "start": "npm explore web -- npm start"
+  },
+  "dependencies": {
+    "web": "file:web"
   },
   "repository": {
     "type": "git",
