@@ -26,13 +26,13 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
-          rm -rf node_modules
+          zip -r --symlinks deploy.zip . -x node_modules/\* *.git*
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: .
+          path: deploy.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -54,4 +54,4 @@ jobs:
           app-name: 'spafemonitor'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_326A8E2159D044E18744E7A8C42FFD3D }}
-          package: .
+          package: deploy.zip
