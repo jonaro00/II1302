@@ -9,6 +9,7 @@
     "start": "npm explore web -- npm start"
   },
   "dependencies": {
+    "semantic-ui-react": "^2.1.2",
     "web": "file:web"
   },
   "repository": {
