@@ -6,11 +6,11 @@ type AzureValidationResponse = {
 
 export default function handler(
     req: NextApiRequest,
-    res: NextApiResponse<AzureValidationResponse|undefined>
+    res: NextApiResponse<AzureValidationResponse|string>
 ) {
     if (req.method !== 'POST') {
         // Method not allowed
-        res.status(405)
+        res.status(405).end()
         return
     }
     // Azure validation https://docs.microsoft.com/en-us/azure/event-grid/webhook-event-delivery#validation-details
@@ -22,4 +22,7 @@ export default function handler(
     }
     // Telemetry
     //...
+
+    // Base case
+    res.status(400).end()
 }
