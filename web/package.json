@@ -13,7 +13,10 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "semantic-ui-css": "2.4.1",
-    "semantic-ui-react": "2.1.2"
+    "semantic-ui-react": "2.1.2",
+    "@azure/logger": "1.0.3",
+    "@azure/event-hubs": "5.7.0",
+    "@azure/eventgrid": "4.9.0"
   },
   "devDependencies": {
     "@types/node": "17.0.23",
