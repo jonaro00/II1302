@@ -1,9 +1,6 @@
 const Sequelize = require('sequelize');
 const cls = require('cls-hooked');
 const Person = require('../model/Person').Person;
-const Availability = require('../model/Availability').Availability;
-const Competence = require('../model/Competence').Competence;
-const Competence_profile = require('../model/Competence_profile').Competence_profile;
 
 class DAO {
   constructor() {
