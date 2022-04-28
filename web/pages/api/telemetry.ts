@@ -26,6 +26,7 @@ export default async function handler(
 
     let events = await egd.deserializeEventGridEvents(req.body)
     events.forEach((event: any): void => {
+        AzureLogger.log(`Received Event grid event:\n${JSON.stringify(event)}`)
         if (isSystemEvent('Microsoft.EventGrid.SubscriptionValidationEvent', event)) {
             // Azure Webhook validation https://docs.microsoft.com/en-us/azure/event-grid/webhook-event-delivery#validation-details
             res.status(200).json({validationResponse: event.data.validationCode})
@@ -47,7 +48,7 @@ export default async function handler(
             // event.timestamp, event.data.deviceId, event.data.body
         }
         else {
-            AzureLogger.log(`Unhandled Event grid event: ${event}`)
+            AzureLogger.log('Event went unhandled...')
         }
     })
 
