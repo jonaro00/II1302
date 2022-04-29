@@ -6,10 +6,14 @@
   "scripts": {
     "dev": "npm explore web -- npm run dev",
     "build": "npm explore web -- npm run build",
-    "start": "npm explore web -- npm start"
+    "start": "npm explore web -- npm start",
+    "prepare": "husky install"
   },
   "dependencies": {
     "web": "file:web"
+  },
+  "devDependencies": {
+    "husky": "7.0.4"
   },
   "repository": {
     "type": "git",
