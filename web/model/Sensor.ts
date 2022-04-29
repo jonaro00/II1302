@@ -1,5 +1,4 @@
 import { Sequelize, Model, DataTypes } from 'sequelize'
-import { User } from './User'
 
 export class Sensor extends Model {
     public static createModel(sequelize: Sequelize): any {
@@ -11,15 +10,15 @@ export class Sensor extends Model {
                     allowNull: false,
                     autoIncrement: true,
                 },
-                deviceId: {
+                device_id: {
                     type: DataTypes.STRING,
                     unique: true,
                     allowNull: false,
                 },
-                owner: {
+                user_id: {
                     type: DataTypes.INTEGER,
                     references: {
-                        model: User,
+                        model: 'user',
                         key: 'id',
                     },
                     allowNull: false,
@@ -30,9 +29,10 @@ export class Sensor extends Model {
             },
             {
                 sequelize,
+                modelName: 'sensor',
                 freezeTableName: true,
                 timestamps: true,
-                paranoid: true,
+                paranoid: true
                 //indexes: [],
             }
         )
