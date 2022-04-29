@@ -10,6 +10,8 @@ export type UserInfo = {
   name: string
 }
 
+const allDBModels = [Sensor, User, Telemetry]
+
 export class DAO {
   public database: Sequelize
 
@@ -25,17 +27,17 @@ export class DAO {
         host: process.env.DB_HOST || '',
         port: Number.parseInt(process.env.DB_PORT || ''),
         dialect: process.env.DB_DIALECT as Dialect,
-        // @ts-ignore
-        ssl: {
-          ca: fs.readFileSync('integration/Azure-db-DigiCertGlobalRootCA.crt.pem'),
+        ssl: true,
+        dialectOptions: {
+          ssl: {
+            ca: fs.readFileSync('integration/Azure-db-DigiCertGlobalRootCA.crt.pem'),
+          },
         },
       },
     )
-    Sensor.createModel(this.database)
-    User.createModel(this.database)
-    Telemetry.createModel(this.database)
+    // initaiate all models
+    allDBModels.forEach(model => model.createModel(this.database))
     this.makeTables()
-    console.log('Contructing DAO')
   }
 
   public static async createDAO(): Promise<DAO> {
@@ -43,18 +45,18 @@ export class DAO {
   }
 
   private async makeTables(): Promise<void> {
+    console.log('Connecting to database...')
     await this.database.authenticate()
-    await this.database.sync({ force: false, alter: false })
     console.log('Making Tables!')
+    await this.database.sync({ force: false, alter: false })
   }
 
   public async login(username: string, password: string): Promise<UserInfo> {
-    console.log('Logging in!')
+    console.log(`User ${username} attempting login...`)
     const matchingUser = await User.findOne({
-      where: { username: username },
+      where: { username },
     })
     if (matchingUser === null) throw new Error('No user with that name found!')
-
     console.log(matchingUser.get('password'))
     if (await User.validPassword(password, matchingUser.get('password') as string)) {
       const { id, name } = matchingUser.get({ plain: true })
@@ -63,8 +65,8 @@ export class DAO {
   }
 
   public async register(username: string, password: string): Promise<UserInfo> {
+    console.log(`User ${username} registering...`)
     await User.create({ username, password })
-
     return this.login(username, password)
   }
 }
