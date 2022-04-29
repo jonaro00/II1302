@@ -1,12 +1,12 @@
 const Sequelize = require('sequelize');
-// const cls = require('cls-hooked');
+const cls = require('cls-hooked');
 const Person = require('../model/Person').Person;
 import * as fs from 'fs'
 
 class DAO {
   constructor() {
-    // const ns = cls.createNamespace(process.env.DB_NAME);
-    // Sequelize.useCLS(ns);
+    const ns = cls.createNamespace(process.env.DB_NAME);
+    Sequelize.useCLS(ns);
     this.database = new Sequelize(
       process.env.DB_NAME,
       process.env.DB_USER,
