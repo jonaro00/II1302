@@ -6,6 +6,7 @@ import * as fs from 'fs'
 class DAO {
   constructor() {
     const ns = cls.createNamespace(process.env.DB_NAME);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     Sequelize.useCLS(ns);
     this.database = new Sequelize(
       process.env.DB_NAME,
