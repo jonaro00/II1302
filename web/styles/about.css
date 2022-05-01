@@ -1,0 +1,47 @@
+.about-grid {
+  padding: 40px 0 !important;
+}
+
+.about-p {
+  font-size: 1.5 rem;
+  text-align: left;
+  padding-bottom: 20px;
+}
+
+.about-title {
+  min-height: 20px !important;
+}
+
+.about-row {
+  display: flex !important;
+  justify-content: space-between !important;
+  padding: 0 90px !important;
+}
+
+.about-card {
+  margin: 20px 0 !important;
+  width: 300px !important;
+  height: 550px !important;
+}
+
+.about-contact {
+  display: flex !important;
+  flex-direction: column;
+}
+
+.about-picture img {
+  width: 300px !important;
+  height: 300px !important;
+  object-fit: cover !important;
+  object-position: top !important;
+}
+
+.about-picture {
+  filter: grayscale(100%);
+  transition: all 0.3s ease-in-out;
+}
+
+.about-picture:hover {
+  filter: grayscale(0%) !important;
+  transition: all 0.3s ease-in-out;
+}
