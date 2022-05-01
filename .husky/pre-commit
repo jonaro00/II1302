@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npx.cmd lint-staged --cwd web
+./node_modules/.bin/lint-staged --cwd web
