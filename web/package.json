@@ -13,7 +13,6 @@
     "@azure/eventgrid": "4.9.0",
     "@azure/logger": "1.0.3",
     "bcrypt": "^5.0.1",
-    "chart.js": "^3.7.1",
     "cls-hooked": "^4.2.2",
     "mysql2": "2.3.3",
     "next": "12.1.4",
