@@ -21,9 +21,11 @@ Vi bygger en IoT sensor för temperatur och luftkvalitet, och en webb-applikatio
 To develop the webpage, do the following:
 
 - Install Node and npm.
-- From the root directory, run `npm install`. This installs all dependencies, including the `web/` subpackage into `node_modules/`.
+- From the root directory, run `npm install`. This installs all dependencies, including those of the `web/` subpackage, into `node_modules/`.
 - `npm run dev` to start a live development server on localhost.
 - Develop. 😎
+- `npm test` to run all unit tests.
+- The `.husky/pre-commit` git hook runs Prettier and ESLint on any staged files before every commit.
 
 ### Hardware
 
