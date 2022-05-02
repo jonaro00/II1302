@@ -20,3 +20,17 @@ test('Register a user', async () => {
   expect(id).not.toBeNull()
   expect(name).toEqual(testname)
 })
+
+test('Register a user twice', async () => {
+  const testname = 'user1',
+    testpass = 'password1'
+  await dao.register(testname, testpass)
+  expect(dao.register(testname, testpass)).rejects.toThrow()
+})
+
+test('Login with incorrect password', async () => {
+  const testname = 'user1',
+    testpass = 'password1'
+  await dao.register(testname, testpass)
+  expect(dao.login(testname, '1234')).rejects.toThrow()
+})
