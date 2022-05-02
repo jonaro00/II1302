@@ -29,7 +29,13 @@ const AboutView = () => {
           {groupInfo.map(p => {
             return (
               <Card className="about-card" key={p.name}>
-                <Image src={p.Picture} wrapped ui={false} className="about-picture" />
+                <Image
+                  src={p.Picture}
+                  alt={'Picture of ' + p.name}
+                  wrapped
+                  ui={false}
+                  className="about-picture"
+                />
                 <Card.Content>
                   <Card.Header className="about-title" textAlign="center">
                     {p.name}

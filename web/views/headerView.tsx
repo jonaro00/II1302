@@ -9,7 +9,7 @@ const HeaderView = () => {
       <Menu.Item as="a" href="/devices">
         Devices
       </Menu.Item>
-      <Menu.Item as="a" href="/api">
+      <Menu.Item as="a" href="/api    ">
         API
       </Menu.Item>
       <Menu.Item as="a" href="/about">
