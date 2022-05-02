@@ -13,7 +13,7 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Spafe Monitor
+          Hit Maxes & Evade Taxes
         </h1>
       </main>
 
