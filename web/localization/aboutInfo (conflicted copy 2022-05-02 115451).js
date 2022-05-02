@@ -2,7 +2,6 @@
 
 export const groupInfo = [
   {
-<<<<<<< HEAD
     name: 'Alex',
     tel: 'Lorem ipsum',
     telTxt: 'Lorem ipsum',
@@ -60,65 +59,6 @@ export const groupInfo = [
     title: 'Lorem ipsum ',
     about:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempus, felis pharetra fermentum commodo, tellus magna vehicula arcu, porta gravida est purus ut nisl. Morbi vel semper ante.',
-=======
-    name: 'NAME',
-    tel: '',
-    telTxt: '',
-    mail: '',
-    gitHub: '',
-    linkdin: '',
-    title: '',
-    about:
-      '',
-    Picture: '',
-  },  
-  {
-    name: 'NAME',
-    tel: '',
-    telTxt: '',
-    mail: '',
-    gitHub: '',
-    linkdin: '',
-    title: '',
-    about:
-      '',
-    Picture: '',
-  },
-  {
-    name: 'NAME',
-    tel: '',
-    telTxt: '',
-    mail: '',
-    gitHub: '',
-    linkdin: '',
-    title: '',
-    about:
-      '',
-    Picture: '',
-  },
-  {
-    name: 'NAME',
-    tel: '',
-    telTxt: '',
-    mail: '',
-    gitHub: '',
-    linkdin: '',
-    title: '',
-    about:
-      '',
-    Picture: '',
-  },
-  {
-    name: 'NAME',
-    tel: '',
-    telTxt: '',
-    mail: '',
-    gitHub: '',
-    linkdin: '',
-    title: '',
-    about:
-      '',
->>>>>>> b1ba3cd8ba47c9aeace045ff0b63954520c29cfc
     Picture: '',
   },
 ];
