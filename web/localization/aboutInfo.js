@@ -1,4 +1,4 @@
-
+import Alex from '../images/alex.jpg'
 
 export const groupInfo = [
   {
@@ -11,7 +11,7 @@ export const groupInfo = [
     title: 'Lorem ipsum',
     about:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempus, felis pharetra fermentum commodo, tellus magna vehicula arcu, porta gravida est purus ut nisl. Morbi vel semper ante.',
-    Picture: '',
+    Picture: Alex,
   },  
   {
     name: 'Johan',
