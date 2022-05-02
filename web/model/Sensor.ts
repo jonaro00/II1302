@@ -24,7 +24,7 @@ export class Sensor extends Model {
         id: {
           type: DataTypes.INTEGER,
           primaryKey: true,
-          allowNull: false,
+          allowNull: true,
           autoIncrement: true,
         },
         device_id: {

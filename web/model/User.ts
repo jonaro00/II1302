@@ -24,10 +24,12 @@ export class User extends Model {
           type: DataTypes.INTEGER,
           primaryKey: true,
           allowNull: true,
+          autoIncrement: true,
         },
         name: {
           type: DataTypes.STRING,
           allowNull: false,
+          unique: true,
         },
         password: {
           type: DataTypes.STRING,

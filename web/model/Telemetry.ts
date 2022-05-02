@@ -5,13 +5,6 @@ export type TelemetryType = {
   temp: number
   humidity: number
   gases: number
-  // lpg: number // Liquefied Petroleum Gas (Gasol)
-  // smoke: number
-  // alcohol: number
-  // propane: number
-  // hydrogen: number
-  // methane: number
-  // carbon_monoxide: number
   createdAt: Date
 }
 
@@ -23,6 +16,7 @@ export class Telemetry extends Model {
           type: DataTypes.INTEGER,
           primaryKey: true,
           allowNull: true,
+          autoIncrement: true,
         },
         sensor_id: {
           type: DataTypes.INTEGER,
@@ -44,34 +38,6 @@ export class Telemetry extends Model {
           type: DataTypes.FLOAT,
           allowNull: true,
         },
-        //   lpg: {
-        //     type: DataTypes.FLOAT,
-        //     allowNull: true
-        //   },
-        //   smoke: {
-        //     type: DataTypes.FLOAT,
-        //     allowNull: true
-        //   },
-        //   alcohol: {
-        //     type: DataTypes.FLOAT,
-        //     allowNull: true
-        //   },
-        //   propane: {
-        //     type: DataTypes.FLOAT,
-        //     allowNull: true
-        //   },
-        //   hydrogen: {
-        //     type: DataTypes.FLOAT,
-        //     allowNull: true
-        //   },
-        //   methane: {
-        //     type: DataTypes.FLOAT,
-        //     allowNull: true
-        //   },
-        //   carbon_monoxide: {
-        //     type: DataTypes.FLOAT,
-        //     allowNull: true
-        //   },
       },
       {
         sequelize,

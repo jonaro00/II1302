@@ -71,7 +71,11 @@ export class DAO {
 
   public async register(username: string, password: string): Promise<UserInfo> {
     console.log(`User ${username} registering...`)
-    await User.create({ name: username, password })
+    try {
+      await User.create({ name: username, password })
+    } catch (error) {
+      throw new Error('Failed to register user.')
+    }
     return this.login(username, password)
   }
 }
