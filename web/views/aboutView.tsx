@@ -31,7 +31,7 @@ const AboutView = () => {
               <Card className="about-card" key={p.name}>
                 <Image
                   src={p.Picture}
-                  alt={p.name + 'picture'}
+                  alt={'Picture of ' + p.name}
                   wrapped
                   ui={false}
                   className="about-picture"
