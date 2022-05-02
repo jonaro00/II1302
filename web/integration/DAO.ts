@@ -20,7 +20,7 @@ export class DAO {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     Sequelize.useCLS(ns)
     if (test) {
-      this.database = new Sequelize('sqlite::memory:')
+      this.database = new Sequelize('sqlite::memory:', { logging: false })
     } else {
       this.database = new Sequelize(
         process.env.DB_NAME || '',
@@ -36,6 +36,7 @@ export class DAO {
               ca: fs.readFileSync('integration/Azure-db-DigiCertGlobalRootCA.crt.pem'),
             },
           },
+          logging: false, // change to true to print all SQL queries when debugging
         },
       )
     }
@@ -50,19 +51,15 @@ export class DAO {
   }
 
   private async makeTables(): Promise<void> {
-    console.log('Connecting to database...')
     await this.database.authenticate()
-    console.log('Making Tables!')
     await this.database.sync({ force: false, alter: false })
   }
 
   public async login(username: string, password: string): Promise<UserInfo> {
-    console.log(`User ${username} attempting login...`)
     const matchingUser = await User.findOne({
       where: { name: username },
     })
     if (matchingUser === null) throw new Error('No user with that name found!')
-    console.log(matchingUser.get('password'))
     if (await User.validPassword(password, matchingUser.get('password') as string)) {
       const { id, name } = matchingUser.get({ plain: true })
       return { id, name }
@@ -70,7 +67,6 @@ export class DAO {
   }
 
   public async register(username: string, password: string): Promise<UserInfo> {
-    console.log(`User ${username} registering...`)
     try {
       await User.create({ name: username, password })
     } catch (error) {
