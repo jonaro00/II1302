@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import Head from 'next/head';
 import { Grid, Segment } from 'semantic-ui-react';
 
@@ -28,25 +27,6 @@ const FooterView = () => {
         </Grid.Row>
         </Grid>
         
-=======
-import { Button, Grid, Segment } from 'semantic-ui-react';
-
-const FooterView = () => {
-  return (
-    <Segment className='board-footer'>
-      <Grid>
-        V:0.8
-      </Grid>
-      <Grid href='https://github.com/jonaro00/II1302'>
-        GitHub
-      </Grid>
-      <Grid >
-        Documentation
-      </Grid>
-      <Grid>
-        Contact
-      </Grid>
->>>>>>> b1ba3cd8ba47c9aeace045ff0b63954520c29cfc
     </Segment>
   );
 };

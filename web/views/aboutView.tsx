@@ -1,5 +1,4 @@
 import { groupInfo } from '../localization/aboutInfo';
-<<<<<<< HEAD
 import { Container, Header, Grid, Card, Image, Icon, Item, Segment } from 'semantic-ui-react';
 
 const AboutView = () => {
@@ -35,12 +34,6 @@ const AboutView = () => {
         </p>
 
   </Container>
-=======
-import { Grid, Card, Image, Icon, Item } from 'semantic-ui-react';
-
-const AboutView = () => {
-  return (
->>>>>>> b1ba3cd8ba47c9aeace045ff0b63954520c29cfc
     <Grid className='about-grid'>
       <Grid.Row className='about-row'>
         {groupInfo.map(p => {
@@ -48,13 +41,8 @@ const AboutView = () => {
             <Card className='about-card'>
               <Image src={p.Picture} wrapped ui={false} className='about-picture' />
               <Card.Content>
-<<<<<<< HEAD
                 <Card.Header className='about-title' textAlign='center'>{p.name}</Card.Header>
                 <Card.Meta textAlign='center'>{p.title}</Card.Meta>
-=======
-                <Card.Header>{p.name}</Card.Header>
-                <Card.Meta>{p.title}</Card.Meta>
->>>>>>> b1ba3cd8ba47c9aeace045ff0b63954520c29cfc
                 <Card.Description>{p.about}</Card.Description>
                 <Card.Content extra className='about-contact'>
                   <Card.Meta href={'mailto:' + p.mail}>{p.mail}</Card.Meta>
@@ -74,10 +62,7 @@ const AboutView = () => {
         })}
       </Grid.Row>
     </Grid>
-<<<<<<< HEAD
     </Segment>
-=======
->>>>>>> b1ba3cd8ba47c9aeace045ff0b63954520c29cfc
   );
 };
 
