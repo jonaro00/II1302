@@ -34,3 +34,9 @@ test('Login with incorrect password', async () => {
   await dao.register(testname, testpass)
   expect(dao.login(testname, '1234')).rejects.toThrow()
 })
+
+test('Login with incorrect user', async () => {
+  const testname = 'admin',
+    testpass = 'admin'
+  expect(dao.login(testname, testpass)).rejects.toThrow()
+})
