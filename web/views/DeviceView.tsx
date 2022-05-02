@@ -2,10 +2,10 @@ import Head from 'next/head'
 import { Grid, Icon, Segment, Dropdown, Image } from 'semantic-ui-react'
 // import { deviceInfo } from '../localization/deviceInfo';
 
-import image1 from '../images/placeholder1.png'
-import image2 from '../images/placeholder2.png'
-import image3 from '../images/placeholder3.png'
-import image4 from '../images/placeholder4.png'
+import image1 from '../public/images/placeholder1.png'
+import image2 from '../public/images/placeholder2.png'
+import image3 from '../public/images/placeholder3.png'
+import image4 from '../public/images/placeholder4.png'
 
 const DeviceView = () => {
   return (

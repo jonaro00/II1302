@@ -1,4 +1,4 @@
-import Alex from '../images/alex.jpg'
+import Alex from '../public/images/alex.jpg'
 
 export const groupInfo = [
   {
