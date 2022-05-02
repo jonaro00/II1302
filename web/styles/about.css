@@ -8,6 +8,10 @@
   padding-bottom: 20px;
 }
 
+.about-p-top {
+  padding-top: 60px;
+}
+
 .about-title {
   min-height: 20px !important;
 }

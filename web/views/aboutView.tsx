@@ -5,12 +5,8 @@ const AboutView = () => {
   return (
     <Segment>
         <Container text textAlign='center'>
-        <Header as='h2' textAlign='left'>
-          About:
-          </Header>
-
-          <p className='about-p' >
-            Spafe Monitor believes in total survelance of all our customer needs, whether they are aware of it ot not.
+          <p className='about-p about-p-top'>
+            Spafe Monitor believes in total survelance of all our customers, whether they are aware of it ot not.
           </p>
           <Icon
             name='eye' 
