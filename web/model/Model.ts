@@ -35,10 +35,22 @@ export class Model extends Observable {
   public alarms: Record<number, Array<AlarmType>> = {}
 
   /**
-   *
+   * Creates a new, empty model instance.
    */
   public constructor() {
     super()
+  }
+
+  /**
+   * Remove all user data.
+   */
+  public clear() {
+    this.user = null
+    this.sensors = []
+    this.events = {}
+    this.telemetry = {}
+    this.alarms = {}
+    this.notifyObservers()
   }
 
   public set setUser(user: number | null) {
