@@ -23,7 +23,7 @@ export class User extends Model {
         id: {
           type: DataTypes.INTEGER,
           primaryKey: true,
-          allowNull: false,
+          allowNull: true,
         },
         name: {
           type: DataTypes.STRING,

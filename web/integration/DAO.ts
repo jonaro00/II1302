@@ -10,38 +10,43 @@ export type UserInfo = {
   name: string
 }
 
-const allDBModels = [Sensor, User, Telemetry]
+export const allDBModels = [Sensor, User, Telemetry]
 
 export class DAO {
   public database: Sequelize
 
-  constructor() {
+  constructor(test: boolean) {
     const ns = createNamespace(process.env.DB_NAME || '')
     // eslint-disable-next-line react-hooks/rules-of-hooks
     Sequelize.useCLS(ns)
-    this.database = new Sequelize(
-      process.env.DB_NAME || '',
-      process.env.DB_USER || '',
-      process.env.DB_PASS || '',
-      {
-        host: process.env.DB_HOST || '',
-        port: Number.parseInt(process.env.DB_PORT || ''),
-        dialect: process.env.DB_DIALECT as Dialect,
-        ssl: true,
-        dialectOptions: {
-          ssl: {
-            ca: fs.readFileSync('integration/Azure-db-DigiCertGlobalRootCA.crt.pem'),
+    if (test) {
+      this.database = new Sequelize('sqlite::memory:')
+    } else {
+      this.database = new Sequelize(
+        process.env.DB_NAME || '',
+        process.env.DB_USER || '',
+        process.env.DB_PASS || '',
+        {
+          host: process.env.DB_HOST || '',
+          port: Number.parseInt(process.env.DB_PORT || ''),
+          dialect: process.env.DB_DIALECT as Dialect,
+          ssl: true,
+          dialectOptions: {
+            ssl: {
+              ca: fs.readFileSync('integration/Azure-db-DigiCertGlobalRootCA.crt.pem'),
+            },
           },
         },
-      },
-    )
+      )
+    }
     // initaiate all models
     allDBModels.forEach(model => model.createModel(this.database))
-    this.makeTables()
   }
 
-  public static async createDAO(): Promise<DAO> {
-    return new DAO()
+  public static async createDAO(test: boolean): Promise<DAO> {
+    const dao = new DAO(test)
+    await dao.makeTables()
+    return dao
   }
 
   private async makeTables(): Promise<void> {
@@ -54,7 +59,7 @@ export class DAO {
   public async login(username: string, password: string): Promise<UserInfo> {
     console.log(`User ${username} attempting login...`)
     const matchingUser = await User.findOne({
-      where: { username },
+      where: { name: username },
     })
     if (matchingUser === null) throw new Error('No user with that name found!')
     console.log(matchingUser.get('password'))
@@ -66,7 +71,7 @@ export class DAO {
 
   public async register(username: string, password: string): Promise<UserInfo> {
     console.log(`User ${username} registering...`)
-    await User.create({ username, password })
+    await User.create({ name: username, password })
     return this.login(username, password)
   }
 }

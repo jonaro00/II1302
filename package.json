@@ -7,6 +7,7 @@
     "dev": "npm explore web -- npm run dev",
     "build": "npm explore web -- npm run build",
     "start": "npm explore web -- npm start",
+    "test": "npm explore web -- npm test",
     "prepare": "husky install"
   },
   "dependencies": {
