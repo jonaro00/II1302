@@ -10,7 +10,7 @@ export type SensorType = {
 }
 
 /**
- * Sent to backend to create/update a Sensor
+ * Sent to backend to create/update a Sensor.
  */
 export type SensorUserData = {
   device_id: string
