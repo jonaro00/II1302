@@ -1,25 +1,14 @@
 import { Sequelize, Model, DataTypes } from 'sequelize'
 
-export type SensorType = {
-  id: number
-  device_azure_name: string
-  user_id: number
-  location: string
+export type EventType = {
+  sensor_id: number
+  type: string
   createdAt: Date
-  updatedAt: Date
 }
 
-/**
- * Sent to backend to create/update a Sensor.
- */
-export type SensorUserData = {
-  device_azure_name: string
-  location: string
-}
-
-export class Sensor extends Model {
+export class Event extends Model {
   public static createModel(sequelize: Sequelize): any {
-    Sensor.init(
+    Event.init(
       {
         id: {
           type: DataTypes.INTEGER,
@@ -27,30 +16,26 @@ export class Sensor extends Model {
           allowNull: true,
           autoIncrement: true,
         },
-        device_azure_name: {
-          type: DataTypes.STRING,
-          unique: true,
-          allowNull: false,
-        },
-        user_id: {
+        sensor_id: {
           type: DataTypes.INTEGER,
           references: {
-            model: 'user',
+            model: 'sensor',
             key: 'id',
           },
           allowNull: false,
         },
-        location: {
+        type: {
           type: DataTypes.STRING,
+          allowNull: true,
         },
       },
       {
         sequelize,
-        modelName: 'sensor',
+        modelName: 'alarm',
+        paranoid: true,
         freezeTableName: true,
         timestamps: true,
-        paranoid: true,
-        //indexes: [],
+        updatedAt: false,
       },
     )
   }

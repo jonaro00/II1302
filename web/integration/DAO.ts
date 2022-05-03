@@ -4,8 +4,10 @@ import * as fs from 'fs'
 import { Sensor } from '../model/Sensor'
 import { User, UserType } from '../model/User'
 import { Telemetry } from '../model/Telemetry'
+import { Alarm } from '../model/Alarm'
+import { Event } from '../model/Event'
 
-export const allDBModels = [Sensor, User, Telemetry]
+export const allDBModels = [Alarm, Event, Sensor, User, Telemetry]
 
 /**
  * Data Access Object.
