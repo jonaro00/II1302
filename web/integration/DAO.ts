@@ -2,20 +2,28 @@ import { createNamespace } from 'cls-hooked'
 import { Sequelize, Dialect } from 'sequelize'
 import * as fs from 'fs'
 import { Sensor } from '../model/Sensor'
-import { User } from '../model/User'
+import { User, UserType } from '../model/User'
 import { Telemetry } from '../model/Telemetry'
-
-export type UserInfo = {
-  id: string
-  name: string
-}
 
 export const allDBModels = [Sensor, User, Telemetry]
 
+/**
+ * Data Access Object.
+ * Uses Singleton pattern: Get the (only) instance with `await DAO.getInstance()`.
+ */
 export class DAO {
   public database: Sequelize
+  private static readonly instance: Promise<DAO> = DAO.createDAO()
 
-  constructor() {
+  /**
+   * Get the Promise for the DAO instance.
+   * @returns The Promise for the DAO instance.
+   */
+  public static async getInstance(): Promise<DAO> {
+    return DAO.instance
+  }
+
+  private constructor() {
     const ns = createNamespace(process.env.DB_NAME as string)
     // eslint-disable-next-line react-hooks/rules-of-hooks
     Sequelize.useCLS(ns)
@@ -40,7 +48,7 @@ export class DAO {
     allDBModels.forEach(model => model.createModel(this.database))
   }
 
-  public static async createDAO(): Promise<DAO> {
+  private static async createDAO(): Promise<DAO> {
     const dao = new DAO()
     await dao.makeTables()
     return dao
@@ -54,18 +62,18 @@ export class DAO {
     })
   }
 
-  public async login(username: string, password: string): Promise<UserInfo> {
+  public async login(username: string, password: string): Promise<UserType> {
     const matchingUser = await User.findOne({
       where: { name: username },
     })
     if (matchingUser === null) throw new Error('No user with that name found!')
     if (await User.validPassword(password, matchingUser.get('password') as string)) {
-      const { id, name } = matchingUser.get({ plain: true })
-      return { id, name }
+      const { id, name, createdAt, updatedAt } = matchingUser.get({ plain: true })
+      return { id, name, createdAt, updatedAt }
     } else throw new Error('Invalid password!')
   }
 
-  public async register(username: string, password: string): Promise<UserInfo> {
+  public async register(username: string, password: string): Promise<UserType> {
     try {
       await User.create({ name: username, password })
     } catch (error) {

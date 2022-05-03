@@ -3,7 +3,7 @@ import { describe, expect, test, beforeEach, afterEach } from '@jest/globals'
 
 let dao: DAO
 beforeEach(async () => {
-  dao = await DAO.createDAO()
+  dao = await DAO.getInstance()
 })
 afterEach(async () => {
   await dao.database.close()
