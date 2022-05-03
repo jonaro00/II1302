@@ -6,13 +6,16 @@ This is group 5 that carries out the project in II1302, Spring 22 at the Royal I
 ## The project
 
 * Background
+
 An imaginary customer wants a cloud-based system for monitoring air quality / temperature. They want to be able to put out sensors in different rooms and connect them all to a common service in the cloud, where the data is displayed.
 
 * Purpose
+
 The overall purpose of this project is to protect human health and equipment. The product can provide incentives to lower the concentration of carbon dioxide in the workplace to improve the work environment.
 The project will also give the group experience in projects and system development.
 
 * Goal
+
 The main goal is to develop a functioning system that meets the requirements. Some sub-goals are: a functional sensor module, integration with the cloud and a functional web interface.
 
 ## If you are interested in the project, look further at the links below:
