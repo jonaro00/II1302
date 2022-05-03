@@ -1,19 +1,26 @@
 # Spafe Monitor 
 ![](https://user-images.githubusercontent.com/102171209/166430504-dea80430-5dd3-43c8-a817-027d7ee5a799.jpeg)
 
-Detta är grupp 5 som genomför projektet i II1302, VT22
+This is group 5 carrying out the project in II1302, VT22
 
-## Vårt projekt
+## The project
 
-* Bakgrund 
-En påhittad kund vill ha ett molnbaserat system för övervakning av luftkvalitet/temperatur. De vill kunna sätta ut sensorer i olika rum och koppla alla till en gemensam tjänst i molnet, där datat visas.
+* Background
+An imaginary customer wants a cloud-based system for monitoring air quality / temperature. They want to be able to put out sensors in different rooms and connect them all to a common service in the cloud, where the data is displayed.
 
-* Syfte
-Det övergripande syftet med detta projekt är att skydda människors hälsa och utrustning. Produkten kan ge incitament att sänka koncentrationen av koldioxid på arbetsplatsen för att förbättra arbetsmiljön.
-Projektet ska även ge gruppen erfarenhet inom projekt och systemutveckling.
+* Purpose
+The overall purpose of this project is to protect human health and equipment. The product can provide incentives to lower the concentration of carbon dioxide in the workplace to improve the work environment.
+The project will also give the group experience in projects and system development.
 
-* Mål 
-Huvudmålet är att utveckla ett fungerande system som uppfyller kraven. Några delmål är: en fungerade sensormodul, integration med molnet samt fungerande webbgränssnitt.
+* Goal
+The main goal is to develop a functioning system that meets the requirements. Some sub-goals are: a functional sensor module, integration with the cloud and a functional web interface.
+
+## For more information, please open the links below
+
+- **Projectdeifinition** 
+- **Vision decoment** 
+- **GANTT**
+- **Work board**
 
 ## Medlemmar
 
