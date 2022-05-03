@@ -15,7 +15,7 @@ The project will also give the group experience in projects and system developme
 * Goal
 The main goal is to develop a functioning system that meets the requirements. Some sub-goals are: a functional sensor module, integration with the cloud and a functional web interface.
 
-## For more information, please open the links below
+## If you are interested in the project, look further at the links below:
 
 - [**Projectdeifinition**](https://docs.google.com/document/d/1rXNqcs8TPbTrrVb3CHk2G23qbBTXSn_r/edit?usp=sharing&ouid=116612736843125590387&rtpof=true&sd=true)
 - [**Vision decoment**](https://docs.google.com/document/d/1SJ3QUOX1WJSA_hTGWOLoi91-rVT0jSy1/edit?usp=sharing&ouid=116612736843125590387&rtpof=true&sd=true)
