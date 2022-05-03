@@ -7,6 +7,7 @@
 import { EventGridDeserializer, isSystemEvent } from '@azure/eventgrid'
 import { AzureLogger } from '@azure/logger'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { APIErrorResponse } from '../../model/APIErrorResponse'
 
 type AzureValidationResponse = {
   validationResponse: string
@@ -16,11 +17,11 @@ const egd = new EventGridDeserializer()
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<AzureValidationResponse | undefined>,
+  res: NextApiResponse<AzureValidationResponse | APIErrorResponse>,
 ) {
   if (req.method !== 'POST') {
     // Method not allowed
-    res.status(405).end()
+    res.status(405).json({ error: 'Method not allowed.' })
     return
   }
 
