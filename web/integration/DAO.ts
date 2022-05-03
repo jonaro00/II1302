@@ -66,18 +66,18 @@ export class DAO {
 
   public async login(username: string, password: string): Promise<UserType> {
     const matchingUser = await User.findOne({
-      where: { name: username },
+      where: { username },
     })
     if (matchingUser === null) throw new Error('No user with that name found!')
     if (await User.validPassword(password, matchingUser.get('password') as string)) {
-      const { id, name, createdAt, updatedAt } = matchingUser.get({ plain: true })
-      return { id, name, createdAt, updatedAt }
+      const { id, username, createdAt, updatedAt } = matchingUser.get({ plain: true })
+      return { id, username, createdAt, updatedAt }
     } else throw new Error('Invalid password!')
   }
 
   public async register(username: string, password: string): Promise<UserType> {
     try {
-      await User.create({ name: username, password })
+      await User.create({ username, password })
     } catch (error) {
       throw new Error('Failed to register user.')
     }

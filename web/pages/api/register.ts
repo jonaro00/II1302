@@ -18,9 +18,9 @@ export default async function handler(
     if (username === undefined || password === undefined) throw new Error() // refactor
     const dao = await DAO.getInstance()
     try {
-      const { id, name, createdAt, updatedAt } = await dao.register(username, password)
+      const { id, username: name, createdAt, updatedAt } = await dao.register(username, password)
       // OK
-      res.status(200).json({ id, name, createdAt, updatedAt })
+      res.status(200).json({ id, username: name, createdAt, updatedAt })
     } catch (error) {
       res.status(400).json({ error: (error as Error).message })
     }

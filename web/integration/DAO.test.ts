@@ -13,9 +13,9 @@ test('Register a user and log in', async () => {
   expect(Object.keys(dao.database.models)).toHaveLength(allDBModels.length)
   const testname = 'user1',
     testpass = 'password1'
-  const { id, name } = await dao.register(testname, testpass)
+  const { id, username } = await dao.register(testname, testpass)
   expect(id).not.toBeNull()
-  expect(name).toEqual(testname)
+  expect(username).toEqual(testname)
   expect(dao.register(testname, testpass)).rejects.toThrow('Failed to register user.')
   expect(dao.login(testname, '1234')).rejects.toThrow('Invalid password!')
   expect(dao.login('admin', testpass)).rejects.toThrow('No user with that name found!')
