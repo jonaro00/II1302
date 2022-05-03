@@ -1,7 +1,7 @@
 # Spafe Monitor 
 ![](https://user-images.githubusercontent.com/102171209/166430504-dea80430-5dd3-43c8-a817-027d7ee5a799.jpeg)
 
-This is group 5 carrying out the project in II1302, VT22
+This is group 5 that carries out the project in II1302, Spring 22 at the Royal Institute of Technology KTH
 
 ## The project
 
