@@ -1,10 +1,19 @@
-# II1302
+# Spafe Monitor 
+![](https://user-images.githubusercontent.com/102171209/166430504-dea80430-5dd3-43c8-a817-027d7ee5a799.jpeg)
 
-Grupp 5
+Detta är grupp 5 som genomför projektet i II1302, VT22
 
 ## Vårt projekt
 
-Vi bygger en IoT sensor för temperatur och luftkvalitet, och en webb-applikation för att se datan som den laddar upp.
+* Bakgrund 
+En påhittad kund vill ha ett molnbaserat system för övervakning av luftkvalitet/temperatur. De vill kunna sätta ut sensorer i olika rum och koppla alla till en gemensam tjänst i molnet, där datat visas.
+
+* Syfte
+Det övergripande syftet med detta projekt är att skydda människors hälsa och utrustning. Produkten kan ge incitament att sänka koncentrationen av koldioxid på arbetsplatsen för att förbättra arbetsmiljön.
+Projektet ska även ge gruppen erfarenhet inom projekt och systemutveckling.
+
+* Mål 
+Huvudmålet är att utveckla ett fungerande system som uppfyller kraven. Några delmål är: en fungerade sensormodul, integration med molnet samt fungerande webbgränssnitt.
 
 ## Medlemmar
 
