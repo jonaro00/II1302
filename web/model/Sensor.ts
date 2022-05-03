@@ -50,7 +50,6 @@ export class Sensor extends Model {
         freezeTableName: true,
         timestamps: true,
         paranoid: true,
-        //indexes: [],
       },
     )
   }

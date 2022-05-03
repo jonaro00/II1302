@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 
 export type UserType = {
   id: number
-  name: string
+  username: string
   createdAt: Date
   updatedAt: Date
 }
@@ -26,7 +26,7 @@ export class User extends Model {
           allowNull: true,
           autoIncrement: true,
         },
-        name: {
+        username: {
           type: DataTypes.STRING,
           allowNull: false,
           unique: true,

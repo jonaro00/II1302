@@ -26,12 +26,12 @@ export class Event extends Model {
         },
         type: {
           type: DataTypes.STRING,
-          allowNull: true,
+          allowNull: false,
         },
       },
       {
         sequelize,
-        modelName: 'alarm',
+        modelName: 'event',
         paranoid: true,
         freezeTableName: true,
         timestamps: true,

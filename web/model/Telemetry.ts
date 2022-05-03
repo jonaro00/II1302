@@ -46,6 +46,7 @@ export class Telemetry extends Model {
         freezeTableName: true,
         timestamps: true,
         updatedAt: false,
+        //indexes: [], // perhaps make an index to optimize data lookup
       },
     )
   }

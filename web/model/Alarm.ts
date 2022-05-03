@@ -1,12 +1,23 @@
 import { Sequelize, Model, DataTypes } from 'sequelize'
 
 export type AlarmType = {
+  id: number
   sensor_id: number
   value: number
   email: string
   message: string
   createdAt: Date
   updatedAt: Date
+}
+
+/**
+ * Sent to backend to create/update an Alarm.
+ */
+export type AlarmUserData = {
+  sensor_id: number
+  value: number
+  email: string
+  message: string
 }
 
 export class Alarm extends Model {
@@ -29,7 +40,7 @@ export class Alarm extends Model {
         },
         value: {
           type: DataTypes.FLOAT,
-          allowNull: true,
+          allowNull: false,
         },
         email: {
           type: DataTypes.STRING,
