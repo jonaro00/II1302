@@ -2,6 +2,12 @@
 
 ## Authentication
 
+### `/api/register` - POST - Register with credentials
+
+Request body: `UserCredentials`
+
+Response type: `UserType`
+
 ### `/api/signin` - POST - Sign in with credentials
 
 Request body: `UserCredentials`
