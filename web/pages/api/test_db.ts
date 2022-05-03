@@ -2,7 +2,7 @@ import { randomInt } from 'crypto'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { DAO } from '../../integration/DAO'
 
-DAO.createDAO(false).then(d => {
+DAO.createDAO().then(d => {
   d.register('a2', 'b').then(console.log)
 })
 

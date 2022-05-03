@@ -3,7 +3,7 @@ import { describe, expect, test, beforeEach, afterEach } from '@jest/globals'
 
 let dao: DAO
 beforeEach(async () => {
-  dao = await DAO.createDAO(true)
+  dao = await DAO.createDAO()
 })
 afterEach(async () => {
   await dao.database.close()
@@ -25,18 +25,18 @@ test('Register a user twice', async () => {
   const testname = 'user1',
     testpass = 'password1'
   await dao.register(testname, testpass)
-  expect(dao.register(testname, testpass)).rejects.toThrow()
+  expect(dao.register(testname, testpass)).rejects.toThrow('Failed to register user.')
 })
 
 test('Login with incorrect password', async () => {
   const testname = 'user1',
     testpass = 'password1'
   await dao.register(testname, testpass)
-  expect(dao.login(testname, '1234')).rejects.toThrow()
+  expect(dao.login(testname, '1234')).rejects.toThrow('Invalid password!')
 })
 
 test('Login with incorrect user', async () => {
   const testname = 'admin',
     testpass = 'admin'
-  expect(dao.login(testname, testpass)).rejects.toThrow()
+  expect(dao.login(testname, testpass)).rejects.toThrow('No user with that name found!')
 })

@@ -15,44 +15,43 @@ export const allDBModels = [Sensor, User, Telemetry]
 export class DAO {
   public database: Sequelize
 
-  constructor(test: boolean) {
-    const ns = createNamespace(process.env.DB_NAME || '')
+  constructor() {
+    const ns = createNamespace(process.env.DB_NAME as string)
     // eslint-disable-next-line react-hooks/rules-of-hooks
     Sequelize.useCLS(ns)
-    if (test) {
-      this.database = new Sequelize('sqlite::memory:', { logging: false })
-    } else {
-      this.database = new Sequelize(
-        process.env.DB_NAME || '',
-        process.env.DB_USER || '',
-        process.env.DB_PASS || '',
-        {
-          host: process.env.DB_HOST || '',
-          port: Number.parseInt(process.env.DB_PORT || ''),
-          dialect: process.env.DB_DIALECT as Dialect,
-          ssl: true,
-          dialectOptions: {
-            ssl: {
-              ca: fs.readFileSync('integration/Azure-db-DigiCertGlobalRootCA.crt.pem'),
-            },
+    this.database = new Sequelize(
+      process.env.DB_NAME as string,
+      process.env.DB_USER as string,
+      process.env.DB_PASS as string,
+      {
+        host: process.env.DB_HOST as string,
+        port: Number.parseInt(process.env.DB_PORT as string),
+        dialect: process.env.DB_DIALECT as Dialect,
+        ssl: true,
+        dialectOptions: {
+          ssl: {
+            ca: fs.readFileSync('integration/Azure-db-DigiCertGlobalRootCA.crt.pem'),
           },
-          logging: false, // change to true to print all SQL queries when debugging
         },
-      )
-    }
+        logging: false, // change to true to print all SQL queries when debugging
+      },
+    )
     // initaiate all models
     allDBModels.forEach(model => model.createModel(this.database))
   }
 
-  public static async createDAO(test: boolean): Promise<DAO> {
-    const dao = new DAO(test)
+  public static async createDAO(): Promise<DAO> {
+    const dao = new DAO()
     await dao.makeTables()
     return dao
   }
 
   private async makeTables(): Promise<void> {
     await this.database.authenticate()
-    await this.database.sync({ force: false, alter: false })
+    await this.database.sync({
+      force: process.env.NODE_ENV === 'test' ? true : false,
+      alter: false,
+    })
   }
 
   public async login(username: string, password: string): Promise<UserInfo> {
