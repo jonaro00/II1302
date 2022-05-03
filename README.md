@@ -17,10 +17,10 @@ The main goal is to develop a functioning system that meets the requirements. So
 
 ## For more information, please open the links below
 
-- **Projectdeifinition** 
-- **Vision decoment** 
-- **GANTT**
-- **Work board**
+- [**Projectdeifinition**](https://docs.google.com/document/d/1rXNqcs8TPbTrrVb3CHk2G23qbBTXSn_r/edit?usp=sharing&ouid=116612736843125590387&rtpof=true&sd=true)
+- [**Vision decoment**](https://docs.google.com/document/d/1SJ3QUOX1WJSA_hTGWOLoi91-rVT0jSy1/edit?usp=sharing&ouid=116612736843125590387&rtpof=true&sd=true)
+- [**GANTT**](https://docs.google.com/spreadsheets/d/1jiP1j_vhUTtjraDfo97tL9Ur1a-9HIi9/edit?usp=sharing&ouid=116612736843125590387&rtpof=true&sd=true)
+- [**Work board**](https://lucid.app/lucidchart/6948f29b-8651-49a3-b143-13c3a75f0af6/edit?invitationId=inv_3b2fd53b-1783-43ff-a65f-f7bd058c15f3)
 
 ## Medlemmar
 
