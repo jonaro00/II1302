@@ -2,7 +2,7 @@
 
 ![banner](https://user-images.githubusercontent.com/102171209/166430504-dea80430-5dd3-43c8-a817-027d7ee5a799.jpeg)
 
-This is group 5 that carries out the project in II1302, Spring 22 at the Royal Institute of Technology KTH
+This is a project carried out by Group 5 in II1302 (Spring 2022) at KTH Royal Institute of Technology.
 
 ## The project
 
@@ -17,7 +17,7 @@ The project will also give the group experience in projects and system developme
 
 ### Goal
 
-The main goal is to develop a functioning system that meets the requirements. Some sub-goals are: a functional sensor module, integration with the cloud and a functional web interface.
+The main goal is to develop a functioning system that meets the requirements. Some sub-goals are: a functional sensor module, integration with the cloud and a functioning web interface.
 
 ## If you are interested in the project, look further at the links below:
 
@@ -25,6 +25,7 @@ The main goal is to develop a functioning system that meets the requirements. So
 - [**Vision document**](https://docs.google.com/document/d/1SJ3QUOX1WJSA_hTGWOLoi91-rVT0jSy1/edit?usp=sharing&ouid=116612736843125590387&rtpof=true&sd=true)
 - [**GANTT**](https://docs.google.com/spreadsheets/d/1jiP1j_vhUTtjraDfo97tL9Ur1a-9HIi9/edit?usp=sharing&ouid=116612736843125590387&rtpof=true&sd=true)
 - [**Work board**](https://lucid.app/lucidchart/6948f29b-8651-49a3-b143-13c3a75f0af6/edit?invitationId=inv_3b2fd53b-1783-43ff-a65f-f7bd058c15f3)
+- More about the iterations of the project can be found on the [**Wiki**](https://github.com/jonaro00/II1302/wiki)
 
 ## Members
 
@@ -50,3 +51,9 @@ To develop the webpage, do the following:
 ### Hardware
 
 *coming soon*
+
+## Testing
+
+The Webpage is continuosly tested in GitHub Actions. This is the latest status:
+
+[![Build and Test npm package](https://github.com/jonaro00/II1302/actions/workflows/test.yml/badge.svg)](https://github.com/jonaro00/II1302/actions/workflows/test.yml)
