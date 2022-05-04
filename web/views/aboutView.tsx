@@ -3,14 +3,14 @@ import { Container, Header, Grid, Card, Image, Icon, Item, Segment } from 'seman
 export const groupInfo = [
   {
     name: 'Alex',
-    tel: 'Lorem ipsum',
-    telTxt: 'Lorem ipsum',
-    mail: 'Lorem ipsum',
-    gitHub: 'Lorem ipsum ',
+    tel: '+46708128516',
+    telTxt: '+46 708-12 85 16',
+    mail: 'Alexberg@kth.se',
+    gitHub: 'https://github.com/calexanderberg ',
     linkedin: 'https://linkedin.com/in/calexanderberg',
-    title: 'Lorem ipsum',
+    title: 'Projektledare/Hållbarhets- och arbetsmiljöansvarig',
     about:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempus, felis pharetra fermentum commodo, tellus magna vehicula arcu, porta gravida est purus ut nisl. Morbi vel semper ante.',
+      'I am a Swedish Computer Science student at KTH. Besides my beaurocatic responsibilities for this  project I was responsible for the Front-end programming for our software side.',
     Picture: '/images/alex.jpg',
   },
   {
@@ -18,7 +18,7 @@ export const groupInfo = [
     tel: 'Lorem ipsum',
     telTxt: 'Lorem ipsum',
     mail: 'jberg8@kth.se',
-    gitHub: 'jonaro00',
+    gitHub: 'https://linkedin.com/in/jonaro00',
     linkedin: 'Lorem ipsum ',
     title: 'Lorem ipsum ',
     about:
