@@ -83,20 +83,24 @@ export class DAO {
   }
 
   public async login({ username, password }: UserCredentials): Promise<UserType> {
-    const matchingUser = await User.findOne({
-      where: { username },
+    return await this.database.transaction(async x => {
+      const matchingUser = await User.findOne({
+        where: { username },
+      })
+      if (matchingUser === null) throw new Error('No user with that name found!')
+      if (await User.validPassword(password, matchingUser.get('password') as string)) {
+        const { id, username, createdAt, updatedAt } = matchingUser.get({ plain: true })
+        return { id, username, createdAt, updatedAt }
+      } else throw new Error('Invalid password!')
     })
-    if (matchingUser === null) throw new Error('No user with that name found!')
-    if (await User.validPassword(password, matchingUser.get('password') as string)) {
-      const { id, username, createdAt, updatedAt } = matchingUser.get({ plain: true })
-      return { id, username, createdAt, updatedAt }
-    } else throw new Error('Invalid password!')
   }
 
   public async register({ username, password }: UserCredentials): Promise<UserType> {
     // TODO: Verify username and password validity
     try {
-      await User.create({ username, password })
+      await this.database.transaction(async x => {
+        await User.create({ username, password })
+      })
     } catch (error) {
       throw new Error('Failed to register user.')
     }
