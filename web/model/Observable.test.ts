@@ -1,5 +1,4 @@
 import { Observable } from './Observable'
-import { describe, expect, test, beforeEach, afterEach } from '@jest/globals'
 import { fn, Mock } from 'jest-mock'
 
 let ob: Observable
@@ -17,44 +16,46 @@ beforeEach(() => {
   }
 })
 
-test('Call one observer', () => {
-  ob.addObserver(mock)
-  ob.notifyObservers()
-  expect(mock.mock.calls).toHaveLength(1)
-  expect(mock.mock.results[0].value).toBeUndefined()
-})
+describe('An Observable', () => {
+  it('should call one observer', () => {
+    ob.addObserver(mock)
+    ob.notifyObservers()
+    expect(mock.mock.calls).toHaveLength(1)
+    expect(mock.mock.results[0].value).toBeUndefined()
+  })
 
-test('Call several observers in correct order', () => {
-  ob.addObserver(f)
-  ob.addObserver(g)
-  ob.notifyObservers()
-  expect(mock.mock.calls).toHaveLength(2)
-  expect(mock.mock.results[0].value).toEqual('f')
-  expect(mock.mock.results[1].value).toEqual('g')
-})
+  it('should call several observers in correct order', () => {
+    ob.addObserver(f)
+    ob.addObserver(g)
+    ob.notifyObservers()
+    expect(mock.mock.calls).toHaveLength(2)
+    expect(mock.mock.results[0].value).toEqual('f')
+    expect(mock.mock.results[1].value).toEqual('g')
+  })
 
-test('Remove observer', () => {
-  ob.addObserver(f)
-  ob.addObserver(g)
-  ob.removeObserver(g)
-  ob.notifyObservers()
-  expect(mock.mock.calls).toHaveLength(1)
-  expect(mock.mock.results[0].value).toEqual('f')
-})
+  it('should call an observer if an other observer is removed', () => {
+    ob.addObserver(f)
+    ob.addObserver(g)
+    ob.removeObserver(g)
+    ob.notifyObservers()
+    expect(mock.mock.calls).toHaveLength(1)
+    expect(mock.mock.results[0].value).toEqual('f')
+  })
 
-test('Remove all observers', () => {
-  ob.addObserver(f)
-  ob.addObserver(g)
-  ob.removeObserver(f)
-  ob.removeObserver(g)
-  ob.notifyObservers()
-  expect(mock.mock.calls).toHaveLength(0)
-})
+  it('should not call any observers after all have been removed', () => {
+    ob.addObserver(f)
+    ob.addObserver(g)
+    ob.removeObserver(f)
+    ob.removeObserver(g)
+    ob.notifyObservers()
+    expect(mock.mock.calls).toHaveLength(0)
+  })
 
-test('One observer throws', () => {
-  ob.addObserver(e)
-  ob.addObserver(f)
-  ob.addObserver(g)
-  ob.notifyObservers()
-  expect(mock.mock.calls).toHaveLength(2)
+  it('should call every observer even though one observer throws', () => {
+    ob.addObserver(e)
+    ob.addObserver(f)
+    ob.addObserver(g)
+    ob.notifyObservers()
+    expect(mock.mock.calls).toHaveLength(2)
+  })
 })
