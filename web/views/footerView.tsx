@@ -16,7 +16,7 @@ const FooterView = () => {
             </Link>
           </Grid.Column>
           <Grid.Column>
-            <Link href="">
+            <Link href="/">
               <a target="_blank" className="link-footer">
                 Documentation
               </a>

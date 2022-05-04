@@ -1,18 +1,17 @@
 import Head from 'next/head'
 import { Grid, Icon, Segment, Dropdown, Image } from 'semantic-ui-react'
-// import { deviceInfo } from '../localization/deviceInfo';
 
-import image1 from '../public/images/placeholder1.png'
-import image2 from '../public/images/placeholder2.png'
-import image3 from '../public/images/placeholder3.png'
-import image4 from '../public/images/placeholder4.png'
+const image1 = '/images/placeholder1.png'
+const image2 = '/images/placeholder2.png'
+const image3 = '/images/placeholder3.png'
+const image4 = '/images/placeholder4.png'
 
 const DeviceView = () => {
   return (
     <Grid>
       <Grid columns={2} padded inverted className="device-grid">
         <Grid.Row color="black">
-          <Segment color="black" inverted classname="device-title">
+          <Segment color="black" inverted className="device-title">
             Device 1
             <Dropdown icon="setting">
               <Dropdown.Menu>
@@ -42,7 +41,7 @@ const DeviceView = () => {
       </Grid>
       <Grid columns={2} padded inverted className="device-grid">
         <Grid.Row color="black">
-          <Segment color="black" inverted classname="device-title">
+          <Segment color="black" inverted className="device-title">
             Device 1
             <Dropdown icon="setting">
               <Dropdown.Menu>
