@@ -27,7 +27,7 @@ jobs:
           cd web
           npm install
           npm run build --if-present
-          npm run test --if-present
+# npm run test --if-present
           zip -r --symlinks ../deploy.zip .
 # Credit: https://github.com/vercel/next.js/discussions/14897
 
