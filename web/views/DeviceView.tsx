@@ -2,36 +2,47 @@ import Head from 'next/head'
 import { Grid, Header, Segment, Dropdown } from 'semantic-ui-react'
 
 
-const liveReading = (isTemp: boolean) => {
-  var annotation = isTemp ? '°C' : 'ppm'
-   return(
-     <Grid>
-        <Grid.Row centered>
-          <div className='device-live-header'>Temperature Live Reading</div>
-        </Grid.Row>
-        <Grid.Row centered>
-          <div className='device-live-read'>
-            <div className='device-live-number'>
-              886 
-            </div>
-            <div className='device-live-annotation'>
-              {annotation}
-            </div>
-          </div>
-        </Grid.Row>
-        <Grid.Row></Grid.Row>
-     </Grid>
-   )
-}
 
-/* Future constant using chart.js
+/* 
+Future constant using chart.js
+https://www.chartjs.org/docs/latest/
+https://www.chartjs.org/docs/latest/samples/line/interpolation.html
 
 const liveGraphing = () => {
 
 }
 */
 
-const DeviceView = () => {
+const DeviceView = ({
+  temp,
+  gasses
+}:{temp: number, gasses: number}) => {
+
+  const liveReading = (isTemp: boolean) => {
+    var title = isTemp ? 
+      'Live Temperature': 'Live "gasses" Level'
+    var annotation = isTemp ? '°C' : 'ppm'
+    var num = isTemp ? temp : gasses
+     return(
+       <Grid>
+          <Grid.Row centered>
+            <div className='device-live-header'>{title}</div>
+          </Grid.Row>
+          <Grid.Row centered>
+            <div className='device-live-read'>
+              <div className='device-live-number'>
+                {num} 
+              </div>
+              <div className='device-live-annotation'>
+                {annotation}
+              </div>
+            </div>
+          </Grid.Row>
+          <Grid.Row></Grid.Row>
+       </Grid>
+     )
+  }
+
   return (
     <div className='device'>
       <Grid columns={2} padded inverted className="device-grid">
@@ -55,7 +66,7 @@ const DeviceView = () => {
                       </Dropdown>
                   </Dropdown.Item>
                   <Dropdown.Item>
-                      <Dropdown text='CO2 levels'>
+                      <Dropdown text='gasses levels'>
                         <Dropdown.Menu>
                           <Dropdown.Item text='Live reading'/>
                           <Dropdown.Item text='Live graphing'/>
@@ -76,12 +87,12 @@ const DeviceView = () => {
             {liveReading(true)}
           </Grid.Column>
           <Grid.Column className='device-info-box'>
-            
+            {liveReading(false)}
           </Grid.Column>
         </Grid.Row>
         <Grid.Row className='device-info-row'>
           <Grid.Column className='device-info-box'>
-            
+ 
           </Grid.Column>
           <Grid.Column className='device-info-box'>
             
