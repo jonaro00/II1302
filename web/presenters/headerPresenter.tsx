@@ -1,7 +1,6 @@
+import { Model } from '../model/Model'
 import HeaderView from '../views/headerView'
 
-const HeaderPresenter = () => {
-  return <HeaderView />
+export default function HeaderPresenter({ model }: { model: Model }) {
+  return <HeaderView username={model.user?.username || ''} />
 }
-
-export default HeaderPresenter

@@ -1,17 +1,11 @@
-import 'semantic-ui-css/semantic.min.css'
-
-import HeaderPresenter from '../../presenters/headerPresenter'
+import MainLayout from '../../components/MainLayout'
 import AboutPresenter from '../../presenters/aboutPresenter'
-import FooterPresenter from '../../presenters/footerPresenter'
+import { Model } from '../../model/Model'
 
-const AboutPage = () => {
+export default function AboutPage({ model }: { model: Model }) {
   return (
-    <>
-      <HeaderPresenter />
+    <MainLayout model={model}>
       <AboutPresenter />
-      <FooterPresenter />
-    </>
+    </MainLayout>
   )
 }
-
-export default AboutPage

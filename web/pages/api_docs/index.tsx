@@ -1,15 +1,10 @@
-import 'semantic-ui-css/semantic.min.css'
+import MainLayout from '../../components/MainLayout'
+import { Model } from '../../model/Model'
 
-import HeaderPresenter from '../../presenters/headerPresenter'
-import FooterPresenter from '../../presenters/footerPresenter'
-
-const APIPage = () => {
+export default function APIPage({ model }: { model: Model }) {
   return (
-    <>
-      <HeaderPresenter />
-      <FooterPresenter />
-    </>
+    <MainLayout model={model}>
+      <></>
+    </MainLayout>
   )
 }
-
-export default APIPage

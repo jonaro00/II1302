@@ -1,6 +1,9 @@
+import { APIErrorResponse } from './APIErrorResponse'
 import { Observable } from './Observable'
 import { SensorType } from './Sensor'
 import { TelemetryType } from './Telemetry'
+import { UserCredentials, UserType } from './User'
+
 type EventType = undefined // import { EventType } from './Event'
 type AlarmType = undefined // import { AlarmType } from './Alarm'
 
@@ -11,7 +14,7 @@ export class Model extends Observable {
   /**
    * The currently signed in user.
    */
-  public user: number | null = null
+  public user: UserType | null = null
 
   /**
    * Sensors.
@@ -53,12 +56,47 @@ export class Model extends Observable {
     this.notifyObservers()
   }
 
-  public set setUser(user: number | null) {
+  public setUser(user: UserType | null) {
     this.user = user
     this.notifyObservers()
   }
 
-  public set setSensors(sensors: Array<SensorType>) {
+  public async register({ username, password }: UserCredentials): Promise<boolean> {
+    const res = await fetch('/api/register', {
+      method: 'POST',
+      body: JSON.stringify({ username, password }),
+    })
+    const j = await res.json()
+    if (!res.ok) {
+      throw new Error((j as APIErrorResponse).error)
+    }
+    this.setUser(j as UserType)
+    return true
+  }
+
+  public async signIn({ username, password }: UserCredentials): Promise<boolean> {
+    const res = await fetch('/api/signin', {
+      method: 'POST',
+      body: JSON.stringify({ username, password }),
+    })
+    const j = await res.json()
+    if (!res.ok) {
+      throw new Error((j as APIErrorResponse).error)
+    }
+    this.setUser(j as UserType)
+    return true
+  }
+
+  public async signOut(): Promise<boolean> {
+    const res = await fetch('/api/signout')
+    if (!res.ok) {
+      throw new Error('Unknown error while signing out.')
+    }
+    this.clear()
+    return true
+  }
+
+  public setSensors(sensors: Array<SensorType>) {
     this.sensors = sensors
     this.notifyObservers()
   }

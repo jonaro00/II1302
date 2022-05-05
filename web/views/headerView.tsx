@@ -1,6 +1,7 @@
+import Link from 'next/link'
 import { Menu, Icon } from 'semantic-ui-react'
 
-const HeaderView = () => {
+export default function HeaderView({ username }: { username: string }) {
   return (
     <Menu stackable secondary compact size="large" className="header">
       <Menu.Item className="header-logo" icon as="a" href="/">
@@ -15,8 +16,18 @@ const HeaderView = () => {
       <Menu.Item as="a" href="/about">
         About
       </Menu.Item>
+      <Menu.Item>
+        {/* fix me */}
+        {username ? (
+          <p>
+            Current user: {username} <a href="#">Sing Out</a>
+          </p>
+        ) : (
+          <Link href="/signin">
+            <a>Sing In</a>
+          </Link>
+        )}
+      </Menu.Item>
     </Menu>
   )
 }
-
-export default HeaderView
