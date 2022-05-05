@@ -1,5 +1,6 @@
 .device {
-  height: 95vh;
+  height: 90vh;
+  padding: 50px 40px;
 }
 
 .device-grid {
@@ -10,4 +11,15 @@
   display: flex !important;
   justify-content: space-between !important;
   min-width: 100% !important;
+  height: 40px;
+}
+
+.device-title{
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.device-infobox {
+  width: 100px;
+  height: 200px;
 }

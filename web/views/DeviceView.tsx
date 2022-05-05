@@ -1,75 +1,64 @@
 import Head from 'next/head'
-import { Grid, Icon, Segment, Dropdown, Image } from 'semantic-ui-react'
-
-const image1 = '/images/placeholder1.png'
-const image2 = '/images/placeholder2.png'
-const image3 = '/images/placeholder3.png'
-const image4 = '/images/placeholder4.png'
+import { Grid, Header, Segment, Dropdown } from 'semantic-ui-react'
 
 const DeviceView = () => {
   return (
-    <Grid>
+    <div className='device'>
       <Grid columns={2} padded inverted className="device-grid">
         <Grid.Row color="black">
-          <Segment color="black" inverted className="device-title">
-            Device 1
-            <Dropdown icon="setting">
+          <Segment color="black" inverted className="device-header">
+            <div></div>
+            <Header as='h3' className='device-title'>Device 1</Header>
+            <Dropdown icon="setting" pointing='left'>
               <Dropdown.Menu>
-                <Dropdown.Item text="Setting 1" />
-                <Dropdown.Item text="Setting 2" />
-                <Dropdown.Item text="Setting 3" />
+                <Dropdown.Item text="Focus mode" />
+                <Dropdown.Item>
+                  <Dropdown text='Add' pointing='left'>
+                  <Dropdown.Menu>
+                    <Dropdown.Item>
+                      <Dropdown text='Temperature'>
+                        <Dropdown.Menu>
+                          <Dropdown.Item text='Live reading'/>
+                          <Dropdown.Item text='Live graphing'/>
+                          <Dropdown.Item text='Historical graphing'/>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                      <Dropdown text='CO2 levels'>
+                        <Dropdown.Menu>
+                          <Dropdown.Item text='Live reading'/>
+                          <Dropdown.Item text='Live graphing'/>
+                          <Dropdown.Item text='Historical graphing'/>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                  </Dropdown.Item>
+                  </Dropdown.Menu>
+                  </Dropdown>
+                </Dropdown.Item>
+                <Dropdown.Item text="Remove device" />
               </Dropdown.Menu>
             </Dropdown>
           </Segment>
         </Grid.Row>
         <Grid.Row color="black">
-          <Grid.Column>
-            <Image src={image1} />
+          <Grid.Column color='red' className='device-infobox'>
+            
           </Grid.Column>
-          <Grid.Column>
-            <Image src={image2} />
+          <Grid.Column color='blue' className='device-infobox'>
+            
           </Grid.Column>
         </Grid.Row>
         <Grid.Row color="black">
-          <Grid.Column>
-            <Image src={image3} />
+          <Grid.Column color='orange' className='device-infobox'>
+            
           </Grid.Column>
-          <Grid.Column>
-            <Image src={image4} />
+          <Grid.Column color='yellow' className='device-infobox'>
+            
           </Grid.Column>
         </Grid.Row>
       </Grid>
-      <Grid columns={2} padded inverted className="device-grid">
-        <Grid.Row color="black">
-          <Segment color="black" inverted className="device-title">
-            Device 1
-            <Dropdown icon="setting">
-              <Dropdown.Menu>
-                <Dropdown.Item text="Setting 1" />
-                <Dropdown.Item text="Setting 2" />
-                <Dropdown.Item text="Setting 3" />
-              </Dropdown.Menu>
-            </Dropdown>
-          </Segment>
-        </Grid.Row>
-        <Grid.Row color="black">
-          <Grid.Column>
-            <Image src={image1} />
-          </Grid.Column>
-          <Grid.Column>
-            <Image src={image2} />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row color="black">
-          <Grid.Column>
-            <Image src={image3} />
-          </Grid.Column>
-          <Grid.Column>
-            <Image src={image4} />
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Grid>
+      </div>
   )
 }
 
