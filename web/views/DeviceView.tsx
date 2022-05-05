@@ -1,6 +1,36 @@
 import Head from 'next/head'
 import { Grid, Header, Segment, Dropdown } from 'semantic-ui-react'
 
+
+const liveReading = (isTemp: boolean) => {
+  var annotation = isTemp ? '°C' : 'ppm'
+   return(
+     <Grid>
+        <Grid.Row centered>
+          <div className='device-live-header'>Temperature Live Reading</div>
+        </Grid.Row>
+        <Grid.Row centered>
+          <div className='device-live-read'>
+            <div className='device-live-number'>
+              886 
+            </div>
+            <div className='device-live-annotation'>
+              {annotation}
+            </div>
+          </div>
+        </Grid.Row>
+        <Grid.Row></Grid.Row>
+     </Grid>
+   )
+}
+
+/* Future constant using chart.js
+
+const liveGraphing = () => {
+
+}
+*/
+
 const DeviceView = () => {
   return (
     <div className='device'>
@@ -41,19 +71,19 @@ const DeviceView = () => {
             </Dropdown>
           </Segment>
         </Grid.Row>
-        <Grid.Row color="black">
-          <Grid.Column color='red' className='device-infobox'>
-            
+        <Grid.Row className='device-info-row'>
+          <Grid.Column className='device-info-box'>
+            {liveReading(true)}
           </Grid.Column>
-          <Grid.Column color='blue' className='device-infobox'>
+          <Grid.Column className='device-info-box'>
             
           </Grid.Column>
         </Grid.Row>
-        <Grid.Row color="black">
-          <Grid.Column color='orange' className='device-infobox'>
+        <Grid.Row className='device-info-row'>
+          <Grid.Column className='device-info-box'>
             
           </Grid.Column>
-          <Grid.Column color='yellow' className='device-infobox'>
+          <Grid.Column className='device-info-box'>
             
           </Grid.Column>
         </Grid.Row>
@@ -63,5 +93,3 @@ const DeviceView = () => {
 }
 
 export default DeviceView
-
-//Note for later, add chart.js to the logic and design of these grids

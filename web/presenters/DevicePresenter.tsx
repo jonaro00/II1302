@@ -1,5 +1,7 @@
 import DeviceView from '../views/DeviceView'
 
+
+
 const DevicePresenter = () => {
   return <DeviceView />
 }
