@@ -27,7 +27,7 @@ export const groupInfo = [
   },
   {
     name: 'Bashar',
-    tel: 'Lorem ipsum',
+    tel: '+46 729 38 68 03',
     telTxt: 'Lorem ipsum',
     mail: 'Lorem ipsum',
     gitHub: 'Lorem ipsum ',
