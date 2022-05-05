@@ -68,22 +68,15 @@ const AboutView = () => {
     <Segment>
       <Container text textAlign="center">
         <p className="about-p about-p-top">
-          Spafe Monitor believes in total survelance of all our customers, whether they are aware of
-          it ot not.
+          Spafe Monitor believes in total survelance of all our customers, whether they are aware of it ot not.
         </p>
         <Icon name="eye" circular color="red" size="huge" inverted />
         <Header as="h2">Spafe Monitor</Header>
         <p className="about-p">
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-          dolor. Aenean massa strong. Cum sociis natoque penatibus et magnis dis parturient montes,
-          nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,
-          sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec,
-          vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-          Nullam dictum felis eu pede link mollis pretium. Integer tincidunt. Cras dapibus. Vivamus
-          elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu,
-          consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat
-          a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean
-          imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi.
+          Spafe Monitor started in 2022 with the explicit goal of creating the most advanced and high tech monitoring system of temperature and co2 levels. Started as a project for the Projects and Project methods course at KTH, Spafe was created to fill the need to fast, afforable, and easy to use monitoring of everything in our lives. 
+          <br></br>Spafe is constructed into two departments each working towards reaching a specific goal. The first one being the hardware, with the explicit goal of creating small and accurate products so you don't need to even be aware that it even exists in your house. 
+          <br></br>The second department is the software, split into front-end and back-end. For the front-end or gui it works with you to make sure you get the information you need and nothing else. On the other hand, the backend works to collect all the information we need and sending it to the appropriate channels.
+          <br></br>Spafe is a company you can trust.
         </p>
       </Container>
       <Grid className="about-grid">

@@ -6,6 +6,8 @@ const HomeView = () => {
     <Container className="home">
       <Header as="h2">Welcome to Spafe Monitor</Header>
       <p className="home-p">
+        We are you all in one solution for monitoring, visualizing, and alertion for your co2, and temperature levels. 
+        Our devices are state of the art, combining complex solutions in easy to read and understand interfaces. 
         Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
         Aenean massa strong. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
         ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla
@@ -18,7 +20,7 @@ const HomeView = () => {
         augue. Curabitur ullamcorper ultricies nisi.
       </p>
       <p className="home-p">
-        If ypu need help setting up your device, you can follow our documentation, you can reach
+        If you need help setting up your device, you can follow our documentation, you can reach
         this by clicking devices or by scrollling down to our footer.
       </p>
       <p className="home-p">
