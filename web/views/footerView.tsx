@@ -7,7 +7,7 @@ const FooterView = () => {
     <Segment className="main-footer" color="black">
       <Grid columns={8}>
         <Grid.Row color="black" style={{ color: 'white' }}>
-          <Grid.Column>V: 0.3</Grid.Column>
+          <Grid.Column>V: 0.5</Grid.Column>
           <Grid.Column>
             <Link href="https://github.com/jonaro00/II1302">
               <a className="link-footer" target="_blank">
