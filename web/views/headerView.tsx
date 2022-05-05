@@ -20,11 +20,11 @@ export default function HeaderView({ username }: { username: string }) {
         {/* fix me */}
         {username ? (
           <p>
-            Current user: {username} <a href="#">Sing Out</a>
+            Current user: {username} <a href="#">Sign Out</a>
           </p>
         ) : (
           <Link href="/signin">
-            <a>Sing In</a>
+            <a>Sign In</a>
           </Link>
         )}
       </Menu.Item>
