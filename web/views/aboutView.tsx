@@ -29,13 +29,13 @@ export const groupInfo = [
     name: 'Bashar',
     tel: '+46 729 38 68 03',
     telTxt: 'Lorem ipsum',
-    mail: 'Lorem ipsum',
-    gitHub: 'Lorem ipsum ',
-    linkedin: 'Lorem ipsum ',
-    title: 'Lorem ipsum ',
+    mail: 'bjpati@kth.se',
+    gitHub: 'https://github.com/bjpati',
+    linkedin: 'https://www.linkedin.com/in/bashar-pati-89735b124/',
+    title: 'Test ansvarig',
     about:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempus, felis pharetra fermentum commodo, tellus magna vehicula arcu, porta gravida est purus ut nisl. Morbi vel semper ante.',
-    Picture: '',
+    Picture: 'https://github.com/bjpati/bjpati/blob/main/Icon/IMG_3796%202.jpeg',
   },
   {
     name: 'Amiran',
