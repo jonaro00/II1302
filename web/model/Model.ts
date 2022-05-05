@@ -57,6 +57,7 @@ export class Model extends Observable {
   }
 
   public setUser(user: UserType | null) {
+    if (this.user === user) return
     this.user = user
     this.notifyObservers()
   }
