@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import type { UserCredentials, UserType } from '../../model/User'
-import { DAO } from '../../integration/DAO'
-import { APIErrorResponse } from '../../model/APIErrorResponse'
+import type { UserCredentials, UserType } from '../../../model/User'
+import { DAO } from '../../../integration/DAO'
+import { APIErrorResponse } from '../../../model/APIErrorResponse'
 
 export default async function handler(
   req: NextApiRequest,
@@ -13,10 +13,11 @@ export default async function handler(
     return
   }
 
+  const dao = await DAO.getInstance()
   try {
     const { username, password } = req.body as UserCredentials
+    console.log(req.body, username, password)
     if (username === undefined || password === undefined) throw new Error() // refactor
-    const dao = await DAO.getInstance()
     try {
       const { id, username: name, createdAt, updatedAt } = await dao.login({ username, password })
       // OK

@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { UserCredentials } from '../../../model/User'
+import { UserCredentials, UserType } from '../../../model/User'
 
 export default NextAuth({
   providers: [
@@ -22,13 +22,15 @@ export default NextAuth({
         // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
-        const res = await fetch('/api/signin', {
+        console.log('sending to /api/signin')
+        const res = await fetch('http://localhost:3000/api/signin', {
           method: 'POST',
           body: JSON.stringify(credentials),
           headers: { 'Content-Type': 'application/json' },
         })
-        const user = await res.json()
-
+        console.log('got from /api/signin')
+        const user = (await res.json()) as UserType
+        console.log(user)
         // If no error and we have user data, return it
         if (res.ok && user) {
           return user
@@ -38,4 +40,9 @@ export default NextAuth({
       },
     }),
   ],
+  callbacks: {},
+  pages: {
+    signIn: '/signin',
+    signOut: '/signout',
+  },
 })

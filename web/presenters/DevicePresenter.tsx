@@ -1,11 +1,9 @@
 import DeviceView from '../views/DeviceView'
-import handler from '../pages/api/test_data/[deviceId]'
-
+import { useSession } from 'next-auth/react'
 
 const DevicePresenter = () => {
-  return <DeviceView temp={45} gasses={886}
-  
-  />
+  const { status } = useSession({ required: true })
+  return status === 'authenticated' ? <DeviceView temp={45} gasses={886} /> : <p>Loading...</p>
 }
 
 export default DevicePresenter
