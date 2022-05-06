@@ -1,28 +1,92 @@
 import Head from 'next/head'
-import { Grid, Header, Segment, Dropdown } from 'semantic-ui-react'
+import { 
+  Grid, 
+  Header, 
+  Segment, 
+  Dropdown 
+} from 'semantic-ui-react'
+
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+import { Line } from 'react-chartjs-2';
+//import faker from 'faker';
 
 
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 /* 
 Future constant using chart.js
 https://www.chartjs.org/docs/latest/
 https://www.chartjs.org/docs/latest/samples/line/interpolation.html
-
-const liveGraphing = () => {
-
-}
 */
+
 
 const DeviceView = ({
   temp,
   gasses
 }:{temp: number, gasses: number}) => {
 
+  /*
+  const liveGraphing = () => {
+
+  const options = {
+  responsive: true,
+  plugins: {
+  legend: { position: 'top' as const},
+  title: {
+    display: true,
+    text: 'Chart.js Line Chart',
+    },
+  },
+};
+
+
+    const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+
+    const data = {
+      label: 'Dataset 1',
+      data: labels.map(() => faker.datatype.number({ min: -20, max: 50 })),
+      borderColor: 'rgb(255, 99, 132)',
+      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+    }
+
+    return(
+       <Line options={options} data={data} />
+    )
+  }
+  */
+  
+
   const liveReading = (isTemp: boolean) => {
-    var title = isTemp ? 
-      'Live Temperature': 'Live "gasses" Level'
-    var annotation = isTemp ? '°C' : 'ppm'
-    var num = isTemp ? temp : gasses
+    var title: string, annotation: string, num: number
+    if(isTemp) {
+      title = 'Live Temperature',
+      annotation = '°C',
+      num = temp;
+    } else {
+      title = 'Live "gasses" Level'
+      annotation = 'ppm'
+      num = gasses;
+    }
+
      return(
        <Grid>
           <Grid.Row centered>
@@ -92,7 +156,7 @@ const DeviceView = ({
         </Grid.Row>
         <Grid.Row className='device-info-row'>
           <Grid.Column className='device-info-box'>
- 
+            {liveGraphing}
           </Grid.Column>
           <Grid.Column className='device-info-box'>
             
