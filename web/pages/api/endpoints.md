@@ -2,19 +2,9 @@
 
 ## Authentication
 
-### `/api/register` - POST - Register with credentials
+Handled by NextAuth.js with endpoints rooted in `/api/auth/`.
 
-Request body: `UserCredentials`
-
-Response type: `UserType`
-
-### `/api/signin` - POST - Sign in with credentials
-
-Request body: `UserCredentials`
-
-Response type: `UserType`
-
-### `/api/signout` - GET - Sign out the current user
+All endpoints below requires a valid session cookie obtained from sign in.
 
 ## Sensors
 

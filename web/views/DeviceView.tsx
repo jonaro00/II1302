@@ -1,10 +1,5 @@
 import Head from 'next/head'
-import { 
-  Grid, 
-  Header, 
-  Segment, 
-  Dropdown 
-} from 'semantic-ui-react'
+import { Grid, Header, Segment, Dropdown } from 'semantic-ui-react'
 
 import {
   Chart as ChartJS,
@@ -15,22 +10,12 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
+} from 'chart.js'
 
-import { Line } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2'
 //import faker from 'faker';
 
-
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
 /* 
 Future constant using chart.js
@@ -38,12 +23,7 @@ https://www.chartjs.org/docs/latest/
 https://www.chartjs.org/docs/latest/samples/line/interpolation.html
 */
 
-
-const DeviceView = ({
-  temp,
-  gasses
-}:{temp: number, gasses: number}) => {
-
+const DeviceView = ({ temp, gasses }: { temp: number; gasses: number }) => {
   /*
   const liveGraphing = () => {
 
@@ -73,72 +53,67 @@ const DeviceView = ({
     )
   }
   */
-  
 
   const liveReading = (isTemp: boolean) => {
     var title: string, annotation: string, num: number
-    if(isTemp) {
-      title = 'Live Temperature',
-      annotation = '°C',
-      num = temp;
+    if (isTemp) {
+      ;(title = 'Live Temperature'), (annotation = '°C'), (num = temp)
     } else {
       title = 'Live "gasses" Level'
       annotation = 'ppm'
-      num = gasses;
+      num = gasses
     }
 
-     return(
-       <Grid>
-          <Grid.Row centered>
-            <div className='device-live-header'>{title}</div>
-          </Grid.Row>
-          <Grid.Row centered>
-            <div className='device-live-read'>
-              <div className='device-live-number'>
-                {num} 
-              </div>
-              <div className='device-live-annotation'>
-                {annotation}
-              </div>
-            </div>
-          </Grid.Row>
-          <Grid.Row></Grid.Row>
-       </Grid>
-     )
+    return (
+      <Grid>
+        <Grid.Row centered>
+          <div className="device-live-header">{title}</div>
+        </Grid.Row>
+        <Grid.Row centered>
+          <div className="device-live-read">
+            <div className="device-live-number">{num}</div>
+            <div className="device-live-annotation">{annotation}</div>
+          </div>
+        </Grid.Row>
+        <Grid.Row></Grid.Row>
+      </Grid>
+    )
   }
 
   return (
-    <div className='device'>
+    <div className="device">
       <Grid columns={2} padded inverted className="device-grid">
         <Grid.Row color="black">
           <Segment color="black" inverted className="device-header">
             <div></div>
-            <Header as='h3' className='device-title'>Device 1</Header>
-            <Dropdown icon="setting" pointing='left'>
+            <Header as="h3" className="device-title">
+              Device 1
+            </Header>
+            <Dropdown icon="setting" pointing="left">
               <Dropdown.Menu>
                 <Dropdown.Item text="Focus mode" />
                 <Dropdown.Item>
-                  <Dropdown text='Add' pointing='left'>
-                  <Dropdown.Menu>
-                    <Dropdown.Item>
-                      <Dropdown text='Temperature'>
-                        <Dropdown.Menu>
-                          <Dropdown.Item text='Live reading'/>
-                          <Dropdown.Item text='Live graphing'/>
-                          <Dropdown.Item text='Historical graphing'/>
-                        </Dropdown.Menu>
-                      </Dropdown>
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                      <Dropdown text='gasses levels'>
-                        <Dropdown.Menu>
-                          <Dropdown.Item text='Live reading'/>
-                          <Dropdown.Item text='Live graphing'/>
-                          <Dropdown.Item text='Historical graphing'/>
-                        </Dropdown.Menu>
-                      </Dropdown>
-                  </Dropdown.Item>
-                  </Dropdown.Menu>
+                  <Dropdown text="Add" pointing="left">
+                    <Dropdown.Menu>
+                      <Dropdown.Item>
+                        <Dropdown text="Temperature">
+                          <Dropdown.Menu>
+                            <Dropdown.Item text="Live reading" />
+                            <Dropdown.Item text="Live graphing" />
+                            <Dropdown.Item text="Historical graphing" />
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </Dropdown.Item>
+                      <Dropdown.Item>
+                        <Dropdown text="gasses levels">
+                          <Dropdown.Menu>
+                            <Dropdown.Item text="Live reading" />
+                            <Dropdown.Item text="Live graphing" />
+                            <Dropdown.Item text="Historical graphing" />
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
                   </Dropdown>
                 </Dropdown.Item>
                 <Dropdown.Item text="Remove device" />
@@ -146,24 +121,16 @@ const DeviceView = ({
             </Dropdown>
           </Segment>
         </Grid.Row>
-        <Grid.Row className='device-info-row'>
-          <Grid.Column className='device-info-box'>
-            {liveReading(true)}
-          </Grid.Column>
-          <Grid.Column className='device-info-box'>
-            {liveReading(false)}
-          </Grid.Column>
+        <Grid.Row className="device-info-row">
+          <Grid.Column className="device-info-box">{liveReading(true)}</Grid.Column>
+          <Grid.Column className="device-info-box">{liveReading(false)}</Grid.Column>
         </Grid.Row>
-        <Grid.Row className='device-info-row'>
-          <Grid.Column className='device-info-box'>
-            {liveGraphing}
-          </Grid.Column>
-          <Grid.Column className='device-info-box'>
-            
-          </Grid.Column>
+        <Grid.Row className="device-info-row">
+          <Grid.Column className="device-info-box">{/* {liveGraphing} */}</Grid.Column>
+          <Grid.Column className="device-info-box"></Grid.Column>
         </Grid.Row>
       </Grid>
-      </div>
+    </div>
   )
 }
 

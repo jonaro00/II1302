@@ -34,6 +34,7 @@ export default async function handler(
       return
     }
     if (isSystemEvent('Microsoft.Devices.DeviceCreated', event)) {
+      // TODO: Verify that the message is coming from Azure ?
       // event.timestamp, event.data.deviceId
     } else if (isSystemEvent('Microsoft.Devices.DeviceDeleted', event)) {
       // event.timestamp, event.data.deviceId

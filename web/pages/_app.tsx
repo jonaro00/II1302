@@ -9,6 +9,7 @@ import React, { useEffect } from 'react'
 const model = new Model()
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+  // For debugging
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
       ;(window as any).model = model
@@ -21,16 +22,26 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
         <link rel="icon" href="/favicon-16x16.png" />
       </Head>
       <SessionProvider session={session}>
-        {(Component as any)?.auth ? (
-          <Auth>
+        <SessionListener model={model}>
+          {(Component as any)?.auth ? (
+            <Auth>
+              <Component {...pageProps} model={model} />
+            </Auth>
+          ) : (
             <Component {...pageProps} model={model} />
-          </Auth>
-        ) : (
-          <Component {...pageProps} model={model} />
-        )}
+          )}
+        </SessionListener>
       </SessionProvider>
     </>
   )
+}
+
+function SessionListener({ model, children }: { model: Model; children: any }) {
+  const { data } = useSession()
+  useEffect(() => {
+    model.setUsername(data?.user?.name || null)
+  })
+  return children
 }
 
 function Auth({ children }: { children: any }) {

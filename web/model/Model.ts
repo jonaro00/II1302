@@ -1,8 +1,7 @@
-import { APIErrorResponse } from './APIErrorResponse'
+import { signIn, signOut } from 'next-auth/react'
 import { Observable } from './Observable'
 import { SensorType } from './Sensor'
 import { TelemetryType } from './Telemetry'
-import { UserCredentials, UserType } from './User'
 
 type EventType = undefined // import { EventType } from './Event'
 type AlarmType = undefined // import { AlarmType } from './Alarm'
@@ -12,9 +11,9 @@ type AlarmType = undefined // import { AlarmType } from './Alarm'
  */
 export class Model extends Observable {
   /**
-   * The currently signed in user.
+   * The name of the currently signed in user.
    */
-  public user: UserType | null = null
+  public username: string | null = null
 
   /**
    * Sensors.
@@ -48,7 +47,7 @@ export class Model extends Observable {
    * Remove all user data.
    */
   public clear() {
-    this.user = null
+    this.username = null
     this.sensors = []
     this.events = {}
     this.telemetry = {}
@@ -56,45 +55,29 @@ export class Model extends Observable {
     this.notifyObservers()
   }
 
-  public setUser(user: UserType | null) {
-    if (this.user === user) return
-    this.user = user
+  public setUsername(username: string | null) {
+    if (this.username === username) return
+    this.username = username
     this.notifyObservers()
   }
 
-  public async register({ username, password }: UserCredentials): Promise<boolean> {
-    const res = await fetch('/api/register', {
-      method: 'POST',
-      body: JSON.stringify({ username, password }),
-    })
-    const j = await res.json()
-    if (!res.ok) {
-      throw new Error((j as APIErrorResponse).error)
-    }
-    this.setUser(j as UserType)
-    return true
+  public async _auth(
+    register: boolean,
+    username: string,
+    password: string,
+  ): Promise<{ error?: string; ok: number; url: string | null }> {
+    return (await signIn('credentials', {
+      callbackUrl: new URL(window.location.href).searchParams.get('callbackUrl') ?? '/',
+      redirect: false,
+      register,
+      username,
+      password,
+    })) as any
   }
 
-  public async signIn({ username, password }: UserCredentials): Promise<boolean> {
-    const res = await fetch('/api/signin', {
-      method: 'POST',
-      body: JSON.stringify({ username, password }),
-    })
-    const j = await res.json()
-    if (!res.ok) {
-      throw new Error((j as APIErrorResponse).error)
-    }
-    this.setUser(j as UserType)
-    return true
-  }
-
-  public async signOut(): Promise<boolean> {
-    const res = await fetch('/api/signout')
-    if (!res.ok) {
-      throw new Error('Unknown error while signing out.')
-    }
-    this.clear()
-    return true
+  public async signOut(): Promise<string> {
+    const { url } = await signOut({ redirect: false, callbackUrl: '/' })
+    return url as string
   }
 
   public setSensors(sensors: Array<SensorType>) {
