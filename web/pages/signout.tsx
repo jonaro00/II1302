@@ -1,5 +1,5 @@
-import MainLayout from '../../components/MainLayout'
-import { Model } from '../../model/Model'
+import MainLayout from '../components/MainLayout'
+import { Model } from '../model/Model'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 

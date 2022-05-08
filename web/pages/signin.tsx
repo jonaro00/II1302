@@ -1,6 +1,6 @@
-import MainLayout from '../../components/MainLayout'
-import SigninPresenter from '../../presenters/signinPresenter'
-import { Model } from '../../model/Model'
+import MainLayout from '../components/MainLayout'
+import SigninPresenter from '../presenters/signinPresenter'
+import { Model } from '../model/Model'
 
 export default function SignInPage({
   model,
