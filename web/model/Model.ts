@@ -2,9 +2,8 @@ import { signIn, signOut } from 'next-auth/react'
 import { Observable } from './Observable'
 import { SensorType } from './Sensor'
 import { TelemetryType } from './Telemetry'
-
-type EventType = undefined // import { EventType } from './Event'
-type AlarmType = undefined // import { AlarmType } from './Alarm'
+import { EventType } from './Event'
+import { AlarmType } from './Alarm'
 
 /**
  * The FRONT-END model. Stores all data fetched from API and notifies observers of changes.
@@ -77,6 +76,7 @@ export class Model extends Observable {
 
   public async signOut(): Promise<string> {
     const { url } = await signOut({ redirect: false, callbackUrl: '/' })
+    this.clear()
     return url as string
   }
 
