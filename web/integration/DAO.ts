@@ -83,7 +83,8 @@ export class DAO {
   }
 
   public async login({ username, password }: UserCredentials): Promise<UserType> {
-    return await this.database.transaction(async x => {
+    return await this.database.transaction(async t => {
+      // use t.afterCommit ??
       const matchingUser = await User.findOne({
         where: { username },
       })
@@ -98,12 +99,12 @@ export class DAO {
   public async register({ username, password }: UserCredentials): Promise<UserType> {
     // TODO: Verify username and password validity
     try {
-      await this.database.transaction(async x => {
+      await this.database.transaction(async t => {
         await User.create({ username, password })
       })
+      return this.login({ username, password })
     } catch (error) {
       throw new Error('Failed to register user.')
     }
-    return this.login({ username, password })
   }
 }
