@@ -50,15 +50,15 @@ export const groupInfo: Array<Profile> = [
     picture: 'https://raw.githubusercontent.com/bjpati/bjpati/main/Icon/IMG_3796%202.jpeg',
   },
   {
-    name: 'Amiran',
-    tel: 'Lorem ipsum',
-    telTxt: 'Lorem ipsum',
-    mail: 'Lorem ipsum',
-    gitHub: 'Lorem ipsum ',
-    linkedin: 'Lorem ipsum ',
-    title: 'Lorem ipsum ',
+    name: 'Amir',
+    tel: '',
+    telTxt: '',
+    mail: 'dugiev123@gmail.com',
+    gitHub: 'https://github.com/Bansheebomb ',
+    linkedin: ' ',
+    title: 'Developer ',
     about:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempus, felis pharetra fermentum commodo, tellus magna vehicula arcu, porta gravida est purus ut nisl. Morbi vel semper ante.',
+      'I am a computer science and engineering student at KTH. As a developer I am responsible for cataloging component descriptions and making sure the systems integrate together.',
     picture: '',
   },
   {
