@@ -109,7 +109,6 @@ const AboutView = () => {
                   <Card.Description>{p.about}</Card.Description>
                   <Card.Content extra className="about-contact">
                     {p.mail ? <Card.Meta href={'mailto:' + p.mail}>{p.mail}</Card.Meta> : false}
-                    {p.tel ? <Card.Meta href={'tel:' + p.tel}>{p.telTxt}</Card.Meta> : false}
                   </Card.Content>
                   <Card.Content extra>
                     {p.gitHub ? (
