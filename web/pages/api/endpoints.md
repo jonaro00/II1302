@@ -10,8 +10,6 @@ All endpoints below requires a valid session cookie obtained from sign in.
 
 ### `/api/sensors` - GET - Get list of the current users sensors
 
-<!-- Add parameters for sorting, limit, and offset ?? -->
-
 Response type: `Array<SensorType>`
 
 ### `/api/sensors/add` - POST - Add a sensor

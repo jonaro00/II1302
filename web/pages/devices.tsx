@@ -4,7 +4,7 @@ import { Model } from '../model/Model'
 
 export default function DevicePage({ model }: { model: Model }) {
   return (
-    <MainLayout model={model}>
+    <MainLayout model={model} title="Devices" description="Manage your devices">
       <DevicePresenter />
     </MainLayout>
   )

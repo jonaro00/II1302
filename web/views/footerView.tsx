@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import Link from 'next/link'
 import { Grid, Segment } from 'semantic-ui-react'
 
@@ -17,7 +16,7 @@ const FooterView = () => {
           </Grid.Column>
           <Grid.Column>
             <Link href="https://github.com/jonaro00/II1302/wiki">
-              <a target="_blank" className="footer-link">
+              <a className="footer-link" target="_blank">
                 Documentation
               </a>
             </Link>

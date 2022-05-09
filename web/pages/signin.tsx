@@ -10,7 +10,7 @@ export default function SignInPage({
   register: boolean
 }) {
   return (
-    <MainLayout model={model}>
+    <MainLayout model={model} title={register ? 'Register' : 'Sign in'}>
       <SigninPresenter model={model} register={register} />
     </MainLayout>
   )

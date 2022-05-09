@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import 'semantic-ui-css/semantic.min.css'
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
@@ -16,23 +15,17 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     }
   }, [])
   return (
-    <>
-      <Head>
-        <title>Spafe Monitor</title>
-        <link rel="icon" href="/favicon-16x16.png" />
-      </Head>
-      <SessionProvider session={session}>
-        <SessionListener model={model}>
-          {(Component as any)?.auth ? (
-            <Auth>
-              <Component {...pageProps} model={model} />
-            </Auth>
-          ) : (
+    <SessionProvider session={session}>
+      <SessionListener model={model}>
+        {(Component as any)?.auth ? (
+          <Auth>
             <Component {...pageProps} model={model} />
-          )}
-        </SessionListener>
-      </SessionProvider>
-    </>
+          </Auth>
+        ) : (
+          <Component {...pageProps} model={model} />
+        )}
+      </SessionListener>
+    </SessionProvider>
   )
 }
 

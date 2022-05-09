@@ -1,16 +1,28 @@
 import { Model } from '../model/Model'
 import FooterPresenter from '../presenters/footerPresenter'
 import HeaderPresenter from '../presenters/headerPresenter'
+import Layout from './Layout'
 
 /**
- * Places child elements between header and footer
+ * The main Layout of pages.
+ * Places children between HeaderPresenter and FooterPresenter
  */
-export default function MainLayout({ children, model }: { children?: any; model: Model }) {
+export default function MainLayout({
+  children,
+  model,
+  title,
+  description,
+}: {
+  children: React.ReactNode
+  model: Model
+  title?: string
+  description?: string
+}) {
   return (
-    <>
+    <Layout title={title} description={description}>
       <HeaderPresenter model={model} />
-      {children ?? false}
+      {children}
       <FooterPresenter />
-    </>
+    </Layout>
   )
 }
