@@ -6,6 +6,11 @@ export type EventType = {
   createdAt: Date
 }
 
+export type IncomingEvent = {
+  device_azure_name: string
+  type: string
+}
+
 export class Event extends Model {
   public static createModel(sequelize: Sequelize): any {
     Event.init(

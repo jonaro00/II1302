@@ -1,17 +1,18 @@
+import { signIn, signOut } from 'next-auth/react'
 import { Observable } from './Observable'
 import { SensorType } from './Sensor'
 import { TelemetryType } from './Telemetry'
-type EventType = undefined // import { EventType } from './Event'
-type AlarmType = undefined // import { AlarmType } from './Alarm'
+import { EventType } from './Event'
+import { AlarmType } from './Alarm'
 
 /**
  * The FRONT-END model. Stores all data fetched from API and notifies observers of changes.
  */
 export class Model extends Observable {
   /**
-   * The currently signed in user.
+   * The name of the currently signed in user.
    */
-  public user: number | null = null
+  public username: string | null = null
 
   /**
    * Sensors.
@@ -45,7 +46,7 @@ export class Model extends Observable {
    * Remove all user data.
    */
   public clear() {
-    this.user = null
+    this.username = null
     this.sensors = []
     this.events = {}
     this.telemetry = {}
@@ -53,12 +54,33 @@ export class Model extends Observable {
     this.notifyObservers()
   }
 
-  public set setUser(user: number | null) {
-    this.user = user
+  public setUsername(username: string | null) {
+    if (this.username === username) return
+    this.username = username
     this.notifyObservers()
   }
 
-  public set setSensors(sensors: Array<SensorType>) {
+  public async _auth(
+    register: boolean,
+    username: string,
+    password: string,
+  ): Promise<{ error?: string; ok: number; url: string | null }> {
+    return (await signIn('credentials', {
+      callbackUrl: new URL(window.location.href).searchParams.get('callbackUrl') ?? '/',
+      redirect: false,
+      register,
+      username,
+      password,
+    })) as any
+  }
+
+  public async signOut(): Promise<string> {
+    const { url } = await signOut({ redirect: false, callbackUrl: '/' })
+    this.clear()
+    return url as string
+  }
+
+  public setSensors(sensors: Array<SensorType>) {
     this.sensors = sensors
     this.notifyObservers()
   }

@@ -1,24 +1,11 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import 'semantic-ui-css/semantic.min.css'
-
-import HeaderPresenter from '../presenters/headerPresenter'
 import HomePresenter from '../presenters/homePresenter'
-import FooterPresenter from '../presenters/footerPresenter'
+import MainLayout from '../components/MainLayout'
+import { Model } from '../model/Model'
 
-const Home: NextPage = () => {
+export default function Home({ model }: { model: Model }) {
   return (
-    <div>
-      <Head>
-        <title>Spafe Monitor</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <HeaderPresenter />
+    <MainLayout model={model}>
       <HomePresenter />
-      <FooterPresenter />
-    </div>
+    </MainLayout>
   )
 }
-
-export default Home

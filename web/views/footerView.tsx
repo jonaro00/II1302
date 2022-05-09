@@ -1,30 +1,30 @@
-import Head from 'next/head'
 import Link from 'next/link'
 import { Grid, Segment } from 'semantic-ui-react'
+import styles from '../styles/footer.module.css'
 
 const FooterView = () => {
   return (
-    <Segment className="main-footer" color="black">
+    <Segment className={styles.main} color="black">
       <Grid columns={8}>
         <Grid.Row color="black" style={{ color: 'white' }}>
-          <Grid.Column>V: 0.3</Grid.Column>
+          <Grid.Column>V: 0.7</Grid.Column>
           <Grid.Column>
             <Link href="https://github.com/jonaro00/II1302">
-              <a className="link-footer" target="_blank">
+              <a className={styles.link} target="_blank">
                 GitHub
               </a>
             </Link>
           </Grid.Column>
           <Grid.Column>
-            <Link href="/">
-              <a target="_blank" className="link-footer">
+            <Link href="https://github.com/jonaro00/II1302/wiki">
+              <a className={styles.link} target="_blank">
                 Documentation
               </a>
             </Link>
           </Grid.Column>
           <Grid.Column>
             <Link href="/about">
-              <a className="link-footer">Contact</a>
+              <a className={styles.link}>Contact</a>
             </Link>
           </Grid.Column>
         </Grid.Row>

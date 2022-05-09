@@ -1,0 +1,16 @@
+.main {
+  min-height: 100px !important;
+}
+
+.logo:hover {
+  background: none !important;
+}
+
+.link {
+  color: black;
+  transition: ease-in-out 0.3s all;
+}
+
+.link:hover {
+  color: grey;
+}

@@ -1,6 +1,6 @@
 import { createNamespace } from 'cls-hooked'
 import { Sequelize, Dialect } from 'sequelize'
-import * as fs from 'fs'
+import fs from 'fs'
 import { Sensor } from '../model/Sensor'
 import { User, UserCredentials, UserType } from '../model/User'
 import { Telemetry } from '../model/Telemetry'
@@ -8,26 +8,6 @@ import { Alarm } from '../model/Alarm'
 import { Event } from '../model/Event'
 
 export const allDBModels = [Alarm, Event, Sensor, User, Telemetry]
-
-/*
-function createAssociations() {
-  // User 1 <---> 0..* Sensor
-  User.hasMany(Sensor)
-  Sensor.belongsTo(User)
-
-  // Sensor 1 <---> 0..* Event
-  Sensor.hasMany(Event)
-  Event.belongsTo(Sensor)
-
-  // Sensor 1 <---> 0..* Telemetry
-  Sensor.hasMany(Telemetry)
-  Telemetry.belongsTo(Sensor)
-
-  // Sensor 1 <---> 0..* Alarm
-  Sensor.hasMany(Alarm)
-  Alarm.belongsTo(Sensor)
-}
-*/
 
 /**
  * Data Access Object.
@@ -68,7 +48,7 @@ export class DAO {
     )
     // initaiate all models
     allDBModels.forEach(model => model.createModel(this.database))
-    // createAssociations()
+    DAO.createAssociations()
   }
 
   private static async createDAO(): Promise<DAO> {
@@ -82,8 +62,27 @@ export class DAO {
     await this.database.sync({ force: false, alter: false })
   }
 
+  private static createAssociations(): void {
+    // User 1 <---> 0..* Sensor
+    User.hasMany(Sensor)
+    Sensor.belongsTo(User)
+
+    // Sensor 1 <---> 0..* Event
+    Sensor.hasMany(Event)
+    Event.belongsTo(Sensor)
+
+    // Sensor 1 <---> 0..* Telemetry
+    Sensor.hasMany(Telemetry)
+    Telemetry.belongsTo(Sensor)
+
+    // Sensor 1 <---> 0..* Alarm
+    Sensor.hasMany(Alarm)
+    Alarm.belongsTo(Sensor)
+  }
+
   public async login({ username, password }: UserCredentials): Promise<UserType> {
-    return await this.database.transaction(async x => {
+    return await this.database.transaction(async t => {
+      // use t.afterCommit ??
       const matchingUser = await User.findOne({
         where: { username },
       })
@@ -98,12 +97,12 @@ export class DAO {
   public async register({ username, password }: UserCredentials): Promise<UserType> {
     // TODO: Verify username and password validity
     try {
-      await this.database.transaction(async x => {
+      await this.database.transaction(async t => {
         await User.create({ username, password })
       })
+      return this.login({ username, password })
     } catch (error) {
       throw new Error('Failed to register user.')
     }
-    return this.login({ username, password })
   }
 }
