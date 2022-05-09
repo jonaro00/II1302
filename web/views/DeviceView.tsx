@@ -25,6 +25,7 @@ https://www.chartjs.org/docs/latest/samples/line/interpolation.html
 */
 
 const DeviceView = ({ temp, gasses }: { temp: number; gasses: number }) => {
+  
   /*
   const liveGraphing = () => {
 
@@ -55,16 +56,29 @@ const DeviceView = ({ temp, gasses }: { temp: number; gasses: number }) => {
   }
   */
 
-  const liveReading = (isTemp: boolean) => {
+
+
+  const dataBox = (type: string) => {
     var title: string, annotation: string, num: number
-    if (isTemp) {
-      ;(title = 'Live Temperature'), (annotation = '°C'), (num = temp)
-    } else {
+
+    if (type=='temp') {
+      title = 'Live Temperature'
+      annotation = '°C'
+      num = temp
+    } else if (type=='gas') {
       title = 'Live "gasses" Level'
       annotation = 'ppm'
       num = gasses
+    } else if (type=='moist'){
+      title = 'Live "moist" Level'
+      annotation = 'some val'
+      num = 0
+    } else {
+      title = 'Not found'
+      annotation = ''
+      num = 404
     }
-
+    
     return (
       <Grid>
         <Grid.Row centered>
@@ -123,8 +137,8 @@ const DeviceView = ({ temp, gasses }: { temp: number; gasses: number }) => {
           </Segment>
         </Grid.Row>
         <Grid.Row className={styles.row}>
-          <Grid.Column className={styles.box}>{liveReading(true)}</Grid.Column>
-          <Grid.Column className={styles.box}>{liveReading(false)}</Grid.Column>
+          <Grid.Column className={styles.box}>{dataBox('temp')}</Grid.Column>
+          <Grid.Column className={styles.box}>{dataBox('gas')}</Grid.Column>
         </Grid.Row>
         <Grid.Row className={styles.row}>
           <Grid.Column className={styles.box}>{/* {liveGraphing} */}</Grid.Column>

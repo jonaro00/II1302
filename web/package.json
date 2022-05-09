@@ -17,6 +17,7 @@
     "bcrypt": "^5.0.1",
     "chart.js": "^3.7.1",
     "cls-hooked": "^4.2.2",
+    "faker": "^5.5.3",
     "mysql2": "2.3.3",
     "next": "12.1.4",
     "next-auth": "4.3.4",
