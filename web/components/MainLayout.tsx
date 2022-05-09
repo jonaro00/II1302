@@ -13,7 +13,7 @@ export default function MainLayout({
   title,
   description,
 }: {
-  children: React.ReactNode
+  children?: React.ReactNode
   model: Model
   title?: string
   description?: string
