@@ -3,7 +3,9 @@ import { useSession } from 'next-auth/react'
 
 const DevicePresenter = () => {
   const { status } = useSession({ required: true })
-  return status === 'authenticated' ? <DeviceView temp={45} gasses={886} /> : <p>Loading...</p>
+  if (status !== 'authenticated') return <p>Loading...</p>
+
+  return <DeviceView temp={45} gasses={886} />
 }
 
 export default DevicePresenter
