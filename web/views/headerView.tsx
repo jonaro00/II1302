@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Menu, Icon } from 'semantic-ui-react'
+import styles from '../styles/header.module.css'
 
 export default function HeaderView({
   username,
@@ -9,8 +10,8 @@ export default function HeaderView({
   signOut(): Promise<void>
 }) {
   return (
-    <Menu stackable secondary compact size="large" className="header">
-      <Menu.Item className="header-logo" icon as="div">
+    <Menu stackable secondary compact size="large" className={styles.main}>
+      <Menu.Item className={styles.logo} icon as="div">
         <Link href="/" passHref>
           <a>
             <Icon name="eye" size="large" circular inverted color="red" />
@@ -18,27 +19,35 @@ export default function HeaderView({
         </Link>
       </Menu.Item>
       <Menu.Item>
-        <Link href="/devices">Devices</Link>
+        <Link href="/devices">
+          <a className={styles.link}>Devices</a>
+        </Link>
       </Menu.Item>
       <Menu.Item>
-        <Link href="/api_docs">API</Link>
+        <Link href="/api_docs">
+          <a className={styles.link}>API</a>
+        </Link>
       </Menu.Item>
       <Menu.Item>
-        <Link href="/about">About</Link>
+        <Link href="/about">
+          <a className={styles.link}>About</a>
+        </Link>
       </Menu.Item>
       {/* fix me */}
       {username ? (
         <>
           <Menu.Item>Current user: {username}</Menu.Item>
           <Menu.Item>
-            <a href="#" onClick={signOut}>
+            <a href="#" onClick={signOut} className={styles.link}>
               Sign Out
             </a>
           </Menu.Item>
         </>
       ) : (
-        <Menu.Item>
-          <Link href="/signin">Sign In</Link>
+        <Menu.Item >
+          <Link href="/signin">
+          <a className={styles.link}>Sign In</a>
+            </Link>
         </Menu.Item>
       )}
     </Menu>

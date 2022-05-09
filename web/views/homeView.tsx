@@ -3,7 +3,7 @@ import styles from '../styles/home.module.css'
 
 const HomeView = () => {
   return (
-    <Container className={styles.home}>
+    <Container className={styles.main}>
       <Header as="h2">Welcome to Spafe Monitor</Header>
       <p className={styles.p}>
         We are your all in one solution for monitoring, visualizing, and alerts for your

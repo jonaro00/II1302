@@ -1,4 +1,4 @@
-.footer-main {
+.main {
   position: relative !important;
   bottom: 0 !important;
   z-index: 200;
@@ -6,11 +6,11 @@
   width: 100% !important;
 }
 
-.footer-link {
+.link {
   color: white;
   transition: ease-in-out all 0.5s;
 }
 
-.footer-link:hover {
+.link:hover {
   color: grey;
 }

@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { Grid, Header, Segment, Dropdown } from 'semantic-ui-react'
+import styles from '../styles/device.module.css'
 
 import {
   Chart as ChartJS,
@@ -67,12 +68,12 @@ const DeviceView = ({ temp, gasses }: { temp: number; gasses: number }) => {
     return (
       <Grid>
         <Grid.Row centered>
-          <div className="device-live-header">{title}</div>
+          <div className={styles.liveheader}>{title}</div>
         </Grid.Row>
         <Grid.Row centered>
-          <div className="device-live-read">
-            <div className="device-live-number">{num}</div>
-            <div className="device-live-annotation">{annotation}</div>
+          <div className={styles.read}>
+            <div className={styles.number}>{num}</div>
+            <div className={styles.annotation}>{annotation}</div>
           </div>
         </Grid.Row>
         <Grid.Row></Grid.Row>
@@ -81,12 +82,12 @@ const DeviceView = ({ temp, gasses }: { temp: number; gasses: number }) => {
   }
 
   return (
-    <div className="device">
-      <Grid columns={2} padded inverted className="device-grid">
+    <div className={styles.main}>
+      <Grid columns={2} padded inverted className={styles.grid}>
         <Grid.Row color="black">
-          <Segment color="black" inverted className="device-header">
+          <Segment color="black" inverted className={styles.header}>
             <div></div>
-            <Header as="h3" className="device-title">
+            <Header as="h3" className={styles.title}>
               Device 1
             </Header>
             <Dropdown icon="setting" pointing="left">
@@ -121,13 +122,13 @@ const DeviceView = ({ temp, gasses }: { temp: number; gasses: number }) => {
             </Dropdown>
           </Segment>
         </Grid.Row>
-        <Grid.Row className="device-info-row">
-          <Grid.Column className="device-info-box">{liveReading(true)}</Grid.Column>
-          <Grid.Column className="device-info-box">{liveReading(false)}</Grid.Column>
+        <Grid.Row className={styles.row}>
+          <Grid.Column className={styles.box}>{liveReading(true)}</Grid.Column>
+          <Grid.Column className={styles.box}>{liveReading(false)}</Grid.Column>
         </Grid.Row>
-        <Grid.Row className="device-info-row">
-          <Grid.Column className="device-info-box">{/* {liveGraphing} */}</Grid.Column>
-          <Grid.Column className="device-info-box"></Grid.Column>
+        <Grid.Row className={styles.row}>
+          <Grid.Column className={styles.box}>{/* {liveGraphing} */}</Grid.Column>
+          <Grid.Column className={styles.box}></Grid.Column>
         </Grid.Row>
       </Grid>
     </div>

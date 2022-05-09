@@ -1,4 +1,5 @@
 import { Container, Header, Grid, Card, Image, Icon, Item, Segment } from 'semantic-ui-react'
+import styles from '../styles/about.module.css'
 
 type Profile = {
   name: string
@@ -67,13 +68,13 @@ const AboutView = () => {
   return (
     <Segment>
       <Container text textAlign="center">
-        <p className="about-p about-p-top">
+        <p className={styles.top}>
           Spafe Monitor believes in total survelance of all our customers, whether they are aware of
           it ot not.
         </p>
         <Icon name="eye" circular color="red" size="huge" inverted />
         <Header as="h2">Spafe Monitor</Header>
-        <p className="about-p">
+        <p className={styles.p}>
           Spafe Monitor started in 2022 with the explicit goal of creating the most advanced and
           high tech monitoring system of temperature and co2 levels. Started as a project for the
           Projects and Project methods course at KTH, Spafe was created to fill the need to fast,
@@ -89,25 +90,25 @@ const AboutView = () => {
           <br></br>Spafe is a company you can trust.
         </p>
       </Container>
-      <Grid className="about-grid">
-        <Grid.Row className="about-row">
+      <Grid className={styles.grid}>
+        <Grid.Row className={styles.row}>
           {groupInfo.map(p => {
             return (
-              <Card className="about-card" key={p.name}>
+              <Card className={styles.card} key={p.name}>
                 <Image
                   src={p.picture}
                   alt={'Picture of ' + p.name}
                   wrapped
                   ui={false}
-                  className="about-picture"
+                  className={styles.picture}
                 />
                 <Card.Content>
-                  <Card.Header className="about-title" textAlign="center">
+                  <Card.Header className={styles.title} textAlign="center">
                     {p.name}
                   </Card.Header>
                   <Card.Meta textAlign="center">{p.title}</Card.Meta>
                   <Card.Description>{p.about}</Card.Description>
-                  <Card.Content extra className="about-contact">
+                  <Card.Content extra className={styles.contact}>
                     {p.mail ? <Card.Meta href={'mailto:' + p.mail}>{p.mail}</Card.Meta> : false}
                   </Card.Content>
                   <Card.Content extra>
