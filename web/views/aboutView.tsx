@@ -2,8 +2,6 @@ import { Container, Header, Grid, Card, Image, Icon, Item, Segment } from 'seman
 
 type Profile = {
   name: string
-  tel: string
-  telTxt: string
   mail: string
   gitHub: string
   linkedin: string
@@ -15,8 +13,6 @@ type Profile = {
 export const groupInfo: Array<Profile> = [
   {
     name: 'Alex',
-    tel: '+46708128516',
-    telTxt: '+46 708-12 85 16',
     mail: 'Alexberg@kth.se',
     gitHub: 'https://github.com/calexanderberg ',
     linkedin: 'https://linkedin.com/in/calexanderberg',
@@ -27,8 +23,6 @@ export const groupInfo: Array<Profile> = [
   },
   {
     name: 'Johan',
-    tel: '',
-    telTxt: '',
     mail: 'jberg8@kth.se',
     gitHub: 'https://github.com/jonaro00',
     linkedin: '',
@@ -39,8 +33,6 @@ export const groupInfo: Array<Profile> = [
   },
   {
     name: 'Bashar',
-    tel: '+46729386803',
-    telTxt: '+46 729 38 68 03',
     mail: 'bjpati@kth.se',
     gitHub: 'https://github.com/bjpati',
     linkedin: 'https://www.linkedin.com/in/bashar-pati-89735b124/',
@@ -51,8 +43,6 @@ export const groupInfo: Array<Profile> = [
   },
   {
     name: 'Amir',
-    tel: '',
-    telTxt: '',
     mail: 'dugiev123@gmail.com',
     gitHub: 'https://github.com/Bansheebomb ',
     linkedin: ' ',
@@ -63,8 +53,6 @@ export const groupInfo: Array<Profile> = [
   },
   {
     name: 'Simon',
-    tel: 'Lorem ipsum',
-    telTxt: 'Lorem ipsum',
     mail: 'Lorem ipsum',
     gitHub: 'Lorem ipsum',
     linkedin: 'Lorem ipsum ',
