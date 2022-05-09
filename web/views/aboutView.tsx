@@ -20,7 +20,7 @@ export const groupInfo: Array<Profile> = [
     mail: 'Alexberg@kth.se',
     gitHub: 'https://github.com/calexanderberg ',
     linkedin: 'https://linkedin.com/in/calexanderberg',
-    title: 'Projektledare/Hållbarhets- och arbetsmiljöansvarig',
+    title: 'Projektledare/Hållbarhets- och arbetsmiljöansvarig 🌳',
     about:
       'I am a Swedish Computer Science student at KTH. Besides my beaurocatic responsibilities for this  project I was responsible for the Front-end programming for our software side.',
     picture: '/images/alex.jpg',
