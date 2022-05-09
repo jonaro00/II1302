@@ -5,7 +5,7 @@ import HeaderView from '../views/headerView'
 
 export default function HeaderPresenter({ model }: { model: Model }) {
   const router = useRouter()
-  const username = useModelProperty(model, 'username')
+  const username = useModelProperty<string>(model, 'username')
   return (
     <HeaderView
       username={username ?? ''}

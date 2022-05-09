@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import SigninView from '../views/signinView'
 import { useRouter } from 'next/router'
 import { Model } from '../model/Model'
@@ -16,13 +16,10 @@ export default function SigninPresenter({ model, register }: { model: Model; reg
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   useEffect(() => {
-    window.location
-  })
-  useEffect(() => {
     if (process.env.NODE_ENV === 'development') console.log('status=', status)
   }, [status])
 
-  const submit = async () => {
+  const submit = useCallback(async () => {
     setLoading(true)
     setUserError(null)
     const { error, ok, url } = await model._auth(register, username, password)
@@ -37,7 +34,7 @@ export default function SigninPresenter({ model, register }: { model: Model; reg
     } else {
       router.push('/')
     }
-  }
+  }, [model, password, register, router, username])
 
   return (
     <SigninView
