@@ -34,7 +34,7 @@ export const groupInfo = [
     linkedin: 'https://www.linkedin.com/in/bashar-pati-89735b124/',
     title: 'Test ansvarig',
     about:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempus, felis pharetra fermentum commodo, tellus magna vehicula arcu, porta gravida est purus ut nisl. Morbi vel semper ante.',
+      'I am a student at KTH and studying Electronics and Computer Engineering. I am responsible for tests in the group during the course II1302. I also have responsibility for hardware selection and programming.',
     Picture: 'https://github.com/bjpati/bjpati/blob/main/Icon/IMG_3796%202.jpeg',
   },
   {
