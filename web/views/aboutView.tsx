@@ -46,21 +46,21 @@ export const groupInfo: Array<Profile> = [
     name: 'Amir',
     mail: 'dugiev123@gmail.com',
     gitHub: 'https://github.com/Bansheebomb ',
-    linkedin: ' ',
-    title: 'Developer ',
+    linkedin: '',
+    title: 'Developer',
     about:
       'I am a computer science and engineering student at KTH. As a developer I am responsible for cataloging component descriptions and making sure the systems integrate together.',
     picture: '',
   },
   {
     name: 'Simon',
-    mail: 'Lorem ipsum',
-    gitHub: 'Lorem ipsum',
-    linkedin: 'Lorem ipsum ',
-    title: 'Lorem ipsum ',
+    mail: 'sstromba@kth.se',
+    gitHub: 'https://github.com/Strumpann',
+    linkedin: 'https://www.linkedin.com/in/simon-str%C3%B6mb%C3%A4ck-28ab761aa/',
+    title: 'Kund/krav ansvarig',
     about:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempus, felis pharetra fermentum commodo, tellus magna vehicula arcu, porta gravida est purus ut nisl. Morbi vel semper ante.',
-    picture: '',
+      'I am studying computerengineering at KTH Kista. My project role was to put up requirements, usecases and hardware development and programming.',
+    picture: 'https://cdn.discordapp.com/attachments/888562787280904222/973557767115792424/51730250404_6e7b52dc7a_o_2.jpg',
   },
 ]
 
