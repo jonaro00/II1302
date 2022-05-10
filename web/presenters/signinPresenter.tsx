@@ -1,8 +1,10 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import SigninView from '../views/signinView'
 import { useRouter } from 'next/router'
 import { Model } from '../model/Model'
 import { useSession } from 'next-auth/react'
+import useUpdateLogger from '../hooks/useUpdateLogger'
+import { dev_log } from '../lib/logging'
 
 const ERRORS: { [index: string]: any } = {
   CredentialsSignin: 'Incorrect credentials',
@@ -15,9 +17,7 @@ export default function SigninPresenter({ model, register }: { model: Model; reg
   const [userError, setUserError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'development') console.log('status=', status)
-  }, [status])
+  useUpdateLogger(status, 'status')
 
   const submit = useCallback(async () => {
     setLoading(true)
@@ -25,7 +25,7 @@ export default function SigninPresenter({ model, register }: { model: Model; reg
     const { error, ok, url } = await model._auth(register, username, password)
     setLoading(false)
     if (error) {
-      if (process.env.NODE_ENV === 'development') console.log(error)
+      dev_log('error:', error)
       setUserError(ERRORS[error] || 'Other error')
       return
     }
