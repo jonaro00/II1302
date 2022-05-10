@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export default function usePromise<T>(promise: Promise<T> | null) {
+export default function usePromise<T>(promise: Promise<T> | null): [T | null, Error | null] {
   const [data, setData] = useState<T | null>(null)
   const [error, setError] = useState<Error | null>(null)
   useEffect(() => {

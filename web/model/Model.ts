@@ -17,23 +17,23 @@ export class Model extends Observable {
   /**
    * Sensors.
    */
-  public sensors: Array<SensorType> = []
+  public sensors: SensorType[] = []
 
   /**
    * Events. Is set by fetcher periodically.
    */
-  public events: Record<number, Array<EventType>> = {}
+  public events: Record<number, EventType[]> = {}
 
   /**
    * Telemetry. Is set by fetcher periodically.
    */
-  public telemetry: Record<number, Array<TelemetryType>> = {}
-  // public telemetry: { [sensor_id: number]: Array<TelemetryType> } = {}
+  public telemetry: Record<number, TelemetryType[]> = {}
+  // public telemetry: { [sensor_id: number]: TelemetryType[] } = {}
 
   /**
    * Alarms.
    */
-  public alarms: Record<number, Array<AlarmType>> = {}
+  public alarms: Record<number, AlarmType[]> = {}
 
   /**
    * Creates a new, empty model instance.
@@ -80,24 +80,22 @@ export class Model extends Observable {
     return url as string
   }
 
-  public setSensors(sensors: Array<SensorType>) {
+  public setSensors(sensors: SensorType[]) {
     this.sensors = sensors
     this.notifyObservers()
   }
 
-  // public addSensor(sensor: SensorType) {}
-
-  public setDeviceEvents(sensor_id: number, events: Array<EventType>) {
+  public setDeviceEvents(sensor_id: number, events: EventType[]) {
     this.events = { ...this.events, [sensor_id]: events }
     this.notifyObservers()
   }
 
-  public setDeviceTelemetry(sensor_id: number, telemetry: Array<TelemetryType>) {
+  public setDeviceTelemetry(sensor_id: number, telemetry: TelemetryType[]) {
     this.telemetry = { ...this.telemetry, [sensor_id]: telemetry }
     this.notifyObservers()
   }
 
-  public setDeviceAlarms(sensor_id: number, alarms: Array<AlarmType>) {
+  public setDeviceAlarms(sensor_id: number, alarms: AlarmType[]) {
     this.alarms = { ...this.alarms, [sensor_id]: alarms }
     this.notifyObservers()
   }
