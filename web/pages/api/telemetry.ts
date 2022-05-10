@@ -31,8 +31,8 @@ export default async function handler(
 
   // TODO: Verify that the message is coming from Azure???
   let events = await egd.deserializeEventGridEvents(req.body)
-  events.forEach((event: any): void => {
-    AzureLogger.log(`Received Event grid event:\n${JSON.stringify(event)}`)
+  events.forEach(async (event: any) => {
+    AzureLogger.log('Received Event grid event:', JSON.stringify(event))
     if (isSystemEvent('Microsoft.EventGrid.SubscriptionValidationEvent', event)) {
       // Azure Webhook validation https://docs.microsoft.com/en-us/azure/event-grid/webhook-event-delivery#validation-details
       res.status(200).json({ validationResponse: event.data.validationCode })
@@ -44,17 +44,21 @@ export default async function handler(
       } else if (isSystemEvent('Microsoft.Devices.DeviceDeleted', event)) {
         //
       } else if (isSystemEvent('Microsoft.Devices.DeviceConnected', event)) {
-        AzureLogger.log('Device connected:', event.data.deviceId, 'at', event.eventTime as Date)
+        const device_azure_name = event.data.deviceId
+        AzureLogger.log('Device connected:', device_azure_name, 'at', event.eventTime as Date)
       } else if (isSystemEvent('Microsoft.Devices.DeviceDisconnected', event)) {
-        AzureLogger.log('Device disconnected:', event.data.deviceId, 'at', event.eventTime as Date)
+        const device_azure_name = event.data.deviceId
+        AzureLogger.log('Device disconnected:', device_azure_name, 'at', event.eventTime as Date)
       } else if (isSystemEvent('Microsoft.Devices.DeviceTelemetry', event)) {
+        const device_azure_name = event.data.systemProperties['iothub-connection-device-id']
+        const telemetry: IncomingTelemetry = JSON.parse(
+          ((event.data.body as any).data as string).replace(/ #\d+$/, ''),
+        )
         AzureLogger.log(
           'Received telemetry from',
-          event.subject,
-          (event.data as any)?.deviceId,
-          event.data.systemProperties['iothub-connection-device-id'],
+          device_azure_name,
           ':',
-          event.data.body as IncomingTelemetry,
+          telemetry,
           'at',
           event.eventTime as Date,
         )
