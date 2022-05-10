@@ -1,50 +1,86 @@
-import { Grid, Header, Segment, Dropdown, Label } from 'semantic-ui-react'
+import { Grid, Header, Segment, Dropdown, Label, Statistic } from 'semantic-ui-react'
 import styles from '../styles/device.module.css'
 import {
   Chart as ChartJS,
-  CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
   Title,
   Tooltip,
   Legend,
+  TimeScale,
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
+import { sv } from 'date-fns/locale'
+import 'chartjs-adapter-date-fns'
 import faker from 'faker'
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
+ChartJS.register(LinearScale, TimeScale, PointElement, LineElement, Title, Tooltip, Legend)
 
-/* 
+/*
 Future constant using chart.js
 https://www.chartjs.org/docs/latest/
 https://www.chartjs.org/docs/latest/samples/line/interpolation.html
 */
 
-const DeviceView = ({ temp, gasses }: { temp: number; gasses: number }) => {
-  const liveGraphing = () => {
-    const options = {
-      responsive: true,
-      plugins: {
-        legend: { position: 'top' as any },
-        title: {
-          display: true,
-          text: 'Chart.js Line Chart',
-        },
+function TempHumidityGraph(times: string[], temps: number[], humidities: number[]) {
+  const options = {
+    responsive: true,
+    interaction: {
+      mode: 'index' as const,
+      intersect: false,
+    },
+    plugins: {
+      legend: { position: 'top' as const },
+      title: {
+        display: true,
+        text: 'Temperature and Humidity',
       },
-    }
-    const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July']
-
-    const data = {
-      label: 'Dataset 1',
-      data: labels.map(() => faker.datatype.number({ min: -20, max: 50 })),
+    },
+    scales: {
+      x: {
+        type: 'time' as any /* prevent typescript from crying */,
+        time: { unit: 'minute' },
+        adapters: { date: { locale: sv } },
+        suggestedMax: Date.now(),
+      },
+      y1: {
+        type: 'linear' as const,
+        display: true,
+        position: 'left' as const,
+        suggestedMin: 17,
+        suggestedMax: 25,
+      },
+      y2: {
+        type: 'linear' as const,
+        display: true,
+        position: 'right' as const,
+        grid: { drawOnChartArea: false },
+        min: 0,
+        max: 100,
+      },
+    },
+  }
+  const datasets = [
+    {
+      label: 'Temperature (°C)',
+      data: temps,
       borderColor: 'rgb(255, 99, 132)',
       backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    }
+      yAxisID: 'y1',
+    },
+    {
+      label: 'Humidity (%)',
+      data: humidities,
+      borderColor: 'rgb(53, 162, 235)',
+      backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      yAxisID: 'y2',
+    },
+  ]
+  return <Line options={options} data={{ labels: times, datasets }} />
+}
 
-    return <Line options={options} data={{ labels, datasets: [data] }} />
-  }
-
+const DeviceView = ({ temp, gasses }: { temp: number; gasses: number }) => {
   const dataBox = (type: string) => {
     var title: string, annotation: string, num: number
 
@@ -69,15 +105,14 @@ const DeviceView = ({ temp, gasses }: { temp: number; gasses: number }) => {
     return (
       <Grid>
         <Grid.Row centered>
-          <div className={styles.liveheader}>{title}</div>
+          <Header size="large">{title}</Header>
         </Grid.Row>
         <Grid.Row centered>
-          <div className={styles.read}>
-            <div className={styles.number}>{num}</div>
-            <div className={styles.annotation}>{annotation}</div>
-          </div>
+          <Statistic horizontal>
+            <Statistic.Value>{num}</Statistic.Value>
+            <Statistic.Label>{annotation}</Statistic.Label>
+          </Statistic>
         </Grid.Row>
-        <Grid.Row></Grid.Row>
       </Grid>
     )
   }
@@ -127,7 +162,20 @@ const DeviceView = ({ temp, gasses }: { temp: number; gasses: number }) => {
           <Grid.Column className={styles.box}>{dataBox('gas')}</Grid.Column>
         </Grid.Row>
         <Grid.Row className={styles.row}>
-          <Grid.Column className={styles.box}>{liveGraphing()}</Grid.Column>
+          <Grid.Column className={styles.box}>
+            {TempHumidityGraph(
+              Array(200)
+                .fill(0)
+                .map((_, i) => new Date(Date.now() - i * 10000).toISOString())
+                .reverse(),
+              Array(200)
+                .fill(0)
+                .map(() => faker.datatype.number({ min: 20, max: 22 })),
+              Array(200)
+                .fill(0)
+                .map(() => faker.datatype.number({ min: 30, max: 60 })),
+            )}
+          </Grid.Column>
           <Grid.Column className={styles.box}>
             <></>
           </Grid.Column>
