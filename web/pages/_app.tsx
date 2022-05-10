@@ -15,7 +15,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     }
   }, [])
   return (
-    <SessionProvider session={session}>
+    <SessionProvider session={session} refetchOnWindowFocus={false}>
       <SessionListener model={model}>
         {(Component as any)?.auth ? (
           <Auth>
