@@ -82,21 +82,37 @@ static uint32_t telemetry_send_count = 0;
 
 static void connectToWiFi()
 {
+  uint8_t retries = 0;
   Serial.begin(115200);
   Serial.println();
-  Serial.print("Connecting to WIFI SSID ");
-  Serial.println(ssid);
 
-  WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    delay(500);
-    Serial.print(".");
-  }
+  Serial.print("Connecting to");
+  Serial.print(ssid);
+  Serial.println("...");
+  
+  while (WiFi.status() != WL_CONNECTED && retries < 20)
+    {
+      Serial.print(".");
+      retries++; 
+     // Serial.print(WiFi.status());
+      delay(500); 
+    }
+  
+  Serial.println();
+  if (retries==20)
+    {
+     Serial.print("Unable to Connect to");
+     Serial.println(ssid);
+      }
 
-  Serial.print("WiFi connected, IP address: ");
-  Serial.println(WiFi.localIP());
+  if (WiFi.status() != WL_CONNECTED)
+    {
+    Serial.print("Successfully connected to ");
+    Serial.println(ssid);
+    Serial.print("IP Address: ");
+    Serial.println(WiFi.localIP());
+    }
 }
 
 static void initializeTime()
