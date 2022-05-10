@@ -22,5 +22,5 @@ export default function DevicePresenter({ model }: { model: Model }) {
   if (fetchedSensorsError) return <p>Failed to fetch sensors. Please refresh.</p>
   if (fetchedSensors === null) return <p>Loading sensors...</p>
 
-  return <DeviceView temp={45} gasses={886} />
+  return <DeviceView sensors={fetchedSensors} />
 }

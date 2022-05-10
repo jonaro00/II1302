@@ -1,4 +1,14 @@
-import { Grid, Header, Segment, Dropdown, Label, Statistic } from 'semantic-ui-react'
+import {
+  Grid,
+  Header,
+  Segment,
+  Dropdown,
+  Label,
+  Statistic,
+  Button,
+  Icon,
+  Container,
+} from 'semantic-ui-react'
 import styles from '../styles/device.module.css'
 import {
   Chart as ChartJS,
@@ -14,6 +24,9 @@ import { Line } from 'react-chartjs-2'
 import { sv } from 'date-fns/locale'
 import 'chartjs-adapter-date-fns'
 import faker from 'faker'
+import { IncomingTelemetry } from '../model/Telemetry'
+import { useState } from 'react'
+import { SensorType } from '../model/Sensor'
 
 ChartJS.register(LinearScale, TimeScale, PointElement, LineElement, Title, Tooltip, Legend)
 
@@ -33,8 +46,8 @@ function TempHumidityGraph(times: string[], temps: number[], humidities: number[
     plugins: {
       legend: { position: 'top' as const },
       title: {
-        display: true,
-        text: 'Temperature and Humidity',
+        // display: true,
+        // text: 'Temperature and Humidity',
       },
     },
     scales: {
@@ -80,109 +93,144 @@ function TempHumidityGraph(times: string[], temps: number[], humidities: number[
   return <Line options={options} data={{ labels: times, datasets }} />
 }
 
-const DeviceView = ({ temp, gasses }: { temp: number; gasses: number }) => {
-  const dataBox = (type: string) => {
-    var title: string, annotation: string, num: number
-
-    if (type == 'temp') {
-      title = 'Live Temperature'
-      annotation = '°C'
-      num = temp
-    } else if (type == 'gas') {
-      title = 'Live "gasses" Level'
-      annotation = 'ppm'
-      num = gasses
-    } else if (type == 'moist') {
-      title = 'Live "moist" Level'
-      annotation = 'some val'
-      num = 0
-    } else {
-      title = 'Not found'
-      annotation = ''
-      num = 404
-    }
-
-    return (
-      <Grid>
-        <Grid.Row centered>
-          <Header size="large">{title}</Header>
-        </Grid.Row>
-        <Grid.Row centered>
-          <Statistic horizontal>
-            <Statistic.Value>{num}</Statistic.Value>
-            <Statistic.Label>{annotation}</Statistic.Label>
-          </Statistic>
-        </Grid.Row>
-      </Grid>
-    )
-  }
+function LiveDataBox(type: keyof IncomingTelemetry, value: number, recent: boolean) {
+  const { title, unit }: { title: string; unit: string } = {
+    temp: { title: 'Live Temperature', unit: '°C' },
+    humidity: { title: 'Live Humidity', unit: '%' },
+    lpg: { title: 'Live LPG concentration', unit: 'ppm' },
+    co: { title: 'Live Carbon Monoxide concentration', unit: 'ppm' },
+    smoke: { title: 'Live Smoke concentration', unit: 'ppm' },
+  }[type]
 
   return (
-    <div className={styles.main}>
-      <Grid columns={2} padded inverted className={styles.grid}>
-        <Grid.Row color="black">
-          <Segment color="black" inverted className={styles.header}>
-            <Header as="h3" className={styles.title}>
-              Device 1<Label>Location: {'something'}</Label>
-            </Header>
-            <Dropdown icon="setting" pointing="left">
-              <Dropdown.Menu>
-                <Dropdown.Item text="Focus mode" />
-                <Dropdown.Item>
-                  <Dropdown text="Add" pointing="left">
-                    <Dropdown.Menu>
-                      <Dropdown.Item>
-                        <Dropdown text="Temperature">
-                          <Dropdown.Menu>
-                            <Dropdown.Item text="Live reading" />
-                            <Dropdown.Item text="Live graphing" />
-                            <Dropdown.Item text="Historical graphing" />
-                          </Dropdown.Menu>
-                        </Dropdown>
-                      </Dropdown.Item>
-                      <Dropdown.Item>
-                        <Dropdown text="gasses levels">
-                          <Dropdown.Menu>
-                            <Dropdown.Item text="Live reading" />
-                            <Dropdown.Item text="Live graphing" />
-                            <Dropdown.Item text="Historical graphing" />
-                          </Dropdown.Menu>
-                        </Dropdown>
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </Dropdown.Item>
-                <Dropdown.Item text="Remove device" />
-              </Dropdown.Menu>
-            </Dropdown>
-          </Segment>
-        </Grid.Row>
-        <Grid.Row className={styles.row}>
-          <Grid.Column className={styles.box}>{dataBox('temp')}</Grid.Column>
-          <Grid.Column className={styles.box}>{dataBox('gas')}</Grid.Column>
-        </Grid.Row>
-        <Grid.Row className={styles.row}>
-          <Grid.Column className={styles.box}>
-            {TempHumidityGraph(
-              Array(200)
-                .fill(0)
-                .map((_, i) => new Date(Date.now() - i * 10000).toISOString())
-                .reverse(),
-              Array(200)
-                .fill(0)
-                .map(() => faker.datatype.number({ min: 20, max: 22 })),
-              Array(200)
-                .fill(0)
-                .map(() => faker.datatype.number({ min: 30, max: 60 })),
-            )}
-          </Grid.Column>
-          <Grid.Column className={styles.box}>
-            <></>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </div>
+    <Grid className={styles.nopad}>
+      <Grid.Row centered>
+        <Header>
+          {title} <Icon name="circle" color={recent ? 'green' : 'red'} />
+        </Header>
+      </Grid.Row>
+      <Grid.Row centered>
+        <Statistic horizontal>
+          <Statistic.Value>{value}</Statistic.Value>
+          <Statistic.Label>{unit}</Statistic.Label>
+        </Statistic>
+      </Grid.Row>
+    </Grid>
   )
 }
 
-export default DeviceView
+function randTemp() {
+  return faker.datatype.float({ min: 20, max: 22, precision: 0.1 })
+}
+function randHumidity() {
+  return faker.datatype.number({ min: 30, max: 60 })
+}
+
+export default function DeviceView({ sensors }: { sensors: SensorType[] }) {
+  // MOCK DATA
+  const times = Array(50)
+    .fill(0)
+    .map((_, i) => new Date(Date.now() - i * 10000).toISOString())
+    .reverse()
+  const [temps, setTemps] = useState(
+    Array(50)
+      .fill(0)
+      .map(() => randTemp()),
+  )
+  const [humitdities, setHumidities] = useState(
+    Array(50)
+      .fill(0)
+      .map(() => randHumidity()),
+  )
+  const mockSensor: SensorType = {
+    id: 0,
+    device_azure_name: 'Fake Sensor',
+    user_id: 0,
+    location: 'nowhere',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }
+
+  return (
+    <Grid className={styles.main}>
+      {[...sensors, mockSensor, mockSensor].map((s: SensorType) => {
+        return (
+          <Grid columns="equal" padded className={styles.grid} key={s.id}>
+            <Grid.Row className={styles.nopad} color="black">
+              <Grid.Column>
+                <Segment.Group horizontal>
+                  <Segment padded color="black" inverted>
+                    <Header>
+                      <Icon name="rss" />
+                      {s.device_azure_name}
+                    </Header>
+                    <Label>
+                      <Icon name="point" />
+                      Location: {s.location}
+                    </Label>
+                  </Segment>
+                  <Segment color="black" inverted>
+                    <Button
+                      onClick={() => {
+                        setTemps([...temps.slice(1), randTemp()])
+                        setHumidities([...humitdities.slice(1), randHumidity()])
+                      }}>
+                      <Icon name="refresh" />
+                      New mock data
+                    </Button>
+                  </Segment>
+                  <Segment color="black" inverted>
+                    <Dropdown icon="setting" pointing="left" as={Button}>
+                      <Dropdown.Menu>
+                        <Dropdown.Item text="Focus mode" />
+                        <Dropdown.Item>
+                          <Dropdown text="Add" pointing="left">
+                            <Dropdown.Menu>
+                              <Dropdown.Item>
+                                <Dropdown text="Temperature">
+                                  <Dropdown.Menu>
+                                    <Dropdown.Item text="Live reading" />
+                                    <Dropdown.Item text="Live graphing" />
+                                    <Dropdown.Item text="Historical graphing" />
+                                  </Dropdown.Menu>
+                                </Dropdown>
+                              </Dropdown.Item>
+                              <Dropdown.Item>
+                                <Dropdown text="gasses levels">
+                                  <Dropdown.Menu>
+                                    <Dropdown.Item text="Live reading" />
+                                    <Dropdown.Item text="Live graphing" />
+                                    <Dropdown.Item text="Historical graphing" />
+                                  </Dropdown.Menu>
+                                </Dropdown>
+                              </Dropdown.Item>
+                            </Dropdown.Menu>
+                          </Dropdown>
+                        </Dropdown.Item>
+                        <Dropdown.Item text="Remove device" />
+                      </Dropdown.Menu>
+                    </Dropdown>
+                    <Button icon="expand" /* click for focus mode ? */ />
+                  </Segment>
+                </Segment.Group>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row className={styles.nopad}>
+              <Grid.Column className={styles.box}>
+                {LiveDataBox('temp', temps[temps.length - 1], true)}
+              </Grid.Column>
+              <Grid.Column className={styles.box}>
+                {LiveDataBox('humidity', humitdities[humitdities.length - 1], true)}
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row className={styles.nopad}>
+              <Grid.Column className={styles.graphbox}>
+                {TempHumidityGraph(times, temps, humitdities)}
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        )
+      })}
+    </Grid>
+  )
+}
