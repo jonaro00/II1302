@@ -33,7 +33,7 @@ function SessionListener({ model, children }: { model: Model; children: any }) {
   const { data } = useSession()
   useEffect(() => {
     model.setUsername(data?.user?.name || null)
-  })
+  }, [data?.user?.name, model])
   return children
 }
 
