@@ -11,52 +11,92 @@ export default function DevicePresenter({ model }: { model: Model }) {
   const sensors = useModelProperty<SensorType[]>(model, 'sensors')
   useUpdateLogger(sensors, 'sensors')
 
+  // Call to fetch sensors
+  const getSensorsFetcher = useCallback(
+    () =>
+      fetch('/api/sensors')
+        .then(res => res.json())
+        .then(s => model.setSensors(s)),
+    [model],
+  )
   // Start a fetch for sensors on mount
-  const [sensorsPromise, setSensorsPromise] = useState<Promise<SensorType[]> | null>(null)
+  const [sensorsPromise, setSensorsPromise] = useState<Promise<void> | null>(null)
   useEffect(() => {
-    setSensorsPromise(fetch('/api/sensors').then(res => res.json()))
-  }, [])
-  const [fetchedSensors, fetchedSensorsError] = usePromise<SensorType[]>(sensorsPromise)
+    setSensorsPromise(getSensorsFetcher())
+  }, [getSensorsFetcher])
+  const [fetchedSensors, fetchedSensorsError] = usePromise<void>(sensorsPromise)
 
   // Add device form
   const [addDevicePromise, setAddDevicePromise] = useState<Promise<boolean> | null>(null)
-  const [deviceName, setDeviceName] = useState('')
-  const [deviceLocation, setDeviceLocation] = useState('')
-  const [deviceSuccess, deviceUserError] = usePromise<boolean>(addDevicePromise)
-  const deviceLoading = useMemo(
-    () => addDevicePromise !== null && deviceSuccess === null && deviceUserError === null,
-    [addDevicePromise, deviceSuccess, deviceUserError],
+  const [addDeviceName, setAddDeviceName] = useState('')
+  const [addDeviceLocation, setAddDeviceLocation] = useState('')
+  const [addDeviceSuccess, addDeviceError] = usePromise<boolean>(addDevicePromise)
+  const addDeviceLoading = useMemo(
+    () => addDevicePromise !== null && addDeviceSuccess === null && addDeviceError === null,
+    [addDevicePromise, addDeviceSuccess, addDeviceError],
   )
-  const submit = useCallback(() => {
-    setAddDevicePromise(
-      fetch('/api/sensors/add', {
-        method: 'POST',
-        body: JSON.stringify({
-          device_azure_name: deviceName,
-          location: deviceLocation,
-        } as SensorUserData),
-      }).then(async res => {
-        if (!res.ok) throw new Error((await res.json())?.error)
-        return true
-      }),
-    )
-  }, [deviceName, deviceLocation])
-  useUpdateLogger(deviceUserError)
+  const addSensorFetcher = useCallback(
+    () =>
+      setAddDevicePromise(
+        fetch('/api/sensors/add', {
+          method: 'POST',
+          body: JSON.stringify({
+            device_azure_name: addDeviceName,
+            location: addDeviceLocation,
+          } as SensorUserData),
+        }).then(async res => {
+          if (!res.ok) throw new Error((await res.json())?.error)
+          setSensorsPromise(getSensorsFetcher())
+          return true
+        }),
+      ),
+    [addDeviceName, addDeviceLocation, getSensorsFetcher],
+  )
+
+  // Delete device button
+  const [deleteDevicePromise, setDeleteDevicePromise] = useState<Promise<boolean> | null>(null)
+  const [deleteDeviceSuccess, deleteDeviceError] = usePromise<boolean>(deleteDevicePromise)
+  const deleteDeviceLoading = useMemo(
+    () =>
+      deleteDevicePromise !== null && deleteDeviceSuccess === null && deleteDeviceError === null,
+    [deleteDevicePromise, deleteDeviceSuccess, deleteDeviceError],
+  )
+  const deleteSensorFetcher = useCallback(
+    (i: number) =>
+      setDeleteDevicePromise(
+        fetch(`/api/sensors/delete/${i}`).then(async res => {
+          if (!res.ok) throw new Error((await res.json())?.error)
+          setSensorsPromise(getSensorsFetcher())
+          return true
+        }),
+      ),
+    [getSensorsFetcher],
+  )
+
+  // Prevent success/error boxes to reamin after a re-fetch of sensors
+  useEffect(() => {
+    setDeleteDevicePromise(null)
+  }, [sensors])
 
   // Wait until sensors are fetched
   if (fetchedSensorsError) return <p>Failed to fetch sensors. Please try again later.</p>
-  if (fetchedSensors === null) return <p>Loading sensors...</p>
+  if (sensorsPromise && !sensors) return <p>Loading sensors...</p>
 
   return (
     <DeviceView
-      sensors={fetchedSensors}
-      deviceFormErrorText={deviceUserError?.message ?? ''}
-      deviceFormLoading={deviceLoading}
-      deviceFormSuccess={!!deviceSuccess}
-      onDeviceName={setDeviceName}
-      onDeviceLocation={setDeviceLocation}
-      deviceFormSubmitHandler={submit}
-      deviceFormClearPromise={() => setAddDevicePromise(null)}
+      sensors={sensors}
+      addDeviceErrorText={addDeviceError?.message ?? ''}
+      addDeviceLoading={addDeviceLoading}
+      addDeviceSuccess={!!addDeviceSuccess}
+      setAddDeviceName={setAddDeviceName}
+      setAddDeviceLocation={setAddDeviceLocation}
+      addDevice={addSensorFetcher}
+      addDeviceClearPromise={() => setAddDevicePromise(null)}
+      deleteDeviceErrorText={deleteDeviceError?.message ?? ''}
+      deleteDeviceLoading={deleteDeviceLoading}
+      deleteDeviceSuccess={!!deleteDeviceSuccess}
+      deleteDevice={deleteSensorFetcher}
+      deleteDeviceClearPromise={() => setDeleteDevicePromise(null)}
     />
   )
 }

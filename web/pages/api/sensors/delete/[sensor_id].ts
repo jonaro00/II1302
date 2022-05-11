@@ -13,9 +13,8 @@ export default async function handler(
   const dao = await DAO.getInstance()
 
   try {
-    // const sensor_id = req.query.sensor_id
-    // dao.deleteSensor(user_id, sensor_id)
-
+    const sensor_id = parseInt(req.query.sensor_id as string)
+    await dao.deleteSensor(user_id, sensor_id)
     res.status(200).end()
   } catch (error) {
     res.status(500).json({ error: 'Internal error' })

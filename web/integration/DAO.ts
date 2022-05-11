@@ -159,11 +159,12 @@ export class DAO {
     }
   }
 
-  public async deleteSensor({ id }: SensorType): Promise<void> {
+  public async deleteSensor(user_id: number, sensor_id: number): Promise<void> {
     try {
       await this.database.transaction(async t => {
-        const matchingSensor = await Sensor.build({ id })
-        await matchingSensor.destroy()
+        const sensor = await Sensor.findOne({ where: { id: sensor_id, user_id } })
+        if (sensor === null) throw new Error('Sensor not found.')
+        await sensor.destroy()
       })
       return
     } catch (error) {
