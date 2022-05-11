@@ -14,11 +14,10 @@ export default async function handler(
   const dao = await DAO.getInstance()
 
   try {
-    // sensor = req.body as SensorUserData
-    // dao.addSensor(user_id, sensor)
-
+    const sensorData = JSON.parse(req.body) as SensorUserData
+    await dao.addSensor(user_id, sensorData)
     res.status(200).end()
-  } catch (error) {
-    res.status(500).json({ error: 'Internal error' })
+  } catch (error: any) {
+    res.status(500).json({ error: error?.message || 'Internal error' })
   }
 }

@@ -148,20 +148,27 @@ function AddDeviceForm(
         submitHandler()
         ;(event.target as HTMLFormElement).reset()
       }}>
-      <Form.Input
-        fluid
-        icon="rss"
-        iconPosition="left"
-        placeholder="Azure Device Name"
-        onChange={event => onName(event.target.value)}
-      />
-      <Form.Input
-        fluid
-        icon="point"
-        iconPosition="left"
-        placeholder="Location"
-        onChange={event => onLocation(event.target.value)}
-      />
+      <Form.Field required>
+        <label>Azure Device Name</label>
+        <Form.Input
+          fluid
+          required
+          icon="rss"
+          iconPosition="left"
+          placeholder="sensorN"
+          onChange={event => onName(event.target.value)}
+        />
+      </Form.Field>
+      <Form.Field>
+        <label>Location</label>
+        <Form.Input
+          fluid
+          icon="point"
+          iconPosition="left"
+          placeholder="Living room"
+          onChange={event => onLocation(event.target.value)}
+        />
+      </Form.Field>
       <Button fluid size="large" color={loading ? 'grey' : 'teal'}>
         Add
       </Button>
@@ -183,6 +190,7 @@ export default function DeviceView({
   deviceFormSubmitHandler,
   onDeviceName,
   onDeviceLocation,
+  deviceFormClearPromise,
 }: {
   sensors: SensorType[]
   deviceFormLoading: boolean
@@ -191,6 +199,7 @@ export default function DeviceView({
   deviceFormSubmitHandler(): void
   onDeviceName(n: string): void
   onDeviceLocation(l: string): void
+  deviceFormClearPromise(): void
 }) {
   // MOCK DATA
   const times = Array(50)
@@ -226,7 +235,10 @@ export default function DeviceView({
           <Segment.Group horizontal>
             <Segment>
               <Modal
-                onClose={() => setAddDeviceModalOpen(false)}
+                onClose={() => {
+                  setAddDeviceModalOpen(false)
+                  deviceFormClearPromise()
+                }}
                 onOpen={() => setAddDeviceModalOpen(true)}
                 open={addDeviceModalOpen}
                 trigger={
@@ -257,7 +269,7 @@ export default function DeviceView({
       </Menu>
       {gridView ? (
         <Grid className={styles.main}>
-          {[...sensors, mockSensor, mockSensor].map((s: SensorType) => {
+          {[...sensors, mockSensor].map((s: SensorType) => {
             return (
               <Grid columns="equal" padded className={styles.grid} key={s.id}>
                 <Grid.Row className={styles.nopad} color="black">

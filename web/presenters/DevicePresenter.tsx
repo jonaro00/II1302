@@ -56,6 +56,7 @@ export default function DevicePresenter({ model }: { model: Model }) {
       onDeviceName={setDeviceName}
       onDeviceLocation={setDeviceLocation}
       deviceFormSubmitHandler={submit}
+      deviceFormClearPromise={() => setAddDevicePromise(null)}
     />
   )
 }

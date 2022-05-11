@@ -14,9 +14,8 @@ export default async function handler(
   const dao = await DAO.getInstance()
 
   try {
-    // dao.getSensors(user_id)
-
-    res.status(200).json([])
+    const sensors = await dao.getSensors(user_id)
+    res.status(200).json(sensors)
   } catch (error) {
     res.status(500).json({ error: 'Internal error' })
   }
