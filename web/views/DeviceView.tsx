@@ -8,6 +8,10 @@ import {
   Button,
   Icon,
   Container,
+  Menu,
+  Modal,
+  Form,
+  Message,
 } from 'semantic-ui-react'
 import styles from '../styles/device.module.css'
 import {
@@ -126,7 +130,68 @@ function randHumidity() {
   return faker.datatype.number({ min: 30, max: 60 })
 }
 
-export default function DeviceView({ sensors }: { sensors: SensorType[] }) {
+function AddDeviceForm(
+  loading: boolean,
+  errorText: string,
+  success: boolean,
+  submitHandler: () => void,
+  onName: (n: string) => void,
+  onLocation: (l: string) => void,
+) {
+  return (
+    <Form
+      loading={loading}
+      error={!!errorText}
+      success={success}
+      onSubmit={event => {
+        event.preventDefault()
+        submitHandler()
+        ;(event.target as HTMLFormElement).reset()
+      }}>
+      <Form.Input
+        fluid
+        icon="rss"
+        iconPosition="left"
+        placeholder="Azure Device Name"
+        onChange={event => onName(event.target.value)}
+      />
+      <Form.Input
+        fluid
+        icon="point"
+        iconPosition="left"
+        placeholder="Location"
+        onChange={event => onLocation(event.target.value)}
+      />
+      <Button fluid size="large" color={loading ? 'grey' : 'teal'}>
+        Add
+      </Button>
+      <Message error color="red">
+        Error: {errorText}
+      </Message>
+      <Message success color="green">
+        Device added ✅
+      </Message>
+    </Form>
+  )
+}
+
+export default function DeviceView({
+  sensors,
+  deviceFormLoading,
+  deviceFormErrorText,
+  deviceFormSuccess,
+  deviceFormSubmitHandler,
+  onDeviceName,
+  onDeviceLocation,
+}: {
+  sensors: SensorType[]
+  deviceFormLoading: boolean
+  deviceFormErrorText: string
+  deviceFormSuccess: boolean
+  deviceFormSubmitHandler(): void
+  onDeviceName(n: string): void
+  onDeviceLocation(l: string): void
+}) {
   // MOCK DATA
   const times = Array(50)
     .fill(0)
@@ -151,86 +216,129 @@ export default function DeviceView({ sensors }: { sensors: SensorType[] }) {
     updatedAt: new Date(),
   }
 
+  const [gridView, setGridView] = useState(true)
+  const [addDeviceModalOpen, setAddDeviceModalOpen] = useState(false)
+
   return (
-    <Grid className={styles.main}>
-      {[...sensors, mockSensor, mockSensor].map((s: SensorType) => {
-        return (
-          <Grid columns="equal" padded className={styles.grid} key={s.id}>
-            <Grid.Row className={styles.nopad} color="black">
-              <Grid.Column>
-                <Segment.Group horizontal>
-                  <Segment padded color="black" inverted>
-                    <Header>
-                      <Icon name="rss" />
-                      {s.device_azure_name}
-                    </Header>
-                    <Label>
-                      <Icon name="point" />
-                      Location: {s.location}
-                    </Label>
-                  </Segment>
-                  <Segment color="black" inverted>
-                    <Button
-                      onClick={() => {
-                        setTemps([...temps.slice(1), randTemp()])
-                        setHumidities([...humitdities.slice(1), randHumidity()])
-                      }}>
-                      <Icon name="refresh" />
-                      New mock data
-                    </Button>
-                  </Segment>
-                  <Segment color="black" inverted>
-                    <Dropdown icon="setting" pointing="left" as={Button}>
-                      <Dropdown.Menu>
-                        <Dropdown.Item text="Focus mode" />
-                        <Dropdown.Item>
-                          <Dropdown text="Add" pointing="left">
-                            <Dropdown.Menu>
-                              <Dropdown.Item>
-                                <Dropdown text="Temperature">
-                                  <Dropdown.Menu>
-                                    <Dropdown.Item text="Live reading" />
-                                    <Dropdown.Item text="Live graphing" />
-                                    <Dropdown.Item text="Historical graphing" />
-                                  </Dropdown.Menu>
-                                </Dropdown>
-                              </Dropdown.Item>
-                              <Dropdown.Item>
-                                <Dropdown text="gasses levels">
-                                  <Dropdown.Menu>
-                                    <Dropdown.Item text="Live reading" />
-                                    <Dropdown.Item text="Live graphing" />
-                                    <Dropdown.Item text="Historical graphing" />
-                                  </Dropdown.Menu>
-                                </Dropdown>
-                              </Dropdown.Item>
-                            </Dropdown.Menu>
-                          </Dropdown>
-                        </Dropdown.Item>
-                        <Dropdown.Item text="Remove device" />
-                      </Dropdown.Menu>
-                    </Dropdown>
-                    <Button icon="expand" /* click for focus mode ? */ />
-                  </Segment>
-                </Segment.Group>
-              </Grid.Column>
-            </Grid.Row>
-            <Grid.Row className={styles.nopad}>
-              <Grid.Column className={styles.box}>
-                {LiveDataBox('temp', temps[temps.length - 1], true)}
-              </Grid.Column>
-              <Grid.Column className={styles.box}>
-                {LiveDataBox('humidity', humitdities[humitdities.length - 1], true)}
-              </Grid.Column>
-            </Grid.Row>
-            <Grid.Row className={styles.nopad}>
-              <Grid.Column className={styles.graphbox}>
-                {TempHumidityGraph(times, temps, humitdities)}
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        )
-      })}
-    </Grid>
+    <>
+      <Menu secondary>
+        <Container>
+          <Segment.Group horizontal>
+            <Segment>
+              <Modal
+                onClose={() => setAddDeviceModalOpen(false)}
+                onOpen={() => setAddDeviceModalOpen(true)}
+                open={addDeviceModalOpen}
+                trigger={
+                  <Button>
+                    <Icon name="plus circle" />
+                    Add Device
+                  </Button>
+                }>
+                <Modal.Header>Add Device</Modal.Header>
+                <Modal.Content>
+                  {AddDeviceForm(
+                    deviceFormLoading,
+                    deviceFormErrorText,
+                    deviceFormSuccess,
+                    deviceFormSubmitHandler,
+                    onDeviceName,
+                    onDeviceLocation,
+                  )}
+                </Modal.Content>
+              </Modal>
+            </Segment>
+            <Segment>
+              <Button icon="grid layout" active={gridView} onClick={() => setGridView(true)} />
+              <Button icon="list" active={!gridView} onClick={() => setGridView(false)} />
+            </Segment>
+          </Segment.Group>
+        </Container>
+      </Menu>
+      {gridView ? (
+        <Grid className={styles.main}>
+          {[...sensors, mockSensor, mockSensor].map((s: SensorType) => {
+            return (
+              <Grid columns="equal" padded className={styles.grid} key={s.id}>
+                <Grid.Row className={styles.nopad} color="black">
+                  <Grid.Column>
+                    <Segment.Group horizontal>
+                      <Segment padded color="black" inverted>
+                        <Header>
+                          <Icon name="rss" />
+                          {s.device_azure_name}
+                        </Header>
+                        <Label>
+                          <Icon name="point" />
+                          Location: {s.location}
+                        </Label>
+                      </Segment>
+                      <Segment color="black" inverted>
+                        <Button
+                          onClick={() => {
+                            setTemps([...temps.slice(1), randTemp()])
+                            setHumidities([...humitdities.slice(1), randHumidity()])
+                          }}>
+                          <Icon name="refresh" />
+                          New mock data
+                        </Button>
+                      </Segment>
+                      <Segment color="black" inverted>
+                        <Dropdown icon="setting" pointing="left" as={Button}>
+                          <Dropdown.Menu>
+                            <Dropdown.Item text="Focus mode" />
+                            <Dropdown.Item>
+                              <Dropdown text="Add" pointing="left">
+                                <Dropdown.Menu>
+                                  <Dropdown.Item>
+                                    <Dropdown text="Temperature">
+                                      <Dropdown.Menu>
+                                        <Dropdown.Item text="Live reading" />
+                                        <Dropdown.Item text="Live graphing" />
+                                        <Dropdown.Item text="Historical graphing" />
+                                      </Dropdown.Menu>
+                                    </Dropdown>
+                                  </Dropdown.Item>
+                                  <Dropdown.Item>
+                                    <Dropdown text="gasses levels">
+                                      <Dropdown.Menu>
+                                        <Dropdown.Item text="Live reading" />
+                                        <Dropdown.Item text="Live graphing" />
+                                        <Dropdown.Item text="Historical graphing" />
+                                      </Dropdown.Menu>
+                                    </Dropdown>
+                                  </Dropdown.Item>
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </Dropdown.Item>
+                            <Dropdown.Item text="Remove device" />
+                          </Dropdown.Menu>
+                        </Dropdown>
+                        <Button icon="expand" /* click for focus mode ? */ />
+                      </Segment>
+                    </Segment.Group>
+                  </Grid.Column>
+                </Grid.Row>
+                <Grid.Row className={styles.nopad}>
+                  <Grid.Column className={styles.box}>
+                    {LiveDataBox('temp', temps[temps.length - 1], true)}
+                  </Grid.Column>
+                  <Grid.Column className={styles.box}>
+                    {LiveDataBox('humidity', humitdities[humitdities.length - 1], true)}
+                  </Grid.Column>
+                </Grid.Row>
+                <Grid.Row className={styles.nopad}>
+                  <Grid.Column className={styles.graphbox}>
+                    {TempHumidityGraph(times, temps, humitdities)}
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            )
+          })}
+        </Grid>
+      ) : (
+        <p>Not implemented</p>
+      )}
+    </>
   )
 }
