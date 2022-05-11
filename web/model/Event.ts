@@ -6,10 +6,11 @@ export type EventType = {
   createdAt: Date
 }
 
-export type IncomingEvent = {
-  device_azure_name: string
-  type: string
-}
+export type AzureSystemEventType =
+  | 'DeviceCreated'
+  | 'DeviceDeleted'
+  | 'DeviceConnected'
+  | 'DeviceDisconnected'
 
 export class Event extends Model {
   public static createModel(sequelize: Sequelize): any {

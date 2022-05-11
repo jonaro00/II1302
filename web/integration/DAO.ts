@@ -3,9 +3,9 @@ import { Sequelize, Dialect } from 'sequelize'
 import fs from 'fs'
 import { Sensor, SensorType, SensorUserData } from '../model/Sensor'
 import { User, UserCredentials, UserType } from '../model/User'
-import { Telemetry } from '../model/Telemetry'
+import { IncomingTelemetry, Telemetry } from '../model/Telemetry'
 import { Alarm } from '../model/Alarm'
-import { Event } from '../model/Event'
+import { AzureSystemEventType, Event } from '../model/Event'
 
 export const allDBModels = [Alarm, Event, Sensor, User, Telemetry]
 
@@ -168,6 +168,35 @@ export class DAO {
       return
     } catch (error) {
       throw new Error('Failed to delete sensor.')
+    }
+  }
+
+  public async addTelemetry(
+    device_azure_name: string,
+    { temp, humidity, lpg, co, smoke }: IncomingTelemetry,
+  ): Promise<void> {
+    try {
+      await this.database.transaction(async t => {
+        const sensor = await Sensor.findOne({ where: { device_azure_name } })
+        if (sensor === null) throw new Error('No sensor with that name found.')
+        const sensor_id = sensor.get('sensor_id')
+        await Telemetry.create({ sensor_id, temp, humidity, lpg, co, smoke })
+      })
+    } catch (error) {
+      throw new Error('Failed to add telemetry.')
+    }
+  }
+
+  public async addEvent(device_azure_name: string, type: AzureSystemEventType): Promise<void> {
+    try {
+      await this.database.transaction(async t => {
+        const sensor = await Sensor.findOne({ where: { device_azure_name } })
+        if (sensor === null) throw new Error('No sensor with that name found.')
+        const sensor_id = sensor.get('sensor_id')
+        await Event.create({ sensor_id, type })
+      })
+    } catch (error) {
+      throw new Error('Failed to add telemetry.')
     }
   }
 }

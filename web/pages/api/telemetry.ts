@@ -46,9 +46,11 @@ export default async function handler(
       } else if (isSystemEvent('Microsoft.Devices.DeviceConnected', event)) {
         const device_azure_name = event.data.deviceId
         AzureLogger.log('Device connected:', device_azure_name, 'at', event.eventTime as Date)
+        await dao.addEvent(device_azure_name, 'DeviceConnected')
       } else if (isSystemEvent('Microsoft.Devices.DeviceDisconnected', event)) {
         const device_azure_name = event.data.deviceId
         AzureLogger.log('Device disconnected:', device_azure_name, 'at', event.eventTime as Date)
+        await dao.addEvent(device_azure_name, 'DeviceDisconnected')
       } else if (isSystemEvent('Microsoft.Devices.DeviceTelemetry', event)) {
         const device_azure_name = event.data.systemProperties['iothub-connection-device-id']
         const telemetry: IncomingTelemetry = JSON.parse(
@@ -62,6 +64,7 @@ export default async function handler(
           'at',
           event.eventTime as Date,
         )
+        await dao.addTelemetry(device_azure_name, telemetry)
       } else {
         AzureLogger.log('Event went unhandled...')
       }
