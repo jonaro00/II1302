@@ -30,48 +30,51 @@ export default async function handler(
   const dao = await DAO.getInstance()
 
   // TODO: Verify that the message is coming from Azure???
-  let events = await egd.deserializeEventGridEvents(req.body)
-  events.forEach(async (event: any) => {
-    AzureLogger.log('Received Event grid event:', JSON.stringify(event))
-    if (isSystemEvent('Microsoft.EventGrid.SubscriptionValidationEvent', event)) {
-      // Azure Webhook validation https://docs.microsoft.com/en-us/azure/event-grid/webhook-event-delivery#validation-details
-      res.status(200).json({ validationResponse: event.data.validationCode })
-      return
-    }
-    try {
-      if (isSystemEvent('Microsoft.Devices.DeviceCreated', event)) {
-        //
-      } else if (isSystemEvent('Microsoft.Devices.DeviceDeleted', event)) {
-        //
-      } else if (isSystemEvent('Microsoft.Devices.DeviceConnected', event)) {
-        const device_azure_name = event.data.deviceId
-        AzureLogger.log('Device connected:', device_azure_name, 'at', event.eventTime as Date)
-        await dao.addEvent(device_azure_name, 'DeviceConnected')
-      } else if (isSystemEvent('Microsoft.Devices.DeviceDisconnected', event)) {
-        const device_azure_name = event.data.deviceId
-        AzureLogger.log('Device disconnected:', device_azure_name, 'at', event.eventTime as Date)
-        await dao.addEvent(device_azure_name, 'DeviceDisconnected')
-      } else if (isSystemEvent('Microsoft.Devices.DeviceTelemetry', event)) {
-        const device_azure_name = event.data.systemProperties['iothub-connection-device-id']
-        const telemetry: IncomingTelemetry = JSON.parse(
-          ((event.data.body as any).data as string).replace(/ #\d+$/, ''),
-        )
-        AzureLogger.log(
-          'Received telemetry from',
-          device_azure_name,
-          ':',
-          telemetry,
-          'at',
-          event.eventTime as Date,
-        )
-        await dao.addTelemetry(device_azure_name, telemetry)
-      } else {
-        AzureLogger.log('Event went unhandled...')
+  const events = await egd.deserializeEventGridEvents(req.body)
+  AzureLogger.log('Received', events.length, 'events...')
+  await Promise.all(
+    events.map(async (event: any) => {
+      AzureLogger.log('Received Event grid event:', JSON.stringify(event))
+      if (isSystemEvent('Microsoft.EventGrid.SubscriptionValidationEvent', event)) {
+        // Azure Webhook validation https://docs.microsoft.com/en-us/azure/event-grid/webhook-event-delivery#validation-details
+        res.status(200).json({ validationResponse: event.data.validationCode })
+        return
       }
-    } catch (error) {
-      res.status(500).json({ error: 'Internal error' })
-    }
-  })
+      try {
+        if (isSystemEvent('Microsoft.Devices.DeviceCreated', event)) {
+          //
+        } else if (isSystemEvent('Microsoft.Devices.DeviceDeleted', event)) {
+          //
+        } else if (isSystemEvent('Microsoft.Devices.DeviceConnected', event)) {
+          const device_azure_name = event.data.deviceId
+          AzureLogger.log('Device connected:', device_azure_name, 'at', event.eventTime as Date)
+          await dao.addEvent(device_azure_name, 'DeviceConnected')
+        } else if (isSystemEvent('Microsoft.Devices.DeviceDisconnected', event)) {
+          const device_azure_name = event.data.deviceId
+          AzureLogger.log('Device disconnected:', device_azure_name, 'at', event.eventTime as Date)
+          await dao.addEvent(device_azure_name, 'DeviceDisconnected')
+        } else if (isSystemEvent('Microsoft.Devices.DeviceTelemetry', event)) {
+          const device_azure_name = event.data.systemProperties['iothub-connection-device-id']
+          const telemetry: IncomingTelemetry = JSON.parse(
+            ((event.data.body as any).data as string).replace(/ #\d+$/, ''),
+          )
+          AzureLogger.log(
+            'Received telemetry from',
+            device_azure_name,
+            ':',
+            telemetry,
+            'at',
+            event.eventTime as Date,
+          )
+          await dao.addTelemetry(device_azure_name, telemetry)
+        } else {
+          AzureLogger.log('Event went unhandled:', JSON.stringify(event))
+        }
+      } catch (error) {
+        AzureLogger.log('Event caused error:', error)
+      }
+    }),
+  )
 
   res.status(200).end()
 }
