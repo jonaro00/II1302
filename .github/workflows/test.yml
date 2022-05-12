@@ -1,4 +1,4 @@
-name: Build and Test npm package
+name: Test Node package
 
 on:
   push:
