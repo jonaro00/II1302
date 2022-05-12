@@ -2,6 +2,7 @@ import {
   Button,
   Confirm,
   Dropdown,
+  Form,
   Grid,
   Header,
   Icon,
@@ -27,7 +28,7 @@ import faker from 'faker'
 import { IncomingTelemetry } from '../model/Telemetry'
 import styles from '../styles/device.module.css'
 import { useState } from 'react'
-import { SensorType } from '../model/Sensor'
+import { SensorType, SensorUserData } from '../model/Sensor'
 
 ChartJS.register(LinearScale, TimeScale, PointElement, LineElement, Title, Tooltip, Legend)
 
@@ -54,8 +55,9 @@ function TempHumidityGraph(times: string[], temps: number[], humidities: number[
     scales: {
       x: {
         type: 'time' as any /* prevent typescript from crying */,
-        time: { unit: 'minute' },
+        time: { unit: 'minute', stepSize: 10 },
         adapters: { date: { locale: sv } },
+        suggestedMin: Date.now() - 3600000, // 1h
         suggestedMax: Date.now(),
       },
       y1: {
@@ -101,25 +103,25 @@ function randHumidity() {
   return faker.datatype.number({ min: 30, max: 60 })
 }
 
+const datasetTypes = {
+  temp: { title: 'Live Temperature', unit: '°C' },
+  humidity: { title: 'Live Humidity', unit: '%' },
+  lpg: { title: 'Live LPG concentration', unit: 'ppm' },
+  co: { title: 'Live Carbon Monoxide concentration', unit: 'ppm' },
+  smoke: { title: 'Live Smoke concentration', unit: 'ppm' },
+}
+
 function LiveDataBox(type: keyof IncomingTelemetry, value: number, recent: boolean) {
-  const { title, unit }: { title: string; unit: string } = {
-    temp: { title: 'Live Temperature', unit: '°C' },
-    humidity: { title: 'Live Humidity', unit: '%' },
-    lpg: { title: 'Live LPG concentration', unit: 'ppm' },
-    co: { title: 'Live Carbon Monoxide concentration', unit: 'ppm' },
-    smoke: { title: 'Live Smoke concentration', unit: 'ppm' },
-  }[type]
+  const { title, unit }: { title: string; unit: string } = datasetTypes[type]
 
   return (
-    <Grid className={styles.nopad}>
+    <Grid className={[styles.nopad, styles[type], recent ? '' : styles.outdated].join(' ')}>
       <Grid.Row centered>
-        <Header>
-          {title} <Icon name="circle" color={recent ? 'green' : 'red'} />
-        </Header>
+        <Header>{title}</Header>
       </Grid.Row>
       <Grid.Row centered>
         <Statistic horizontal>
-          <Statistic.Value>{value}</Statistic.Value>
+          <Statistic.Value>{value ?? '--'}</Statistic.Value>
           <Statistic.Label>{unit}</Statistic.Label>
         </Statistic>
       </Grid.Row>
@@ -130,62 +132,118 @@ function LiveDataBox(type: keyof IncomingTelemetry, value: number, recent: boole
 export default function DeviceBox({
   sensor: s,
   deleteDevice,
-  deleteDeviceLoading,
-  deleteDeviceErrorText,
-  deleteDeviceSuccess,
-  deleteDeviceClearPromise,
+  updateDevice,
+  devicePromiseLoading,
+  devicePromiseErrorText,
+  devicePromiseSuccess,
+  devicePromiseClear,
 }: {
-  sensor: SensorType
+  sensor: SensorType & { fake?: boolean }
   deleteDevice(i: number): void
-  deleteDeviceLoading: boolean
-  deleteDeviceErrorText: string
-  deleteDeviceSuccess: boolean
-  deleteDeviceClearPromise(): void
+  updateDevice(i: number, d: SensorUserData): void
+  devicePromiseLoading: boolean
+  devicePromiseErrorText: string
+  devicePromiseSuccess: boolean
+  devicePromiseClear(): void
 }) {
   // MOCK DATA
   const times = Array(50)
     .fill(0)
-    .map((_, i) => new Date(Date.now() - i * 10000).toISOString())
+    .map((_, i) => new Date(Date.now() - i * 70000).toISOString())
     .reverse()
   const [temps, setTemps] = useState(
-    Array(50)
-      .fill(0)
-      .map(() => randTemp()),
+    s?.fake
+      ? Array(50)
+          .fill(0)
+          .map(() => randTemp())
+      : [],
   )
   const [humitdities, setHumidities] = useState(
-    Array(50)
-      .fill(0)
-      .map(() => randHumidity()),
+    s?.fake
+      ? Array(50)
+          .fill(0)
+          .map(() => randHumidity())
+      : [],
   )
 
   const [confirmDeviceDeleteOpen, setConfirmDeviceDeleteOpen] = useState(false)
+  const [confirmDeviceEditOpen, setConfirmDeviceEditOpen] = useState(false)
+  const [locationText, setLocationText] = useState('')
 
   return (
     <Grid columns="equal" padded className={styles.grid} key={s.id}>
       <Grid.Row className={styles.nopad} color="black">
         <Grid.Column>
           <Segment.Group horizontal>
-            <Segment padded color="black" inverted>
+            <Segment color="black" inverted>
               <Header>
-                <Icon name="rss" />
+                <i>
+                  <Icon name="rss" />
+                </i>
                 {s.device_azure_name}
+                <i>
+                  <Icon
+                    name="circle"
+                    color={true ? 'green' : 'red'}
+                    style={{ margin: '0 0 0 .75rem' }}
+                  />
+                </i>
               </Header>
-              <Label>
+              <Button as={Label} onClick={() => setConfirmDeviceEditOpen(true)}>
                 <Icon name="point" />
-                Location: {s.location}
-              </Label>
-            </Segment>
-            <Segment color="black" inverted>
-              <Button
-                onClick={() => {
-                  setTemps([...temps.slice(1), randTemp()])
-                  setHumidities([...humitdities.slice(1), randHumidity()])
-                }}>
-                <Icon name="refresh" />
-                New mock data
+                Location: {s.location} <Icon fitted name="pencil" />
               </Button>
+              <Confirm
+                open={confirmDeviceEditOpen}
+                header="Edit Device Location"
+                content={
+                  <Segment>
+                    <Form>
+                      <Form.Field required>
+                        <label>New location</label>
+                        <Form.Input
+                          fluid
+                          required
+                          icon="point"
+                          iconPosition="left"
+                          placeholder="Living room"
+                          onChange={e => setLocationText(e.target.value)}
+                        />
+                      </Form.Field>
+                    </Form>
+                    <Message error color="red" hidden={!devicePromiseErrorText}>
+                      Error: {devicePromiseErrorText}
+                    </Message>
+                    <Message success color="green" hidden={!devicePromiseSuccess}>
+                      Updated <b>{s.device_azure_name}</b>.
+                    </Message>
+                  </Segment>
+                }
+                cancelButton={
+                  devicePromiseErrorText || devicePromiseSuccess ? (
+                    <Button>Close</Button>
+                  ) : undefined
+                }
+                onCancel={() => {
+                  setConfirmDeviceEditOpen(false)
+                  devicePromiseClear()
+                }}
+                confirmButton={
+                  devicePromiseErrorText || devicePromiseSuccess ? (
+                    false
+                  ) : (
+                    <Button loading={devicePromiseLoading}>OK</Button>
+                  )
+                }
+                onConfirm={() =>
+                  updateDevice(s.id, {
+                    device_azure_name: s.device_azure_name,
+                    location: locationText,
+                  })
+                }
+              />
             </Segment>
-            <Segment color="black" inverted>
+            <Segment color="black" inverted style={{ flexGrow: 0 }}>
               <Dropdown icon="setting" pointing="left" as={Button}>
                 <Dropdown.Menu>
                   <Dropdown.Item text="Focus mode" />
@@ -217,33 +275,39 @@ export default function DeviceBox({
                 </Dropdown.Menu>
               </Dropdown>
               <Button icon="expand" /* click for focus mode ? */ />
-              <Button icon="trash" onClick={() => setConfirmDeviceDeleteOpen(true)} />
+              <Button
+                icon="trash alternate"
+                negative
+                onClick={() => setConfirmDeviceDeleteOpen(true)}
+              />
               <Confirm
                 open={confirmDeviceDeleteOpen}
                 header="Delete Device"
                 content={
                   <Segment>
                     Are you sure you want to delete <b>{s.device_azure_name}</b>?
-                    <Message error color="red" hidden={!deleteDeviceErrorText}>
-                      Error: {deleteDeviceErrorText}
+                    <Message error color="red" hidden={!devicePromiseErrorText}>
+                      Error: {devicePromiseErrorText}
                     </Message>
-                    <Message success color="green" hidden={!deleteDeviceSuccess}>
+                    <Message success color="green" hidden={!devicePromiseSuccess}>
                       Deleted <b>{s.device_azure_name}</b>.
                     </Message>
                   </Segment>
                 }
                 cancelButton={
-                  deleteDeviceErrorText || deleteDeviceSuccess ? <Button>Close</Button> : undefined
+                  devicePromiseErrorText || devicePromiseSuccess ? (
+                    <Button>Close</Button>
+                  ) : undefined
                 }
                 onCancel={() => {
                   setConfirmDeviceDeleteOpen(false)
-                  deleteDeviceClearPromise()
+                  devicePromiseClear()
                 }}
                 confirmButton={
-                  deleteDeviceErrorText || deleteDeviceSuccess ? (
+                  devicePromiseErrorText || devicePromiseSuccess ? (
                     false
                   ) : (
-                    <Button loading={deleteDeviceLoading}>OK</Button>
+                    <Button loading={devicePromiseLoading}>OK</Button>
                   )
                 }
                 onConfirm={() => deleteDevice(s.id)}
@@ -263,6 +327,20 @@ export default function DeviceBox({
       <Grid.Row className={styles.nopad}>
         <Grid.Column className={styles.graphbox}>
           {TempHumidityGraph(times, temps, humitdities)}
+          {s?.fake ? (
+            <Button
+              as="div"
+              size="mini"
+              onClick={() => {
+                setTemps([...temps.slice(1), randTemp()])
+                setHumidities([...humitdities.slice(1), randHumidity()])
+              }}>
+              <Icon name="refresh" />
+              New fake datapoint
+            </Button>
+          ) : (
+            false
+          )}
         </Grid.Column>
       </Grid.Row>
     </Grid>

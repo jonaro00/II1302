@@ -19,12 +19,28 @@
 
 .box,
 .graphbox {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
   border: 2px black solid;
 }
 
 .graphbox {
   min-height: 250px;
+}
+
+.temp {
+  background-color: rgba(255, 99, 133, 0.2);
+}
+
+.humidity {
+  background-color: rgba(53, 162, 235, 0.2);
+}
+
+.lpg {
+}
+.co {
+}
+.smoke {
+}
+
+.outdated {
+  background-color: gray;
 }

@@ -14,10 +14,9 @@ export default async function handler(
   const dao = await DAO.getInstance()
 
   try {
-    // const sensor_id = req.query.sensor_id
-    // sensor = req.body as SensorUserData
-    // dao.updateSensor(user_id, sensor_id, sensor)
-
+    const sensor_id = parseInt(req.query.sensor_id as string)
+    const sensor = JSON.parse(req.body) as SensorUserData
+    await dao.updateSensor(user_id, sensor_id, sensor)
     res.status(200).end()
   } catch (error) {
     res.status(500).json({ error: 'Internal error' })

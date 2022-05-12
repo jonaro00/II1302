@@ -12,7 +12,7 @@ import {
 import styles from '../styles/device.module.css'
 
 import { useState } from 'react'
-import { SensorType } from '../model/Sensor'
+import { SensorType, SensorUserData } from '../model/Sensor'
 import DeviceBox from '../components/DeviceBox'
 
 function AddDeviceForm(
@@ -69,44 +69,45 @@ function AddDeviceForm(
 
 export default function DeviceView({
   sensors,
-  setAddDeviceName,
-  setAddDeviceLocation,
   addDevice,
   addDeviceLoading,
   addDeviceErrorText,
   addDeviceSuccess,
   addDeviceClearPromise,
   deleteDevice,
-  deleteDeviceLoading,
-  deleteDeviceErrorText,
-  deleteDeviceSuccess,
-  deleteDeviceClearPromise,
+  updateDevice,
+  devicePromiseLoading,
+  devicePromiseErrorText,
+  devicePromiseSuccess,
+  devicePromiseClear,
 }: {
   sensors: SensorType[]
-  setAddDeviceName(n: string): void
-  setAddDeviceLocation(l: string): void
-  addDevice(): void
+  addDevice(n: string, l: string): void
   addDeviceLoading: boolean
   addDeviceErrorText: string
   addDeviceSuccess: boolean
   addDeviceClearPromise(): void
   deleteDevice(i: number): void
-  deleteDeviceLoading: boolean
-  deleteDeviceErrorText: string
-  deleteDeviceSuccess: boolean
-  deleteDeviceClearPromise(): void
+  updateDevice(i: number, d: SensorUserData): void
+  devicePromiseLoading: boolean
+  devicePromiseErrorText: string
+  devicePromiseSuccess: boolean
+  devicePromiseClear(): void
 }) {
-  const mockSensor: SensorType = {
+  const mockSensor: SensorType & { fake?: boolean } = {
     id: 0,
     device_azure_name: 'Fake Sensor',
     user_id: 0,
     location: 'nowhere',
     createdAt: new Date(),
     updatedAt: new Date(),
+    fake: true,
   }
 
   const [gridView, setGridView] = useState(true)
   const [addDeviceModalOpen, setAddDeviceModalOpen] = useState(false)
+  const [addDeviceName, setAddDeviceName] = useState('')
+  const [addDeviceLocation, setAddDeviceLocation] = useState('')
 
   return (
     <>
@@ -133,7 +134,7 @@ export default function DeviceView({
                     addDeviceLoading,
                     addDeviceErrorText,
                     addDeviceSuccess,
-                    addDevice,
+                    () => addDevice(addDeviceName, addDeviceLocation),
                     setAddDeviceName,
                     setAddDeviceLocation,
                   )}
@@ -155,10 +156,11 @@ export default function DeviceView({
                 key={s.id}
                 sensor={s}
                 deleteDevice={deleteDevice}
-                deleteDeviceLoading={deleteDeviceLoading}
-                deleteDeviceErrorText={deleteDeviceErrorText}
-                deleteDeviceSuccess={deleteDeviceSuccess}
-                deleteDeviceClearPromise={deleteDeviceClearPromise}
+                updateDevice={updateDevice}
+                devicePromiseLoading={devicePromiseLoading}
+                devicePromiseErrorText={devicePromiseErrorText}
+                devicePromiseSuccess={devicePromiseSuccess}
+                devicePromiseClear={devicePromiseClear}
               />
             )
           })}

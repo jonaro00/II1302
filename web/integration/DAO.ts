@@ -133,27 +133,18 @@ export class DAO {
     }
   }
 
-  public async updateSensor({
-    id,
-    device_azure_name,
-    user_id,
-    location,
-    createdAt,
-    updatedAt,
-  }: SensorType): Promise<void> {
+  public async updateSensor(
+    user_id: number,
+    sensor_id: number,
+    sensor_data: SensorUserData,
+  ): Promise<void> {
     try {
       await this.database.transaction(async t => {
-        const matchingSensor = await Sensor.build({ id })
-        matchingSensor.set({
-          device_azure_name: device_azure_name,
-          user_id: user_id,
-          location: location,
-          createdAt: createdAt,
-          updatedAt: updatedAt,
+        const [affectedRows] = await Sensor.update(sensor_data, {
+          where: { id: sensor_id, user_id },
         })
-        await matchingSensor.save()
+        if (affectedRows !== 1) throw new Error('Query did not match exactly one row.')
       })
-      return
     } catch (error) {
       throw new Error('Failed to update sensor.')
     }
@@ -166,7 +157,6 @@ export class DAO {
         if (sensor === null) throw new Error('Sensor not found.')
         await sensor.destroy()
       })
-      return
     } catch (error) {
       throw new Error('Failed to delete sensor.')
     }
