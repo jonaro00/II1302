@@ -25,7 +25,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
-#include <stdlib.h>
+#include <cstdlib>
 
 // Libraries for MQTT client, WiFi connection and SAS-token generation.
 #include <ESP8266WiFi.h>
@@ -49,7 +49,7 @@
 #define AZURE_SDK_CLIENT_USER_AGENT "c/" AZ_SDK_VERSION_STRING "(ard;esp8266)"
 
 // Utility macros and defines
-#define LED_PIN LED_BUILTIN
+#define LED_PIN 2
 #define sizeofarray(a) (sizeof(a) / sizeof(a[0]))
 #define ONE_HOUR_IN_SECS 3600
 #define NTP_SERVERS "pool.ntp.org", "time.nist.gov"
@@ -348,7 +348,7 @@ static void sendTelemetry()
   delay(100);
   digitalWrite(LED_PIN, LOW);
 }
-
+/*
 static int mqtt_connected()
 {
   return mqtt_client.connected();
@@ -358,3 +358,4 @@ static void mqtt_loop()
 {
   mqtt_client.loop();
 }
+*/
