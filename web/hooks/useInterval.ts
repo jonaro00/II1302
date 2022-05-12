@@ -17,13 +17,15 @@ export default function useInterval(
   // Remember the latest callback
   useEffect(() => {
     savedCallback.current = callback
-  }, [callback])
+    if (callImmediately) callback()
+  }, [callback, callImmediately])
   useEffect(() => {
     // Pause the interval if ms === null
     if (ms !== null) {
+      // pass the reference to the callback and call it
       const tick = () => (savedCallback.current ? savedCallback.current() : null)
-      if (callImmediately) tick()
       const timer = setInterval(tick, ms)
+      // stop the interval
       return () => clearInterval(timer)
     }
   }, [callImmediately, ms])
