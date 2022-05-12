@@ -3,7 +3,7 @@ import { Sequelize, Dialect } from 'sequelize'
 import fs from 'fs'
 import { Sensor, SensorType, SensorUserData } from '../model/Sensor'
 import { User, UserCredentials, UserType } from '../model/User'
-import { IncomingTelemetry, Telemetry } from '../model/Telemetry'
+import { IncomingTelemetry, Telemetry, TelemetryType } from '../model/Telemetry'
 import { Alarm } from '../model/Alarm'
 import { AzureSystemEventType, Event } from '../model/Event'
 
@@ -100,7 +100,7 @@ export class DAO {
       await this.database.transaction(async t => {
         await User.create({ username, password })
       })
-      return this.login({ username, password })
+      return this.login({ username, password }) // move into transaction?
     } catch (error) {
       throw new Error('Failed to register user.')
     }
@@ -194,5 +194,16 @@ export class DAO {
     } catch (error) {
       throw error // new Error('Failed to add event.')
     }
+  }
+
+  public async getTelemetry(
+    user_id: number,
+    sensor_id: number,
+    start: Date,
+    end: Date,
+    interval: number,
+    max_count: number | null,
+  ): Promise<TelemetryType[]> {
+    return []
   }
 }

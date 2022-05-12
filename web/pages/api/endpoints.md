@@ -10,7 +10,7 @@ All endpoints below requires a valid session cookie obtained from sign in.
 
 ### `/api/sensors` - GET - Get list of the current users sensors
 
-Response type: `Array<SensorType>`
+Response type: `SensorType[]`
 
 ### `/api/sensors/add` - POST - Add a sensor
 
@@ -33,7 +33,7 @@ Parameters:
 - `interval`: Minimum number of seconds between each data point. Default: 1.
 - `max_count`: Max number of data points. Default: none.
 
-Response type: `Array<TelemetryType>`
+Response type: `TelemetryType[]`
 
 ### `/api/sensors/events/[sensor_id]` - GET - Get events from a sensor
 
@@ -43,11 +43,11 @@ Parameters:
 - `end`: Timestamp when event interval ends. Default: now.
 - `max_count`: Max number of events. Default: none.
 
-Response type: `Array<EventType>`
+Response type: `EventType[]`
 
 ### `/api/sensors/alarms/[sensor_id]` - GET - Get alarms for a sensor
 
-Response type: `Array<AlarmType>`
+Response type: `AlarmType[]`
 
 ### `/api/sensors/alarms/add/[sensor_id]` - POST - Add an alarm to a sensor
 

@@ -2,6 +2,8 @@ import DeviceView from '../views/DeviceView'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Model } from '../model/Model'
 import { SensorType, SensorUserData } from '../model/Sensor'
+import { TelemetryType } from '../model/Telemetry'
+import useInterval from '../hooks/useInterval'
 import useModelProperty from '../hooks/useModelProperty'
 import usePromise from '../hooks/usePromise'
 import useUpdateLogger from '../hooks/useUpdateLogger'
@@ -16,7 +18,7 @@ export default function DevicePresenter({ model }: { model: Model }) {
     () =>
       fetch('/api/sensors')
         .then(res => res.json())
-        .then(s => model.setSensors(s)),
+        .then((s: SensorType[]) => model.setSensors(s)),
     [model],
   )
   // Start a fetch for sensors on mount
@@ -26,7 +28,7 @@ export default function DevicePresenter({ model }: { model: Model }) {
   }, [getSensorsFetcher])
   const [_, fetchedSensorsError] = usePromise<void>(sensorsPromise)
 
-  // Add device form
+  // Add Device Promise handling
   const [addDevicePromise, setAddDevicePromise] = useState<Promise<boolean> | null>(null)
   const [addDeviceSuccess, addDeviceError] = usePromise<boolean>(addDevicePromise)
   const addDeviceLoading = useMemo(
@@ -51,7 +53,7 @@ export default function DevicePresenter({ model }: { model: Model }) {
     [getSensorsFetcher],
   )
 
-  // Device Promise handling
+  // Update/Delete Device Promise handling
   const [devicePromise, setDevicePromise] = useState<Promise<boolean> | null>(null)
   const [devicePromiseSuccess, devicePromiseError] = usePromise<boolean>(devicePromise)
   const devicePromiseLoading = useMemo(
@@ -88,8 +90,20 @@ export default function DevicePresenter({ model }: { model: Model }) {
 
   // Prevent success/error boxes to remain after a re-fetch of sensors
   useEffect(() => {
-    setDevicePromise(null) // FIXME: Correct for deletes, but weird for edits...
+    setDevicePromise(null) // FIXME: Works for deletes, but weird for edits...
   }, [sensors])
+
+  // Call to fetch telemetry
+  const getTelemetryFetcher = useCallback(() => {
+    Promise.all(
+      sensors.map(async s =>
+        fetch(`/api/sensors/telemetry/${s.id}`)
+          .then(res => res.json())
+          .then((t: TelemetryType[]) => model.setDeviceTelemetry(s.id, t)),
+      ),
+    )
+  }, [model, sensors])
+  useInterval(getTelemetryFetcher, 30000)
 
   // Wait until sensors are fetched
   if (fetchedSensorsError) return <p>Failed to fetch sensors. Please try again later.</p>
