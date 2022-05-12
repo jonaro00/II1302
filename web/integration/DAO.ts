@@ -171,7 +171,7 @@ export class DAO {
       await this.database.transaction(async t => {
         const sensor = await Sensor.findOne({ where: { device_azure_name } })
         if (sensor === null) throw new Error('No sensor with that name found.')
-        const sensor_id = sensor.get('sensor_id')
+        const sensor_id = sensor.get('id')
         await Telemetry.create({ sensor_id, temp, humidity, lpg, co, smoke, createdAt: time })
       })
     } catch (error) {
@@ -188,7 +188,7 @@ export class DAO {
       await this.database.transaction(async t => {
         const sensor = await Sensor.findOne({ where: { device_azure_name } })
         if (sensor === null) throw new Error('No sensor with that name found.')
-        const sensor_id = sensor.get('sensor_id')
+        const sensor_id = sensor.get('id')
         await Event.create({ sensor_id, type, createdAt: time })
       })
     } catch (error) {
