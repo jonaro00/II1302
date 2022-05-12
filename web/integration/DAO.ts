@@ -165,29 +165,34 @@ export class DAO {
   public async addTelemetry(
     device_azure_name: string,
     { temp, humidity, lpg, co, smoke }: IncomingTelemetry,
+    time: Date,
   ): Promise<void> {
     try {
       await this.database.transaction(async t => {
         const sensor = await Sensor.findOne({ where: { device_azure_name } })
         if (sensor === null) throw new Error('No sensor with that name found.')
         const sensor_id = sensor.get('sensor_id')
-        await Telemetry.create({ sensor_id, temp, humidity, lpg, co, smoke })
+        await Telemetry.create({ sensor_id, temp, humidity, lpg, co, smoke, createdAt: time })
       })
     } catch (error) {
-      throw new Error('Failed to add telemetry.')
+      throw error // new Error('Failed to add telemetry.')
     }
   }
 
-  public async addEvent(device_azure_name: string, type: AzureSystemEventType): Promise<void> {
+  public async addEvent(
+    device_azure_name: string,
+    type: AzureSystemEventType,
+    time: Date,
+  ): Promise<void> {
     try {
       await this.database.transaction(async t => {
         const sensor = await Sensor.findOne({ where: { device_azure_name } })
         if (sensor === null) throw new Error('No sensor with that name found.')
         const sensor_id = sensor.get('sensor_id')
-        await Event.create({ sensor_id, type })
+        await Event.create({ sensor_id, type, createdAt: time })
       })
     } catch (error) {
-      throw new Error('Failed to add telemetry.')
+      throw error // new Error('Failed to add event.')
     }
   }
 }
