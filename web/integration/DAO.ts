@@ -251,11 +251,14 @@ export class DAO {
     }
   }
 
-  public async getAlarms(
-    user_id: number,
-    alarm_id: number,
-    sensor_id: number,
-  ): Promise<AlarmType[]> {
+  private async checkSensorAlarm(sensor_id: number, alarm_id: number): Promise<Alarm> {
+    // does not use a transaction on its own, should be called from within a transaction
+    const alarm = await Alarm.findOne({ where: { id: alarm_id, sensor_id } })
+    if (alarm === null) throw new Error('Alarm not found or does not belong to that sensor.')
+    return alarm
+  }
+
+  public async getAlarms(user_id: number, sensor_id: number): Promise<AlarmType[]> {
     try {
       return await this.database.transaction(async t => {
         await this.checkSensorOwnership(user_id, sensor_id)
@@ -267,13 +270,14 @@ export class DAO {
     }
   }
 
-  public async addAlarm(user_id: number, sensor_id: number, alarm: AlarmUserData): Promise<void> {
+  public async addAlarm(
+    user_id: number,
+    { sensor_id, value, email, message }: AlarmUserData,
+  ): Promise<void> {
     try {
       await this.database.transaction(async t => {
-        const alarms = await Alarm.findOne({ where: { sensor_id } })
-        if (alarms === null) throw new Error('No alarm with that name found.')
-        const alarm_id = alarms.get('id')
-        await Alarm.create({ alarm_id, alarm })
+        await this.checkSensorOwnership(user_id, sensor_id)
+        await Alarm.create({ sensor_id, value, email, message })
       })
     } catch (error) {
       throw new Error('Failed to add alarm.')
@@ -282,14 +286,19 @@ export class DAO {
 
   public async updateAlarm(
     user_id: number,
-    sensor_id: number,
-    alarm: AlarmUserData,
+    alarm_id: number,
+    { sensor_id, value, email, message }: AlarmUserData,
   ): Promise<void> {
     try {
       await this.database.transaction(async t => {
-        const [affectedRows] = await Alarm.update(alarm, {
-          where: { id: sensor_id },
-        })
+        await this.checkSensorOwnership(user_id, sensor_id)
+        await this.checkSensorAlarm(sensor_id, alarm_id)
+        const [affectedRows] = await Alarm.update(
+          { value, email, message },
+          {
+            where: { id: alarm_id },
+          },
+        )
         if (affectedRows !== 1) throw new Error('Query did not match exactly one row.')
       })
     } catch (error) {
@@ -300,7 +309,10 @@ export class DAO {
   public async deleteAlarm(user_id: number, alarm_id: number): Promise<void> {
     try {
       await this.database.transaction(async t => {
-        const alarm = await this.checkSensorOwnership(user_id, alarm_id)
+        const alarm = await Alarm.findOne({ where: { id: alarm_id } })
+        if (alarm === null) throw new Error('Alarm not found.')
+        const sensor_id = alarm.get('sensor_id') as number
+        await this.checkSensorOwnership(user_id, sensor_id)
         await alarm.destroy()
       })
     } catch (error) {

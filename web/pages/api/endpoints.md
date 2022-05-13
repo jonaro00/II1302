@@ -49,7 +49,7 @@ Response type: `EventType[]`
 
 Response type: `AlarmType[]`
 
-### `/api/sensors/alarms/add/[sensor_id]` - POST - Add an alarm to a sensor
+### `/api/sensors/alarms/add` - POST - Add an alarm to a sensor
 
 Request body: `AlarmUserData`
 
