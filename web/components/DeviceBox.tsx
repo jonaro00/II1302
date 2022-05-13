@@ -121,7 +121,7 @@ function LiveDataBox(type: keyof IncomingTelemetry, value: number, recent: boole
       </Grid.Row>
       <Grid.Row centered>
         <Statistic horizontal>
-          <Statistic.Value>{value.toFixed(1) ?? '--'}</Statistic.Value>
+          <Statistic.Value>{value === undefined ? '--' : value.toFixed(1)}</Statistic.Value>
           <Statistic.Label>{unit}</Statistic.Label>
         </Statistic>
       </Grid.Row>
