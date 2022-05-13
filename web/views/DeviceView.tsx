@@ -10,9 +10,8 @@ import {
   Message,
 } from 'semantic-ui-react'
 import styles from '../styles/device.module.css'
-
 import { useState } from 'react'
-import { SensorType, SensorUserData } from '../model/Sensor'
+import { SensorTelemetries, SensorType, SensorUserData } from '../model/Sensor'
 import DeviceBox from '../components/DeviceBox'
 
 function AddDeviceForm(
@@ -69,6 +68,7 @@ function AddDeviceForm(
 
 export default function DeviceView({
   sensors,
+  telemetry,
   addDevice,
   addDeviceLoading,
   addDeviceErrorText,
@@ -82,6 +82,7 @@ export default function DeviceView({
   devicePromiseClear,
 }: {
   sensors: SensorType[]
+  telemetry: SensorTelemetries
   addDevice(n: string, l: string): void
   addDeviceLoading: boolean
   addDeviceErrorText: string
@@ -155,6 +156,7 @@ export default function DeviceView({
               <DeviceBox
                 key={s.id}
                 sensor={s}
+                telemetry={telemetry[s.id]}
                 deleteDevice={deleteDevice}
                 updateDevice={updateDevice}
                 devicePromiseLoading={devicePromiseLoading}

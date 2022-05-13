@@ -19,6 +19,15 @@ export type IncomingTelemetry = {
   smoke: number // ppm
 }
 
+export type TelemetrySeries = {
+  times: string[]
+  temps: number[]
+  humidities: number[]
+  lpgs: number[]
+  cos: number[]
+  smokes: number[]
+}
+
 export class Telemetry extends Model {
   public static createModel(sequelize: Sequelize): any {
     Telemetry.init(

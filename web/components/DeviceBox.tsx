@@ -25,7 +25,7 @@ import { Line } from 'react-chartjs-2'
 import { sv } from 'date-fns/locale'
 import 'chartjs-adapter-date-fns'
 import faker from 'faker'
-import { IncomingTelemetry } from '../model/Telemetry'
+import { IncomingTelemetry, TelemetrySeries } from '../model/Telemetry'
 import styles from '../styles/device.module.css'
 import { useState } from 'react'
 import { SensorType, SensorUserData } from '../model/Sensor'
@@ -121,7 +121,7 @@ function LiveDataBox(type: keyof IncomingTelemetry, value: number, recent: boole
       </Grid.Row>
       <Grid.Row centered>
         <Statistic horizontal>
-          <Statistic.Value>{value ?? '--'}</Statistic.Value>
+          <Statistic.Value>{value.toFixed(1) ?? '--'}</Statistic.Value>
           <Statistic.Label>{unit}</Statistic.Label>
         </Statistic>
       </Grid.Row>
@@ -131,6 +131,7 @@ function LiveDataBox(type: keyof IncomingTelemetry, value: number, recent: boole
 
 export default function DeviceBox({
   sensor: s,
+  telemetry: t,
   deleteDevice,
   updateDevice,
   devicePromiseLoading,
@@ -139,6 +140,7 @@ export default function DeviceBox({
   devicePromiseClear,
 }: {
   sensor: SensorType & { fake?: boolean }
+  telemetry: TelemetrySeries
   deleteDevice(i: number): void
   updateDevice(i: number, d: SensorUserData): void
   devicePromiseLoading: boolean
@@ -147,10 +149,14 @@ export default function DeviceBox({
   devicePromiseClear(): void
 }) {
   // MOCK DATA
-  const times = Array(50)
-    .fill(0)
-    .map((_, i) => new Date(Date.now() - i * 70000).toISOString())
-    .reverse()
+  const [times, setTimes] = useState(
+    s?.fake
+      ? Array(50)
+          .fill(0)
+          .map((_, i) => new Date(Date.now() - i * 70000).toISOString())
+          .reverse()
+      : [],
+  )
   const [temps, setTemps] = useState(
     s?.fake
       ? Array(50)
@@ -158,7 +164,7 @@ export default function DeviceBox({
           .map(() => randTemp())
       : [],
   )
-  const [humitdities, setHumidities] = useState(
+  const [humidities, setHumidities] = useState(
     s?.fake
       ? Array(50)
           .fill(0)
@@ -318,22 +324,32 @@ export default function DeviceBox({
       </Grid.Row>
       <Grid.Row className={styles.nopad}>
         <Grid.Column className={styles.box}>
-          {LiveDataBox('temp', temps[temps.length - 1], true)}
+          {LiveDataBox(
+            'temp',
+            s?.fake ? temps[temps.length - 1] : t.temps[t.temps.length - 1],
+            true,
+          )}
         </Grid.Column>
         <Grid.Column className={styles.box}>
-          {LiveDataBox('humidity', humitdities[humitdities.length - 1], true)}
+          {LiveDataBox(
+            'humidity',
+            s?.fake ? humidities[humidities.length - 1] : t.humidities[t.humidities.length - 1],
+            true,
+          )}
         </Grid.Column>
       </Grid.Row>
       <Grid.Row className={styles.nopad}>
         <Grid.Column className={styles.graphbox}>
-          {TempHumidityGraph(times, temps, humitdities)}
+          {s?.fake
+            ? TempHumidityGraph(times, temps, humidities)
+            : TempHumidityGraph(t.times, t.temps, t.humidities)}
           {s?.fake ? (
             <Button
               as="div"
               size="mini"
               onClick={() => {
                 setTemps([...temps.slice(1), randTemp()])
-                setHumidities([...humitdities.slice(1), randHumidity()])
+                setHumidities([...humidities.slice(1), randHumidity()])
               }}>
               <Icon name="refresh" />
               New fake datapoint

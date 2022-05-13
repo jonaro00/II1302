@@ -1,4 +1,5 @@
 import { Sequelize, Model, DataTypes } from 'sequelize'
+import { TelemetrySeries } from './Telemetry'
 
 export type SensorType = {
   id: number
@@ -16,6 +17,8 @@ export type SensorUserData = {
   device_azure_name: string
   location: string
 }
+
+export type SensorTelemetries = Record<number, TelemetrySeries>
 
 export class Sensor extends Model {
   public static createModel(sequelize: Sequelize): any {

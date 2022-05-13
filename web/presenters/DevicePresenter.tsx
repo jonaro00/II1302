@@ -1,7 +1,7 @@
 import DeviceView from '../views/DeviceView'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Model } from '../model/Model'
-import { SensorType, SensorUserData } from '../model/Sensor'
+import { SensorType, SensorUserData, SensorTelemetries } from '../model/Sensor'
 import { TelemetryType } from '../model/Telemetry'
 import useInterval from '../hooks/useInterval'
 import useModelProperty from '../hooks/useModelProperty'
@@ -11,7 +11,33 @@ import useUpdateLogger from '../hooks/useUpdateLogger'
 export default function DevicePresenter({ model }: { model: Model }) {
   // Observe
   const sensors = useModelProperty<SensorType[]>(model, 'sensors')
+  const raw_telemetry = useModelProperty<
+    Record<number, (Omit<TelemetryType, 'createdAt'> & { createdAt: string })[]>
+  >(model, 'telemetry')
+  const telemetry: SensorTelemetries = useMemo(() => {
+    const o: SensorTelemetries = {}
+    sensors.map(s => {
+      const times: string[] = [],
+        temps: number[] = [],
+        humidities: number[] = [],
+        lpgs: number[] = [],
+        cos: number[] = [],
+        smokes: number[] = []
+      raw_telemetry[s.id]?.forEach(t => {
+        times.push(t.createdAt)
+        temps.push(t.temp)
+        humidities.push(t.humidity)
+        lpgs.push(t.lpg)
+        cos.push(t.co)
+        smokes.push(t.smoke)
+      })
+      o[s.id] = { times, temps, humidities, lpgs, cos, smokes }
+    })
+    return o
+  }, [raw_telemetry, sensors])
   useUpdateLogger(sensors, 'sensors')
+  useUpdateLogger(raw_telemetry, 'raw telemetry')
+  useUpdateLogger(telemetry, 'telemetry')
 
   // Call to fetch sensors
   const getSensorsFetcher = useCallback(
@@ -98,8 +124,12 @@ export default function DevicePresenter({ model }: { model: Model }) {
     Promise.all(
       sensors.map(async s =>
         fetch(`/api/sensors/telemetry/${s.id}`)
-          .then(res => res.json())
-          .then((t: TelemetryType[]) => model.setDeviceTelemetry(s.id, t)),
+          .then(async res => {
+            if (!res.ok) throw new Error(await res.json())
+            return res.json()
+          })
+          .then((t: TelemetryType[]) => model.setDeviceTelemetry(s.id, t))
+          .catch(() => {}),
       ),
     )
   }, [model, sensors])
@@ -112,6 +142,7 @@ export default function DevicePresenter({ model }: { model: Model }) {
   return (
     <DeviceView
       sensors={sensors}
+      telemetry={telemetry}
       addDeviceErrorText={addDeviceError?.message ?? ''}
       addDeviceLoading={addDeviceLoading}
       addDeviceSuccess={!!addDeviceSuccess}
