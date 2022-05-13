@@ -1,5 +1,5 @@
 import { createNamespace } from 'cls-hooked'
-import { Sequelize, Dialect } from 'sequelize'
+import { Sequelize, Dialect, Op } from 'sequelize'
 import fs from 'fs'
 import { Sensor, SensorType, SensorUserData } from '../model/Sensor'
 import { User, UserCredentials, UserType } from '../model/User'
@@ -153,8 +153,7 @@ export class DAO {
   public async deleteSensor(user_id: number, sensor_id: number): Promise<void> {
     try {
       await this.database.transaction(async t => {
-        const sensor = await Sensor.findOne({ where: { id: sensor_id, user_id } })
-        if (sensor === null) throw new Error('Sensor not found.')
+        const sensor = await this.checkSensorOwnership(user_id, sensor_id)
         await sensor.destroy()
       })
     } catch (error) {
@@ -196,6 +195,13 @@ export class DAO {
     }
   }
 
+  private async checkSensorOwnership(user_id: number, sensor_id: number): Promise<Sensor> {
+    // does not use a transaction on its own, should be called from within a transaction
+    const sensor = await Sensor.findOne({ where: { id: sensor_id, user_id } })
+    if (sensor === null) throw new Error('Sensor not found or is not owned by that user.')
+    return sensor
+  }
+
   public async getTelemetry(
     user_id: number,
     sensor_id: number,
@@ -205,20 +211,19 @@ export class DAO {
     max_count: number | null,
   ): Promise<TelemetryType[]> {
     try {
-      await this.database.transaction(async t => {
+      return await this.database.transaction(async t => {
+        await this.checkSensorOwnership(user_id, sensor_id)
         const telemetry = await Telemetry.findAll({
           where: {
             sensor_id,
-            created_at: {
-              $between: [start, end],
-            },
+            createdAt: { [Op.between]: [start, end] },
           },
+          order: [['createdAt', 'ASC']],
         })
         return telemetry.map(s => s.get({ plain: true }))
       })
-      return []
     } catch (error) {
-      throw error // new Error('Failed to get telemetry.')
+      throw new Error('Failed to get telemetry.')
     }
   }
 
@@ -230,36 +235,31 @@ export class DAO {
     max_count: number | null,
   ): Promise<EventType[]> {
     try {
-      await this.database.transaction(async t => {
-        const event = await Event.findAll({
+      return await this.database.transaction(async t => {
+        await this.checkSensorOwnership(user_id, sensor_id)
+        const events = await Event.findAll({
           where: {
             sensor_id,
-            created_at: {
-              $between: [start, end],
-            },
+            createdAt: { [Op.between]: [start, end] },
           },
+          order: [['createdAt', 'ASC']],
         })
-        return event.map(s => s.get({ plain: true }))
+        return events.map(e => e.get({ plain: true }))
       })
-      return []
     } catch (error) {
-      throw error // new Error('Failed to get event.')
+      throw new Error('Failed to get events.')
     }
   }
 
   public async getAlarms(user_id: number, sensor_id: number): Promise<AlarmType[]> {
     try {
-      await this.database.transaction(async t => {
-        const alarm = await Alarm.findAll({
-          where: {
-            sensor_id,
-          },
-        })
-        return alarm.map(s => s.get({ plain: true }))
+      return await this.database.transaction(async t => {
+        await this.checkSensorOwnership(user_id, sensor_id)
+        const alarms = await Alarm.findAll({ where: { sensor_id } })
+        return alarms.map(a => a.get({ plain: true }))
       })
-      return []
     } catch (error) {
-      throw error // new Error('Failed to get alarm.')
+      throw new Error('Failed to get alarms.')
     }
   }
 }
