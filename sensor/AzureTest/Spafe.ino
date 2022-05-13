@@ -1,6 +1,6 @@
-#include "Azure.h"
+#include "AzureTest.h"
 #include "MQ2.h"
-#include "TempSensor.h"
+#include "tempSensor.h"
 
 // Arduino setup and loop main functions.
 

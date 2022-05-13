@@ -1,3 +1,4 @@
+
 static void connectToWiFi();
 static void initializeTime();
 static char* getCurrentLocalTimeString();
@@ -10,5 +11,6 @@ static int connectToAzureIoTHub();
 static void establishConnection();
 static char* getTelemetryPayload();
 static void sendTelemetry();
+//static unsigned long next_telemetry_send_time_ms;
 static int mqtt_connected();
 static void mqtt_loop(); 

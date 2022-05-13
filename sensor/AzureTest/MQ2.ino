@@ -25,4 +25,3 @@ mq2.begin();
   // smoke = values[2];
   smoke = mq2.readSmoke();
 }
-
