@@ -41,7 +41,7 @@
 #include <azure_ca.h>
 
 // Additional sample headers 
-#include "iot_configs.h"
+#include "configs.h"
 #include "WifiConnection.h"
 
 // Translate iot_configs.h defines into variables used by the sample
