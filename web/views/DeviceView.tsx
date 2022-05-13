@@ -66,6 +66,12 @@ function AddDeviceForm(
   )
 }
 
+export enum ViewMode {
+  Grid,
+  List,
+  Focus,
+}
+
 export default function DeviceView({
   sensors,
   telemetry,
@@ -105,7 +111,8 @@ export default function DeviceView({
     fake: true,
   }
 
-  const [gridView, setGridView] = useState(true)
+  const [viewMode, setViewMode] = useState(ViewMode.Grid)
+  const [focusedSensor, setFocusedSensor] = useState<SensorType | null>(null)
   const [addDeviceModalOpen, setAddDeviceModalOpen] = useState(false)
   const [addDeviceName, setAddDeviceName] = useState('')
   const [addDeviceLocation, setAddDeviceLocation] = useState('')
@@ -143,13 +150,21 @@ export default function DeviceView({
               </Modal>
             </Segment>
             <Segment>
-              <Button icon="grid layout" active={gridView} onClick={() => setGridView(true)} />
-              <Button icon="list" active={!gridView} onClick={() => setGridView(false)} />
+              <Button
+                icon="grid layout"
+                active={viewMode === ViewMode.Grid}
+                onClick={() => setViewMode(ViewMode.Grid)}
+              />
+              <Button
+                icon="list"
+                active={viewMode === ViewMode.List}
+                onClick={() => setViewMode(ViewMode.List)}
+              />
             </Segment>
           </Segment.Group>
         </Container>
       </Menu>
-      {gridView ? (
+      {viewMode === ViewMode.Grid ? (
         <Grid className={styles.main}>
           {[...sensors /*, mockSensor*/].map((s: SensorType) => {
             return (
@@ -157,6 +172,11 @@ export default function DeviceView({
                 key={s.id}
                 sensor={s}
                 telemetry={telemetry[s.id]}
+                viewMode={viewMode}
+                setFocusedSensor={() => {
+                  setFocusedSensor(s)
+                  setViewMode(ViewMode.Focus)
+                }}
                 deleteDevice={deleteDevice}
                 updateDevice={updateDevice}
                 devicePromiseLoading={devicePromiseLoading}
@@ -167,8 +187,27 @@ export default function DeviceView({
             )
           })}
         </Grid>
-      ) : (
+      ) : viewMode === ViewMode.List ? (
         <p>Not implemented</p>
+      ) : viewMode === ViewMode.Focus && focusedSensor ? (
+        <DeviceBox
+          key={focusedSensor.id}
+          sensor={focusedSensor}
+          telemetry={telemetry[focusedSensor.id]}
+          viewMode={viewMode}
+          setFocusedSensor={() => {
+            setFocusedSensor(null)
+            setViewMode(ViewMode.Grid)
+          }}
+          deleteDevice={deleteDevice}
+          updateDevice={updateDevice}
+          devicePromiseLoading={devicePromiseLoading}
+          devicePromiseErrorText={devicePromiseErrorText}
+          devicePromiseSuccess={devicePromiseSuccess}
+          devicePromiseClear={devicePromiseClear}
+        />
+      ) : (
+        false
       )}
     </>
   )

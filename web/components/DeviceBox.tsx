@@ -29,6 +29,7 @@ import { IncomingTelemetry, TelemetrySeries } from '../model/Telemetry'
 import styles from '../styles/device.module.css'
 import { useState } from 'react'
 import { SensorType, SensorUserData } from '../model/Sensor'
+import { ViewMode } from '../views/DeviceView'
 
 ChartJS.register(LinearScale, TimeScale, PointElement, LineElement, Title, Tooltip, Legend)
 
@@ -111,7 +112,7 @@ const datasetTypes = {
   smoke: { title: 'Live Smoke concentration', unit: 'ppm' },
 }
 
-function LiveDataBox(type: keyof IncomingTelemetry, value: number, recent: boolean) {
+function LiveDataBox(type: keyof IncomingTelemetry, value?: number, recent?: boolean) {
   const { title, unit }: { title: string; unit: string } = datasetTypes[type]
 
   return (
@@ -132,6 +133,8 @@ function LiveDataBox(type: keyof IncomingTelemetry, value: number, recent: boole
 export default function DeviceBox({
   sensor: s,
   telemetry: t,
+  viewMode,
+  setFocusedSensor,
   deleteDevice,
   updateDevice,
   devicePromiseLoading,
@@ -141,6 +144,8 @@ export default function DeviceBox({
 }: {
   sensor: SensorType & { fake?: boolean }
   telemetry: TelemetrySeries
+  viewMode: ViewMode
+  setFocusedSensor(): void
   deleteDevice(i: number): void
   updateDevice(i: number, d: SensorUserData): void
   devicePromiseLoading: boolean
@@ -175,6 +180,7 @@ export default function DeviceBox({
   const [confirmDeviceDeleteOpen, setConfirmDeviceDeleteOpen] = useState(false)
   const [confirmDeviceEditOpen, setConfirmDeviceEditOpen] = useState(false)
   const [locationText, setLocationText] = useState('')
+  const [viewingGases, setViewingGases] = useState(false)
 
   return (
     <Grid columns="equal" padded className={styles.grid} key={s.id}>
@@ -250,114 +256,146 @@ export default function DeviceBox({
               />
             </Segment>
             <Segment color="black" inverted style={{ flexGrow: 0 }}>
-              <Dropdown icon="setting" pointing="left" as={Button}>
-                <Dropdown.Menu>
-                  <Dropdown.Item text="Focus mode" />
-                  <Dropdown.Item>
-                    <Dropdown text="Add" pointing="left">
-                      <Dropdown.Menu>
-                        <Dropdown.Item>
-                          <Dropdown text="Temperature">
-                            <Dropdown.Menu>
-                              <Dropdown.Item text="Live reading" />
-                              <Dropdown.Item text="Live graphing" />
-                              <Dropdown.Item text="Historical graphing" />
-                            </Dropdown.Menu>
-                          </Dropdown>
-                        </Dropdown.Item>
-                        <Dropdown.Item>
-                          <Dropdown text="gasses levels">
-                            <Dropdown.Menu>
-                              <Dropdown.Item text="Live reading" />
-                              <Dropdown.Item text="Live graphing" />
-                              <Dropdown.Item text="Historical graphing" />
-                            </Dropdown.Menu>
-                          </Dropdown>
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  </Dropdown.Item>
-                  <Dropdown.Item text="Remove device" />
-                </Dropdown.Menu>
-              </Dropdown>
-              <Button icon="expand" /* click for focus mode ? */ />
-              <Button
-                icon="trash alternate"
-                negative
-                onClick={() => setConfirmDeviceDeleteOpen(true)}
-              />
-              <Confirm
-                open={confirmDeviceDeleteOpen}
-                header="Delete Device"
-                content={
-                  <Segment>
-                    Are you sure you want to delete <b>{s.device_azure_name}</b>?
-                    <Message error color="red" hidden={!devicePromiseErrorText}>
-                      Error: {devicePromiseErrorText}
-                    </Message>
-                    <Message success color="green" hidden={!devicePromiseSuccess}>
-                      Deleted <b>{s.device_azure_name}</b>.
-                    </Message>
-                  </Segment>
-                }
-                cancelButton={
-                  devicePromiseErrorText || devicePromiseSuccess ? (
-                    <Button>Close</Button>
-                  ) : undefined
-                }
-                onCancel={() => {
-                  setConfirmDeviceDeleteOpen(false)
-                  devicePromiseClear()
-                }}
-                confirmButton={
-                  devicePromiseErrorText || devicePromiseSuccess ? (
-                    false
-                  ) : (
-                    <Button loading={devicePromiseLoading}>OK</Button>
-                  )
-                }
-                onConfirm={() => deleteDevice(s.id)}
-              />
+              <div>
+                <Dropdown icon="setting" pointing="left" as={Button}>
+                  <Dropdown.Menu>
+                    <Dropdown.Item text="Focus mode" />
+                    <Dropdown.Item>
+                      <Dropdown text="Add" pointing="left">
+                        <Dropdown.Menu>
+                          <Dropdown.Item>
+                            <Dropdown text="Temperature">
+                              <Dropdown.Menu>
+                                <Dropdown.Item text="Live reading" />
+                                <Dropdown.Item text="Live graphing" />
+                                <Dropdown.Item text="Historical graphing" />
+                              </Dropdown.Menu>
+                            </Dropdown>
+                          </Dropdown.Item>
+                          <Dropdown.Item>
+                            <Dropdown text="gasses levels">
+                              <Dropdown.Menu>
+                                <Dropdown.Item text="Live reading" />
+                                <Dropdown.Item text="Live graphing" />
+                                <Dropdown.Item text="Historical graphing" />
+                              </Dropdown.Menu>
+                            </Dropdown>
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </Dropdown.Item>
+                    <Dropdown.Item text="Remove device" />
+                  </Dropdown.Menu>
+                </Dropdown>
+                <Button icon="expand" onClick={setFocusedSensor} />
+                <Button
+                  icon="trash alternate"
+                  negative
+                  onClick={() => setConfirmDeviceDeleteOpen(true)}
+                />
+                <Confirm
+                  open={confirmDeviceDeleteOpen}
+                  header="Delete Device"
+                  content={
+                    <Segment>
+                      Are you sure you want to delete <b>{s.device_azure_name}</b>?
+                      <Message error color="red" hidden={!devicePromiseErrorText}>
+                        Error: {devicePromiseErrorText}
+                      </Message>
+                      <Message success color="green" hidden={!devicePromiseSuccess}>
+                        Deleted <b>{s.device_azure_name}</b>.
+                      </Message>
+                    </Segment>
+                  }
+                  cancelButton={
+                    devicePromiseErrorText || devicePromiseSuccess ? (
+                      <Button>Close</Button>
+                    ) : undefined
+                  }
+                  onCancel={() => {
+                    setConfirmDeviceDeleteOpen(false)
+                    devicePromiseClear()
+                  }}
+                  confirmButton={
+                    devicePromiseErrorText || devicePromiseSuccess ? (
+                      false
+                    ) : (
+                      <Button loading={devicePromiseLoading}>OK</Button>
+                    )
+                  }
+                  onConfirm={() => deleteDevice(s.id)}
+                />
+              </div>
+              <div>
+                <Button onClick={() => setViewingGases(!viewingGases)}>
+                  <Icon name="refresh" />
+                  Switch graphs
+                </Button>
+              </div>
             </Segment>
           </Segment.Group>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row className={styles.nopad}>
-        <Grid.Column className={styles.box}>
-          {LiveDataBox(
-            'temp',
-            s?.fake ? temps[temps.length - 1] : t.temps[t.temps.length - 1],
-            true,
-          )}
-        </Grid.Column>
-        <Grid.Column className={styles.box}>
-          {LiveDataBox(
-            'humidity',
-            s?.fake ? humidities[humidities.length - 1] : t.humidities[t.humidities.length - 1],
-            true,
-          )}
-        </Grid.Column>
+        {(viewMode === ViewMode.Focus || !viewingGases) && (
+          <>
+            <Grid.Column className={styles.box}>
+              {LiveDataBox(
+                'temp',
+                s?.fake ? temps[temps.length - 1] : t.temps[t.temps.length - 1],
+                true,
+              )}
+            </Grid.Column>
+            <Grid.Column className={styles.box}>
+              {LiveDataBox(
+                'humidity',
+                s?.fake ? humidities[humidities.length - 1] : t.humidities[t.humidities.length - 1],
+                true,
+              )}
+            </Grid.Column>
+          </>
+        )}
+        {(viewMode === ViewMode.Focus || viewingGases) && (
+          <>
+            <Grid.Column className={styles.box}>
+              {LiveDataBox('lpg', s?.fake ? undefined : t.lpgs[t.lpgs.length - 1], true)}
+            </Grid.Column>
+            <Grid.Column className={styles.box}>
+              {LiveDataBox('co', s?.fake ? undefined : t.cos[t.cos.length - 1], true)}
+            </Grid.Column>
+            <Grid.Column className={styles.box}>
+              {LiveDataBox('smoke', s?.fake ? undefined : t.smokes[t.smokes.length - 1], true)}
+            </Grid.Column>
+          </>
+        )}
       </Grid.Row>
       <Grid.Row className={styles.nopad}>
-        <Grid.Column className={styles.graphbox}>
-          {s?.fake
-            ? TempHumidityGraph(times, temps, humidities)
-            : TempHumidityGraph(t.times, t.temps, t.humidities)}
-          {s?.fake ? (
-            <Button
-              as="div"
-              size="mini"
-              onClick={() => {
-                setTemps([...temps.slice(1), randTemp()])
-                setHumidities([...humidities.slice(1), randHumidity()])
-              }}>
-              <Icon name="refresh" />
-              New fake datapoint
-            </Button>
-          ) : (
-            false
-          )}
-        </Grid.Column>
+        {(viewMode === ViewMode.Focus || !viewingGases) && (
+          <Grid.Column className={styles.graphbox}>
+            {s?.fake ? (
+              <>
+                {TempHumidityGraph(times, temps, humidities)}
+                <Button
+                  as="div"
+                  size="mini"
+                  onClick={() => {
+                    setTemps([...temps.slice(1), randTemp()])
+                    setHumidities([...humidities.slice(1), randHumidity()])
+                  }}>
+                  <Icon name="refresh" />
+                  New fake datapoint
+                </Button>
+              </>
+            ) : (
+              TempHumidityGraph(t.times, t.temps, t.humidities)
+            )}
+          </Grid.Column>
+        )}
+        {(viewMode === ViewMode.Focus || viewingGases) && (
+          <Grid.Column className={styles.graphbox}>
+            {/* {GasesGraph(t.times, t.lpgs, t.cos, t.smokes)} */}
+          </Grid.Column>
+        )}
       </Grid.Row>
     </Grid>
   )
