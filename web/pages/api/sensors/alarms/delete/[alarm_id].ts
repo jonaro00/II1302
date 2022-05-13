@@ -14,7 +14,8 @@ export default async function handler(
 
   try {
     // const alarm_id = req.query.alarm_id
-    // dao.deleteAlarm(user_id, alarm_id)
+    // const sensor_id = req.query.sensor_id
+    // dao.deleteAlarm(user_id, alarm_id, sensor_id)
 
     res.status(200).end()
   } catch (error) {

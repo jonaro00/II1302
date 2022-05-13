@@ -4,7 +4,7 @@ import fs from 'fs'
 import { Sensor, SensorType, SensorUserData } from '../model/Sensor'
 import { User, UserCredentials, UserType } from '../model/User'
 import { IncomingTelemetry, Telemetry, TelemetryType } from '../model/Telemetry'
-import { Alarm, AlarmType } from '../model/Alarm'
+import { Alarm, AlarmType, AlarmUserData } from '../model/Alarm'
 import { AzureSystemEventType, Event, EventType } from '../model/Event'
 
 export const allDBModels = [Alarm, Event, Sensor, User, Telemetry]
@@ -174,7 +174,7 @@ export class DAO {
         await Telemetry.create({ sensor_id, temp, humidity, lpg, co, smoke, createdAt: time })
       })
     } catch (error) {
-      throw error // new Error('Failed to add telemetry.')
+      throw new Error('Failed to add telemetry.')
     }
   }
 
@@ -191,7 +191,7 @@ export class DAO {
         await Event.create({ sensor_id, type, createdAt: time })
       })
     } catch (error) {
-      throw error // new Error('Failed to add event.')
+      throw new Error('Failed to add event.')
     }
   }
 
@@ -251,7 +251,11 @@ export class DAO {
     }
   }
 
-  public async getAlarms(user_id: number, sensor_id: number): Promise<AlarmType[]> {
+  public async getAlarms(
+    user_id: number,
+    alarm_id: number,
+    sensor_id: number,
+  ): Promise<AlarmType[]> {
     try {
       return await this.database.transaction(async t => {
         await this.checkSensorOwnership(user_id, sensor_id)
@@ -260,6 +264,47 @@ export class DAO {
       })
     } catch (error) {
       throw new Error('Failed to get alarms.')
+    }
+  }
+
+  public async addAlarm(user_id: number, sensor_id: number, alarm: AlarmUserData): Promise<void> {
+    try {
+      await this.database.transaction(async t => {
+        const alarms = await Alarm.findOne({ where: { sensor_id } })
+        if (alarms === null) throw new Error('No alarm with that name found.')
+        const alarm_id = alarms.get('id')
+        await Alarm.create({ alarm_id, alarm })
+      })
+    } catch (error) {
+      throw new Error('Failed to add alarm.')
+    }
+  }
+
+  public async updateAlarm(
+    user_id: number,
+    sensor_id: number,
+    alarm: AlarmUserData,
+  ): Promise<void> {
+    try {
+      await this.database.transaction(async t => {
+        const [affectedRows] = await Alarm.update(alarm, {
+          where: { id: sensor_id },
+        })
+        if (affectedRows !== 1) throw new Error('Query did not match exactly one row.')
+      })
+    } catch (error) {
+      throw new Error('Failed to update alarm.')
+    }
+  }
+
+  public async deleteAlarm(user_id: number, alarm_id: number): Promise<void> {
+    try {
+      await this.database.transaction(async t => {
+        const alarm = await this.checkSensorOwnership(user_id, alarm_id)
+        await alarm.destroy()
+      })
+    } catch (error) {
+      throw new Error('Failed to delete alarm.')
     }
   }
 }
