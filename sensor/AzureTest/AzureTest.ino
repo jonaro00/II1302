@@ -83,7 +83,7 @@ static void printCurrentTime()
 void receivedCallback(char* topic, byte* payload, unsigned int length)
 {
   Serial.print("Received [");
-  Serial.print(topic);
+  Serial.print(topic); //hej
   Serial.print("]: ");
   for (int i = 0; i < length; i++)
   {
