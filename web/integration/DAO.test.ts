@@ -8,7 +8,7 @@ beforeAll(async () => {
 })
 beforeEach(async () => {
   await dao.database.sync({ force: true })
-})
+}, 8000)
 afterAll(async () => {
   await dao.database.close()
 })
