@@ -4,8 +4,8 @@ import fs from 'fs'
 import { Sensor, SensorType, SensorUserData } from '../model/Sensor'
 import { User, UserCredentials, UserType } from '../model/User'
 import { IncomingTelemetry, Telemetry, TelemetryType } from '../model/Telemetry'
-import { Alarm } from '../model/Alarm'
-import { AzureSystemEventType, Event } from '../model/Event'
+import { Alarm, AlarmType } from '../model/Alarm'
+import { AzureSystemEventType, Event, EventType } from '../model/Event'
 
 export const allDBModels = [Alarm, Event, Sensor, User, Telemetry]
 
@@ -204,6 +204,62 @@ export class DAO {
     interval: number,
     max_count: number | null,
   ): Promise<TelemetryType[]> {
-    return []
+    try {
+      await this.database.transaction(async t => {
+        const telemetry = await Telemetry.findAll({
+          where: {
+            sensor_id,
+            created_at: {
+              $between: [start, end],
+            },
+          },
+        })
+        return telemetry.map(s => s.get({ plain: true }))
+      })
+      return []
+    } catch (error) {
+      throw error // new Error('Failed to get telemetry.')
+    }
+  }
+
+  public async getEvents(
+    user_id: number,
+    sensor_id: number,
+    start: Date,
+    end: Date,
+    max_count: number | null,
+  ): Promise<EventType[]> {
+    try {
+      await this.database.transaction(async t => {
+        const event = await Event.findAll({
+          where: {
+            sensor_id,
+            created_at: {
+              $between: [start, end],
+            },
+          },
+        })
+        return event.map(s => s.get({ plain: true }))
+      })
+      return []
+    } catch (error) {
+      throw error // new Error('Failed to get event.')
+    }
+  }
+
+  public async getAlarms(user_id: number, sensor_id: number): Promise<AlarmType[]> {
+    try {
+      await this.database.transaction(async t => {
+        const alarm = await Alarm.findAll({
+          where: {
+            sensor_id,
+          },
+        })
+        return alarm.map(s => s.get({ plain: true }))
+      })
+      return []
+    } catch (error) {
+      throw error // new Error('Failed to get alarm.')
+    }
   }
 }
