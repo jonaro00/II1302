@@ -151,7 +151,7 @@ export default function DeviceView({
       </Menu>
       {gridView ? (
         <Grid className={styles.main}>
-          {[...sensors, mockSensor].map((s: SensorType) => {
+          {[...sensors /*, mockSensor*/].map((s: SensorType) => {
             return (
               <DeviceBox
                 key={s.id}

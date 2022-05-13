@@ -9,11 +9,12 @@ import usePromise from '../hooks/usePromise'
 import useUpdateLogger from '../hooks/useUpdateLogger'
 
 export default function DevicePresenter({ model }: { model: Model }) {
-  // Observe
+  // Observe model
   const sensors = useModelProperty<SensorType[]>(model, 'sensors')
   const raw_telemetry = useModelProperty<
     Record<number, (Omit<TelemetryType, 'createdAt'> & { createdAt: string })[]>
   >(model, 'telemetry')
+  // Restructure the telemetry in model
   const telemetry: SensorTelemetries = useMemo(() => {
     const o: SensorTelemetries = {}
     sensors.map(s => {
@@ -35,6 +36,7 @@ export default function DevicePresenter({ model }: { model: Model }) {
     })
     return o
   }, [raw_telemetry, sensors])
+  // Debug
   useUpdateLogger(sensors, 'sensors')
   useUpdateLogger(raw_telemetry, 'raw telemetry')
   useUpdateLogger(telemetry, 'telemetry')
@@ -133,6 +135,7 @@ export default function DevicePresenter({ model }: { model: Model }) {
       ),
     )
   }, [model, sensors])
+  // Fetch every 30 s.
   useInterval(getTelemetryFetcher, 30000)
 
   // Wait until sensors are fetched
