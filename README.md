@@ -50,7 +50,21 @@ To develop the webpage, do the following:
 
 ### Hardware
 
-*coming soon*
+The required hardware is:
+
+- AZ Envy (+ USB A to micro B)
+- FT232RL FTDI USB to TTL adapter (+ USB A to mini B)
+- Cables for connecting the programming pins (breadboard optional)
+
+![hardware programming](https://user-images.githubusercontent.com/54029719/168320355-70bfd431-d14e-45a8-aeb6-488fb22bafc3.png)
+
+To develop the hardware:
+
+- Install Arduino IDE.
+- Connect all hardware as shown above.
+- Select the correct board type in (... -> ... -> )
+- Select the correct port in (... -> ...)
+- Develop. 😎
 
 ## Testing
 
