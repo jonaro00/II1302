@@ -118,7 +118,7 @@ export default function DeviceView({
   const [addDeviceLocation, setAddDeviceLocation] = useState('')
 
   return (
-    <>
+    <div>
       <Menu secondary>
         <Container>
           <Segment.Group horizontal>
@@ -190,25 +190,27 @@ export default function DeviceView({
       ) : viewMode === ViewMode.List ? (
         <p>Not implemented</p>
       ) : viewMode === ViewMode.Focus && focusedSensor ? (
-        <DeviceBox
-          key={focusedSensor.id}
-          sensor={focusedSensor}
-          telemetry={telemetry[focusedSensor.id]}
-          viewMode={viewMode}
-          setFocusedSensor={() => {
-            setFocusedSensor(null)
-            setViewMode(ViewMode.Grid)
-          }}
-          deleteDevice={deleteDevice}
-          updateDevice={updateDevice}
-          devicePromiseLoading={devicePromiseLoading}
-          devicePromiseErrorText={devicePromiseErrorText}
-          devicePromiseSuccess={devicePromiseSuccess}
-          devicePromiseClear={devicePromiseClear}
-        />
+        <>
+          <DeviceBox
+            key={focusedSensor.id}
+            sensor={focusedSensor}
+            telemetry={telemetry[focusedSensor.id]}
+            viewMode={viewMode}
+            setFocusedSensor={() => {
+              setFocusedSensor(null)
+              setViewMode(ViewMode.Grid)
+            }}
+            deleteDevice={deleteDevice}
+            updateDevice={updateDevice}
+            devicePromiseLoading={devicePromiseLoading}
+            devicePromiseErrorText={devicePromiseErrorText}
+            devicePromiseSuccess={devicePromiseSuccess}
+            devicePromiseClear={devicePromiseClear}
+          />
+        </>
       ) : (
         false
       )}
-    </>
+    </div>
   )
 }

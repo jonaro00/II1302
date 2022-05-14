@@ -46,13 +46,6 @@ function TempHumidityGraph(times: string[], temps: number[], humidities: number[
       mode: 'index' as const,
       intersect: false,
     },
-    plugins: {
-      legend: { position: 'top' as const },
-      title: {
-        // display: true,
-        // text: 'Temperature and Humidity',
-      },
-    },
     scales: {
       x: {
         type: 'time' as any /* prevent typescript from crying */,

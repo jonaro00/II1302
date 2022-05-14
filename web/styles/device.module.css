@@ -35,10 +35,15 @@
 }
 
 .lpg {
+  background-color: rgba(236, 108, 22, 0.2);
 }
+
 .co {
+  background-color: rgba(156, 1, 1, 0.2);
 }
+
 .smoke {
+  background-color: rgba(92, 92, 92, 0.2);
 }
 
 .outdated {
