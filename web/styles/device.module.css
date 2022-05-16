@@ -9,10 +9,16 @@
 
 .grid {
   max-width: 600px !important;
+  height: 100% !important;
+}
+
+.box {
+  height: 150px !important;
 }
 
 .nopad,
 .box {
+  height: 100%;
   padding: 0 !important;
   margin: 0 !important;
 }
