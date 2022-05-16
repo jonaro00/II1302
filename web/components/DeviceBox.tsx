@@ -189,7 +189,7 @@ export default function DeviceBox({
                 <i>
                   <Icon
                     name="circle"
-                    color={true ? 'green' : 'red'}
+                    color={t.recent ? 'green' : 'red'}
                     style={{ margin: '0 0 0 .75rem' }}
                   />
                 </i>
@@ -336,14 +336,14 @@ export default function DeviceBox({
               {LiveDataBox(
                 'temp',
                 s?.fake ? temps[temps.length - 1] : t.temps[t.temps.length - 1],
-                true,
+                t.recent,
               )}
             </Grid.Column>
             <Grid.Column className={styles.box}>
               {LiveDataBox(
                 'humidity',
                 s?.fake ? humidities[humidities.length - 1] : t.humidities[t.humidities.length - 1],
-                true,
+                t.recent,
               )}
             </Grid.Column>
           </>
@@ -351,13 +351,13 @@ export default function DeviceBox({
         {(viewMode === ViewMode.Focus || viewingGases) && (
           <>
             <Grid.Column className={styles.box}>
-              {LiveDataBox('lpg', s?.fake ? undefined : t.lpgs[t.lpgs.length - 1], true)}
+              {LiveDataBox('lpg', s?.fake ? undefined : t.lpgs[t.lpgs.length - 1], t.recent)}
             </Grid.Column>
             <Grid.Column className={styles.box}>
-              {LiveDataBox('co', s?.fake ? undefined : t.cos[t.cos.length - 1], true)}
+              {LiveDataBox('co', s?.fake ? undefined : t.cos[t.cos.length - 1], t.recent)}
             </Grid.Column>
             <Grid.Column className={styles.box}>
-              {LiveDataBox('smoke', s?.fake ? undefined : t.smokes[t.smokes.length - 1], true)}
+              {LiveDataBox('smoke', s?.fake ? undefined : t.smokes[t.smokes.length - 1], t.recent)}
             </Grid.Column>
           </>
         )}
