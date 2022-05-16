@@ -1,6 +1,6 @@
-#include "AzureTest.h"
+#include "Azure.h"
 #include "MQ2.h"
-#include "tempSensor.h"
+#include "TempSensor.h"
 
 // Arduino setup and loop main functions.
 
@@ -10,7 +10,11 @@ void setup()
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
   establishConnection();
-
+  while(1){
+  mq2Sensor();
+  tempSensor();
+  delay(5000);
+  }
  
 }
 
@@ -23,15 +27,12 @@ void loop()
     {
       establishConnection();
     }
-    
-  mq2Sensor();
-  tempSensor();
-  
+
     sendTelemetry();
     next_telemetry_send_time_ms = millis() + TELEMETRY_FREQUENCY_MILLISECS;
   }
 
   // MQTT loop must be called to process Device-to-Cloud and Cloud-to-Device.
   mqtt_client.loop();
-  delay(5000);
+  delay(500);
 }

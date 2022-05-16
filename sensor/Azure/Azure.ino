@@ -2,24 +2,24 @@
 // SPDX-License-Identifier: MIT
 
 /*
-   This is an Arduino-based Azure IoT Hub sample for ESPRESSIF ESP8266 board.
-   It uses our Azure Embedded SDK for C to help interact with Azure IoT.
-   For reference, please visit https://github.com/azure/azure-sdk-for-c.
-
-   To connect and work with Azure IoT Hub you need an MQTT client, connecting, subscribing
-   and publishing to specific topics to use the messaging features of the hub.
-   Our azure-sdk-for-c is an MQTT client support library, helping to compose and parse the
-   MQTT topic names and messages exchanged with the Azure IoT Hub.
-
-   This sample performs the following tasks:
-   - Synchronize the device clock with a NTP server;
-   - Initialize our "az_iot_hub_client" (struct for data, part of our azure-sdk-for-c);
-   - Initialize the MQTT client (here we use Nick Oleary's PubSubClient, which also handle the tcp connection and TLS);
-   - Connect the MQTT client (using server-certificate validation, SAS-tokens for client authentication);
-   - Periodically send telemetry data to the Azure IoT Hub.
-
-   To properly connect to your Azure IoT Hub, please fill the information in the `iot_configs.h` file.
-*/
+ * This is an Arduino-based Azure IoT Hub sample for ESPRESSIF ESP8266 board.
+ * It uses our Azure Embedded SDK for C to help interact with Azure IoT.
+ * For reference, please visit https://github.com/azure/azure-sdk-for-c.
+ * 
+ * To connect and work with Azure IoT Hub you need an MQTT client, connecting, subscribing
+ * and publishing to specific topics to use the messaging features of the hub.
+ * Our azure-sdk-for-c is an MQTT client support library, helping to compose and parse the
+ * MQTT topic names and messages exchanged with the Azure IoT Hub.
+ *
+ * This sample performs the following tasks:
+ * - Synchronize the device clock with a NTP server;
+ * - Initialize our "az_iot_hub_client" (struct for data, part of our azure-sdk-for-c);
+ * - Initialize the MQTT client (here we use Nick Oleary's PubSubClient, which also handle the tcp connection and TLS);
+ * - Connect the MQTT client (using server-certificate validation, SAS-tokens for client authentication);
+ * - Periodically send telemetry data to the Azure IoT Hub.
+ * 
+ * To properly connect to your Azure IoT Hub, please fill the information in the `iot_configs.h` file. 
+ */
 
 // C99 libraries
 #include <string.h>
@@ -40,7 +40,7 @@
 #include <az_iot.h>
 #include <azure_ca.h>
 
-// Additional sample headers
+// Additional sample headers 
 #include "config.h"
 #include "WifiConnection.h"
 
@@ -99,10 +99,10 @@ static void initializeClients()
 
   wifi_client.setTrustAnchors(&cert);
   if (az_result_failed(az_iot_hub_client_init(
-                         &client,
-                         az_span_create((uint8_t*)host, strlen(host)),
-                         az_span_create((uint8_t*)device_id, strlen(device_id)),
-                         &options)))
+          &client,
+          az_span_create((uint8_t*)host, strlen(host)),
+          az_span_create((uint8_t*)device_id, strlen(device_id)),
+          &options)))
   {
     Serial.println("Failed initializing Azure IoT Hub client");
     return;
@@ -113,9 +113,9 @@ static void initializeClients()
 }
 
 /*
-   @brief           Gets the number of seconds since UNIX epoch until now.
-   @return uint32_t Number of seconds.
-*/
+ * @brief           Gets the number of seconds since UNIX epoch until now.
+ * @return uint32_t Number of seconds.
+ */
 static uint32_t getSecondsSinceEpoch()
 {
   return (uint32_t)time(NULL);
@@ -126,13 +126,13 @@ static int generateSasToken(char* sas_token, size_t size)
   az_span signature_span = az_span_create((uint8_t*)signature, sizeofarray(signature));
   az_span out_signature_span;
   az_span encrypted_signature_span
-    = az_span_create((uint8_t*)encrypted_signature, sizeofarray(encrypted_signature));
+      = az_span_create((uint8_t*)encrypted_signature, sizeofarray(encrypted_signature));
 
   uint32_t expiration = getSecondsSinceEpoch() + ONE_HOUR_IN_SECS;
 
   // Get signature
   if (az_result_failed(az_iot_hub_client_sas_get_signature(
-                         &client, expiration, signature_span, &out_signature_span)))
+          &client, expiration, signature_span, &out_signature_span)))
   {
     Serial.println("Failed getting SAS signature");
     return 1;
@@ -140,7 +140,7 @@ static int generateSasToken(char* sas_token, size_t size)
 
   // Base64-decode device key
   int base64_decoded_device_key_length
-    = base64_decode_chars(device_key, strlen(device_key), base64_decoded_device_key);
+      = base64_decode_chars(device_key, strlen(device_key), base64_decoded_device_key);
 
   if (base64_decoded_device_key_length == 0)
   {
@@ -151,7 +151,7 @@ static int generateSasToken(char* sas_token, size_t size)
   // SHA-256 encrypt
   br_hmac_key_context kc;
   br_hmac_key_init(
-    &kc, &br_sha256_vtable, base64_decoded_device_key, base64_decoded_device_key_length);
+      &kc, &br_sha256_vtable, base64_decoded_device_key, base64_decoded_device_key_length);
 
   br_hmac_context hmac_ctx;
   br_hmac_init(&hmac_ctx, &kc, 32);
@@ -162,17 +162,17 @@ static int generateSasToken(char* sas_token, size_t size)
   String b64enc_hmacsha256_signature = base64::encode(encrypted_signature, br_hmac_size(&hmac_ctx));
 
   az_span b64enc_hmacsha256_signature_span = az_span_create(
-        (uint8_t*)b64enc_hmacsha256_signature.c_str(), b64enc_hmacsha256_signature.length());
+      (uint8_t*)b64enc_hmacsha256_signature.c_str(), b64enc_hmacsha256_signature.length());
 
   // URl-encode base64 encoded encrypted signature
   if (az_result_failed(az_iot_hub_client_sas_get_password(
-                         &client,
-                         expiration,
-                         b64enc_hmacsha256_signature_span,
-                         AZ_SPAN_EMPTY,
-                         sas_token,
-                         size,
-                         NULL)))
+          &client,
+          expiration,
+          b64enc_hmacsha256_signature_span,
+          AZ_SPAN_EMPTY,
+          sas_token,
+          size,
+          NULL)))
   {
     Serial.println("Failed getting SAS token");
     return 1;
@@ -186,7 +186,7 @@ static int connectToAzureIoTHub()
   size_t client_id_length;
   char mqtt_client_id[128];
   if (az_result_failed(az_iot_hub_client_get_client_id(
-                         &client, mqtt_client_id, sizeof(mqtt_client_id) - 1, &client_id_length)))
+          &client, mqtt_client_id, sizeof(mqtt_client_id) - 1, &client_id_length)))
   {
     Serial.println("Failed getting client id");
     return 1;
@@ -197,7 +197,7 @@ static int connectToAzureIoTHub()
   char mqtt_username[128];
   // Get the MQTT user name used to connect to IoT Hub
   if (az_result_failed(az_iot_hub_client_get_user_name(
-                         &client, mqtt_username, sizeofarray(mqtt_username), NULL)))
+          &client, mqtt_username, sizeofarray(mqtt_username), NULL)))
   {
     printf("Failed to get MQTT clientId, return code\n");
     return 1;
@@ -236,7 +236,7 @@ static int connectToAzureIoTHub()
   return 0;
 }
 
-static void establishConnection()
+static void establishConnection() 
 {
   connectToWiFi();
   initializeTime();
@@ -261,12 +261,10 @@ static void establishConnection()
 static char* getTelemetryPayload()
 {
   az_span temp_span = az_span_create(telemetry_payload, sizeof(telemetry_payload));
-  temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR("{\"temp\":24,\"humidity\":60,\"lpg\":3,\"co\":17,\"smoke\":3}"));
-  //temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR("{ \"msgCount\": "));
-  //(void)az_span_u32toa(temp_span, telemetry_send_count++, &temp_span);
- // temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR(" }"));
+  temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR("{ \"msgCount\": "));
+  (void)az_span_u32toa(temp_span, telemetry_send_count++, &temp_span);  
+  temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR(" }"));
   temp_span = az_span_copy_u8(temp_span, '\0');
-
 
   return (char*)telemetry_payload;
 }
@@ -277,7 +275,7 @@ static void sendTelemetry()
   Serial.print(millis());
   Serial.print(" ESP8266 Sending telemetry . . . ");
   if (az_result_failed(az_iot_hub_client_telemetry_get_publish_topic(
-                         &client, NULL, telemetry_topic, sizeof(telemetry_topic), NULL)))
+          &client, NULL, telemetry_topic, sizeof(telemetry_topic), NULL)))
   {
     Serial.println("Failed az_iot_hub_client_telemetry_get_publish_topic");
     return;
