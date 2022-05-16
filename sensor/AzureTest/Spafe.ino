@@ -27,9 +27,12 @@ void loop()
    
 
    mq2array = mq2Sensor();
+   float mq2array2[3];
+   
     for(int i=0;i<3;i++)  
     {  
-        //Serial.println(mq2array[i]);  
+        mq2array[i] = mq2array[i];
+        Serial.println(mq2array2[i]);  
     }  
   tempSensor();
   
