@@ -104,7 +104,7 @@ function GasGraph(times: string[], lpg: number[], co: number[], smoke: number[])
         display: true,
         position: 'left' as const,
         suggestedMin: 0,
-        suggestedMax: 400,
+        suggestedMax: 35,
       },
     },
   }

@@ -50,7 +50,7 @@ export const groupInfo: Array<Profile> = [
     title: 'Developer',
     about:
       'I am a computer science and engineering student at KTH. As a developer I am responsible for cataloging component descriptions and making sure the systems integrate together.',
-    picture: '',
+    picture: '/images/amir.jpg',
   },
   {
     name: 'Simon',
