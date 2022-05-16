@@ -46,7 +46,8 @@ describe('The DAO', () => {
     )
   })
 
-  it('should get a sensor with a matching user id', async () => {
+  it.only('should get a sensor with a matching user id', async () => {
+    await dao.addSensor(testid, { device_azure_name: 'azure name', location: 'sweden' })
     const arr = await dao.getSensors(testid)
     var check = false
     for (const x of arr) {
