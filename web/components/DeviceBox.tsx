@@ -33,11 +33,6 @@ import { ViewMode } from '../views/DeviceView'
 
 ChartJS.register(LinearScale, TimeScale, PointElement, LineElement, Title, Tooltip, Legend)
 
-/*
-Future constant using chart.js
-https://www.chartjs.org/docs/latest/
-https://www.chartjs.org/docs/latest/samples/line/interpolation.html
-*/
 
 function TempHumidityGraph(times: string[], temps: number[], humidities: number[]) {
   const options = {
@@ -89,6 +84,55 @@ function TempHumidityGraph(times: string[], temps: number[], humidities: number[
   ]
   return <Line options={options} data={{ labels: times, datasets }} />
 }
+function GasGraph(times: string[], lpg: number[], co: number[], smoke: number[]) {
+  const options = {
+    responsive: true,
+    interaction: {
+      mode: 'index' as const,
+      intersect: false,
+    },
+    scales: {
+      x: {
+        type: 'time' as any /* prevent typescript from crying */,
+        time: { unit: 'minute', stepSize: 10 },
+        adapters: { date: { locale: sv } },
+        suggestedMin: Date.now() - 3600000, // 1h
+        suggestedMax: Date.now(),
+      },
+      y: {
+        type: 'linear' as const,
+        display: true,
+        position: 'left' as const,
+        suggestedMin: 0,
+        suggestedMax: 400,
+      },
+    },
+  }
+  const datasets = [
+    {
+      label: 'LPG (PPM)',
+      data: lpg,
+      borderColor: 'rgb(236, 108, 22)',
+      backgroundColor: 'rgba(236, 108, 22, 0.2)',
+      yAxisID: 'y',
+    },
+    {
+      label: 'Carbon Monoxide (PPM)',
+      data: co,
+      borderColor: 'rgb(156, 1, 1)',
+      backgroundColor: 'rgba(156, 1, 1, 0.2)',
+      yAxisID: 'y',
+    },{
+      label: 'Smoke (PPM)',
+      data: smoke,
+      borderColor: 'rgb(92, 92, 92)',
+      backgroundColor: 'rgba(92, 92, 92, 0.2)',
+      yAxisID: 'y',
+    },
+  ]
+  return <Line options={options} data={{ labels: times, datasets }} />
+}
+
 
 function randTemp() {
   return faker.datatype.float({ min: 20, max: 22, precision: 0.1 })
@@ -386,7 +430,7 @@ export default function DeviceBox({
         )}
         {(viewMode === ViewMode.Focus || viewingGases) && (
           <Grid.Column className={styles.graphbox}>
-            {/* {GasesGraph(t.times, t.lpgs, t.cos, t.smokes)} */}
+            {GasGraph(t.times, t.lpgs, t.cos, t.smokes)}
           </Grid.Column>
         )}
       </Grid.Row>
