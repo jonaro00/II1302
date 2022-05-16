@@ -76,7 +76,7 @@ const AboutView = () => {
         <Header as="h2">Spafe Monitor</Header>
         <p className={styles.p}>
           Spafe Monitor started in 2022 with the explicit goal of creating the most advanced and
-          high tech monitoring system of temperature and co2 levels. Started as a project for the
+          high tech monitoring system of temperature and gas levels. Started as a project for the
           Projects and Project methods course at KTH, Spafe was created to fill the need to fast,
           afforable, and easy to use monitoring of everything in our lives.
           <br></br>Spafe is constructed into two departments each working towards reaching a
