@@ -1,1 +1,1 @@
-static void tempSensor();
+static float *tempSensor();

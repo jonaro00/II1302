@@ -258,20 +258,45 @@ static void establishConnection()
   digitalWrite(LED_BUILTIN, LOW);
 }
 
-static char* getTelemetryPayload()
+static char* getTelemetryPayload(float *temphum, float *mq2array)
 {
   az_span temp_span = az_span_create(telemetry_payload, sizeof(telemetry_payload));
-  temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR("{\"temp\":24,\"humidity\":60,\"lpg\":3,\"co\":17,\"smoke\":3}"));
+ // temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR("{\"temp\":24,\"humidity\":60,\"lpg\":3,\"co\":17,\"smoke\":3}"));
   //temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR("{ \"msgCount\": "));
+  
   //(void)az_span_u32toa(temp_span, telemetry_send_count++, &temp_span);
- // temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR(" }"));
+  
+  // temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR(" }"));
+
+  temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR("{\"temp\":"));
+  
+  (void)az_span_dtoa(temp_span, temphum[0], 5, &temp_span);
+
+  temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR(",\"humidity\":"));
+  
+  (void)az_span_dtoa(temp_span, temphum[1], 5, &temp_span);
+
+  temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR(",\"lpg\":"));
+
+  (void)az_span_dtoa(temp_span, mq2array[0], 5, &temp_span);
+
+    temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR(",\"co\":"));
+  
+  (void)az_span_dtoa(temp_span, mq2array[1], 5, &temp_span);
+
+  temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR(",\"smoke\":"));
+  
+  (void)az_span_dtoa(temp_span, mq2array[2], 5, &temp_span);
+
+  temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR("}"));
+  
   temp_span = az_span_copy_u8(temp_span, '\0');
 
 
   return (char*)telemetry_payload;
 }
 
-static void sendTelemetry()
+static void sendTelemetry(float *temphum, float *mq2array)
 {
   digitalWrite(LED_BUILTIN, HIGH);
   Serial.print(millis());
@@ -283,7 +308,7 @@ static void sendTelemetry()
     return;
   }
 
-  mqtt_client.publish(telemetry_topic, getTelemetryPayload(), false);
+  mqtt_client.publish(telemetry_topic, getTelemetryPayload(temphum, mq2array), false);
   Serial.println("OK");
   delay(100);
   digitalWrite(LED_BUILTIN, LOW);

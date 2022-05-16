@@ -34,5 +34,5 @@ float arr[3];
   arr[1] = co;
   arr[2] = smoke;
 
-  return arr;
+  return values;
 }
