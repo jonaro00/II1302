@@ -2,12 +2,16 @@
 
 //change this with the pin that you use
 int pin = A0;
-float lpg, co, smoke;
+float lpg;
+float co;
+float smoke;
 
 MQ2 mq2(pin);
 
-static void mq2Sensor() {
+static float *mq2Sensor() {
 mq2.begin();
+
+float arr[3];
   
   /*
    * read the values from the sensor, it returns
@@ -20,8 +24,15 @@ mq2.begin();
   
   // lpg = values[0];
   lpg = mq2.readLPG();
+ 
   // co = values[1];
   co = mq2.readCO();
   // smoke = values[2];
   smoke = mq2.readSmoke();
+
+  arr[0] = lpg;
+  arr[1] = co;
+  arr[2] = smoke;
+
+  return arr;
 }

@@ -3,6 +3,7 @@
 #include "tempSensor.h"
 
 // Arduino setup and loop main functions.
+float *mq2array;
 
 void setup()
 {
@@ -23,8 +24,13 @@ void loop()
     {
       establishConnection();
     }
-    
-  mq2Sensor();
+   
+
+   mq2array = mq2Sensor();
+    for(int i=0;i<3;i++)  
+    {  
+        //Serial.println(mq2array[i]);  
+    }  
   tempSensor();
   
     sendTelemetry();

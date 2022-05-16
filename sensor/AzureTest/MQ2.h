@@ -1,1 +1,1 @@
-static void mq2Sensor(); 
+static float *mq2Sensor(); 
