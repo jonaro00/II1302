@@ -1,7 +1,6 @@
 import {
   Button,
   Confirm,
-  Dropdown,
   Form,
   Grid,
   Header,
@@ -112,21 +111,21 @@ function GasGraph(times: string[], lpg: number[], co: number[], smoke: number[])
       label: 'LPG (PPM)',
       data: lpg,
       borderColor: 'rgb(236, 108, 22)',
-      backgroundColor: 'rgba(236, 108, 22, 0.2)',
+      backgroundColor: 'rgba(236, 108, 22, 0.5)',
       yAxisID: 'y',
     },
     {
       label: 'Carbon Monoxide (PPM)',
       data: co,
       borderColor: 'rgb(156, 1, 1)',
-      backgroundColor: 'rgba(156, 1, 1, 0.2)',
+      backgroundColor: 'rgba(156, 1, 1, 0.5)',
       yAxisID: 'y',
     },
     {
       label: 'Smoke (PPM)',
       data: smoke,
       borderColor: 'rgb(92, 92, 92)',
-      backgroundColor: 'rgba(92, 92, 92, 0.2)',
+      backgroundColor: 'rgba(92, 92, 92, 0.5)',
       yAxisID: 'y',
     },
   ]
@@ -233,6 +232,7 @@ export default function DeviceBox({
                   <Icon
                     name="circle"
                     color={t.recent ? 'green' : 'red'}
+                    title={t.recent ? 'Online' : 'Offline'}
                     style={{ margin: '0 0 0 .75rem' }}
                   />
                 </i>
