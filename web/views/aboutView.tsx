@@ -37,7 +37,7 @@ export const groupInfo: Array<Profile> = [
     mail: 'bjpati@kth.se',
     gitHub: 'https://github.com/bjpati',
     linkedin: 'https://www.linkedin.com/in/bashar-pati-89735b124/',
-    title: 'Test ansvarig',
+    title: 'Test ansvarig 🧪',
     about:
       'I am a student at KTH and studying Electronics and Computer Engineering. I am responsible for tests in the group during the course II1302. I also have responsibility for hardware selection and programming.',
     picture: 'https://raw.githubusercontent.com/bjpati/bjpati/main/Icon/IMG_3796%202.jpeg',
@@ -47,7 +47,7 @@ export const groupInfo: Array<Profile> = [
     mail: 'dugiev123@gmail.com',
     gitHub: 'https://github.com/Bansheebomb ',
     linkedin: '',
-    title: 'Developer',
+    title: 'Developer 👾',
     about:
       'I am a computer science and engineering student at KTH. As a developer I am responsible for cataloging component descriptions and making sure the systems integrate together.',
     picture: '/images/amir.jpg',
@@ -57,7 +57,7 @@ export const groupInfo: Array<Profile> = [
     mail: 'sstromba@kth.se',
     gitHub: 'https://github.com/Strumpann',
     linkedin: 'https://www.linkedin.com/in/simon-str%C3%B6mb%C3%A4ck-28ab761aa/',
-    title: 'Kund/krav ansvarig',
+    title: 'Kund/krav ansvarig 🤷‍♂️',
     about:
       'I am studying computerengineering at KTH Kista. My project role was to put up requirements, usecases and hardware development and programming.',
     picture: 'https://cdn.discordapp.com/attachments/888562787280904222/973557767115792424/51730250404_6e7b52dc7a_o_2.jpg',
