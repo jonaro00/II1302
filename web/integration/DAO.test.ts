@@ -2,7 +2,9 @@ import { DAO, allDBModels } from './DAO'
 
 let dao: DAO
 const testname = 'user1',
-  testpass = 'password1'
+  testpass = 'password1',
+  testid = 1,
+  sensorid = 1
 beforeAll(async () => {
   dao = await DAO.getInstance()
 })
@@ -42,5 +44,97 @@ describe('The DAO', () => {
     expect(dao.login({ username: 'obamas last  name', password: 'bruh' })).rejects.toThrow(
       'No user with that name found!',
     )
+  })
+
+  it('should get a sensor with a matching user id', async () => {
+    const arr = await dao.getSensors(testid)
+    var check = false
+    for (const x of arr) {
+      if (x.user_id === testid) {
+        check = true
+      }
+    }
+    expect(arr).not.toBeNull()
+    expect(check).toEqual(true)
+  })
+
+  it('should add a sensor', async () => {
+    await dao.addSensor(testid, { device_azure_name: 'azure name', location: 'sweden' })
+    const arr = await dao.getSensors(testid)
+    var check = false
+    for (const x of arr) {
+      if (x.user_id === testid) {
+        check = true
+      }
+    }
+    expect(arr).not.toBeNull()
+    expect(check).toEqual(true)
+  })
+
+  it('should update a sensor', async () => {
+    await dao.addSensor(testid, { device_azure_name: 'azure name', location: 'sweden' })
+    await dao.updateSensor(testid, sensorid, {
+      device_azure_name: 'azure name',
+      location: 'germany',
+    })
+    const arr = await dao.getSensors(testid)
+    var check = false
+    for (const x of arr) {
+      if (x.location === 'germany') {
+        check = true
+      }
+    }
+    expect(arr).not.toBeNull()
+    expect(check).toEqual(true)
+  })
+
+  it('should delete a sensor', async () => {
+    await dao.addSensor(testid, { device_azure_name: 'azure name', location: 'sweden' })
+    await dao.deleteSensor(testid, sensorid)
+    const arr = await dao.getSensors(testid)
+    expect(arr).toBeNull()
+  })
+
+  it('should get telemetry with a matching sensor id', async () => {
+    const arr = await dao.getTelemetry(
+      testid,
+      sensorid,
+      new Date('January 1, 2022 10:00:00'),
+      new Date('January 1, 2023 10:00:00'),
+      5,
+      100,
+    )
+    var check = false
+    for (const x of arr) {
+      if (x.sensor_id === sensorid) {
+        check = true
+      }
+    }
+    expect(arr).not.toBeNull()
+    expect(check).toEqual(true)
+  })
+
+  it('should add telemetry with a matching sensor id', async () => {
+    await dao.addTelemetry(
+      'azure name',
+      { temp: 5, humidity: 5, lpg: 5, co: 5, smoke: 5 },
+      new Date('January 1, 2022 10:00:01'),
+    )
+    const arr = await dao.getTelemetry(
+      testid,
+      sensorid,
+      new Date('January 1, 2022 10:00:00'),
+      new Date('January 1, 2023 10:00:00'),
+      5,
+      100,
+    )
+    var check = false
+    for (const x of arr) {
+      if (x.co === 5) {
+        check = true
+      }
+    }
+    expect(arr).not.toBeNull()
+    expect(check).toEqual(true)
   })
 })

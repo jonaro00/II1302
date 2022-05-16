@@ -112,12 +112,16 @@ export class DAO {
   }
 
   public async getSensors(user_id: number): Promise<SensorType[]> {
-    return await this.database.transaction(async t => {
-      const userSensors = await Sensor.findAll({
-        where: { user_id },
+    try {
+      return await this.database.transaction(async t => {
+        const userSensors = await Sensor.findAll({
+          where: { user_id },
+        })
+        return userSensors.map(s => s.get({ plain: true }))
       })
-      return userSensors.map(s => s.get({ plain: true }))
-    })
+    } catch (error) {
+      throw new Error('Failed to get sensor')
+    }
   }
 
   public async addSensor(
