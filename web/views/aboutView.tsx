@@ -30,7 +30,8 @@ export const groupInfo: Array<Profile> = [
     title: 'Architect 🛠',
     about:
       'I study Computer Science at KTH. As the architect in this project, I was involved in choosing most of the systems and code frameworks involved, and connecting them.',
-    picture: '/images/wallace.png',
+    picture:
+      'https://cdn.discordapp.com/attachments/224236452513447936/975801436430557184/unknown.png',
   },
   {
     name: 'Bashar',
@@ -60,7 +61,8 @@ export const groupInfo: Array<Profile> = [
     title: 'Kund/krav ansvarig 🤷‍♂️',
     about:
       'I am studying computerengineering at KTH Kista. My project role was to put up requirements, usecases and hardware development and programming.',
-    picture: 'https://cdn.discordapp.com/attachments/888562787280904222/973557767115792424/51730250404_6e7b52dc7a_o_2.jpg',
+    picture:
+      'https://cdn.discordapp.com/attachments/888562787280904222/973557767115792424/51730250404_6e7b52dc7a_o_2.jpg',
   },
 ]
 
