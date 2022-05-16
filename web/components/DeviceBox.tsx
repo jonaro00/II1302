@@ -33,7 +33,6 @@ import { ViewMode } from '../views/DeviceView'
 
 ChartJS.register(LinearScale, TimeScale, PointElement, LineElement, Title, Tooltip, Legend)
 
-
 function TempHumidityGraph(times: string[], temps: number[], humidities: number[]) {
   const options = {
     responsive: true,
@@ -122,7 +121,8 @@ function GasGraph(times: string[], lpg: number[], co: number[], smoke: number[])
       borderColor: 'rgb(156, 1, 1)',
       backgroundColor: 'rgba(156, 1, 1, 0.2)',
       yAxisID: 'y',
-    },{
+    },
+    {
       label: 'Smoke (PPM)',
       data: smoke,
       borderColor: 'rgb(92, 92, 92)',
@@ -132,7 +132,6 @@ function GasGraph(times: string[], lpg: number[], co: number[], smoke: number[])
   ]
   return <Line options={options} data={{ labels: times, datasets }} />
 }
-
 
 function randTemp() {
   return faker.datatype.float({ min: 20, max: 22, precision: 0.1 })
@@ -233,7 +232,7 @@ export default function DeviceBox({
                 <i>
                   <Icon
                     name="circle"
-                    color={true ? 'green' : 'red'}
+                    color={t.recent ? 'green' : 'red'}
                     style={{ margin: '0 0 0 .75rem' }}
                   />
                 </i>
@@ -294,36 +293,7 @@ export default function DeviceBox({
             </Segment>
             <Segment color="black" inverted style={{ flexGrow: 0 }}>
               <div>
-                <Dropdown icon="setting" pointing="left" as={Button}>
-                  <Dropdown.Menu>
-                    <Dropdown.Item text="Focus mode" />
-                    <Dropdown.Item>
-                      <Dropdown text="Add" pointing="left">
-                        <Dropdown.Menu>
-                          <Dropdown.Item>
-                            <Dropdown text="Temperature">
-                              <Dropdown.Menu>
-                                <Dropdown.Item text="Live reading" />
-                                <Dropdown.Item text="Live graphing" />
-                                <Dropdown.Item text="Historical graphing" />
-                              </Dropdown.Menu>
-                            </Dropdown>
-                          </Dropdown.Item>
-                          <Dropdown.Item>
-                            <Dropdown text="gasses levels">
-                              <Dropdown.Menu>
-                                <Dropdown.Item text="Live reading" />
-                                <Dropdown.Item text="Live graphing" />
-                                <Dropdown.Item text="Historical graphing" />
-                              </Dropdown.Menu>
-                            </Dropdown>
-                          </Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </Dropdown.Item>
-                    <Dropdown.Item text="Remove device" />
-                  </Dropdown.Menu>
-                </Dropdown>
+                <Button icon="bell" />
                 <Button icon="expand" onClick={setFocusedSensor} />
                 <Button
                   icon="trash alternate"
@@ -380,14 +350,14 @@ export default function DeviceBox({
               {LiveDataBox(
                 'temp',
                 s?.fake ? temps[temps.length - 1] : t.temps[t.temps.length - 1],
-                true,
+                t.recent,
               )}
             </Grid.Column>
             <Grid.Column className={styles.box}>
               {LiveDataBox(
                 'humidity',
                 s?.fake ? humidities[humidities.length - 1] : t.humidities[t.humidities.length - 1],
-                true,
+                t.recent,
               )}
             </Grid.Column>
           </>
@@ -395,13 +365,13 @@ export default function DeviceBox({
         {(viewMode === ViewMode.Focus || viewingGases) && (
           <>
             <Grid.Column className={styles.box}>
-              {LiveDataBox('lpg', s?.fake ? undefined : t.lpgs[t.lpgs.length - 1], true)}
+              {LiveDataBox('lpg', s?.fake ? undefined : t.lpgs[t.lpgs.length - 1], t.recent)}
             </Grid.Column>
             <Grid.Column className={styles.box}>
-              {LiveDataBox('co', s?.fake ? undefined : t.cos[t.cos.length - 1], true)}
+              {LiveDataBox('co', s?.fake ? undefined : t.cos[t.cos.length - 1], t.recent)}
             </Grid.Column>
             <Grid.Column className={styles.box}>
-              {LiveDataBox('smoke', s?.fake ? undefined : t.smokes[t.smokes.length - 1], true)}
+              {LiveDataBox('smoke', s?.fake ? undefined : t.smokes[t.smokes.length - 1], t.recent)}
             </Grid.Column>
           </>
         )}

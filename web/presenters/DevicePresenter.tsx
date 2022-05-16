@@ -7,6 +7,7 @@ import useInterval from '../hooks/useInterval'
 import useModelProperty from '../hooks/useModelProperty'
 import usePromise from '../hooks/usePromise'
 import useUpdateLogger from '../hooks/useUpdateLogger'
+import { parseISO } from 'date-fns'
 
 export default function DevicePresenter({ model }: { model: Model }) {
   // Observe model
@@ -32,7 +33,15 @@ export default function DevicePresenter({ model }: { model: Model }) {
         cos.push(t.co)
         smokes.push(t.smoke)
       })
-      o[s.id] = { times, temps, humidities, lpgs, cos, smokes }
+      o[s.id] = {
+        times,
+        temps,
+        humidities,
+        lpgs,
+        cos,
+        smokes,
+        recent: Date.now() - parseISO(times[times.length - 1]).getTime() < 60000,
+      }
     })
     return o
   }, [raw_telemetry, sensors])

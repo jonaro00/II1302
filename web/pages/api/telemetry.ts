@@ -55,9 +55,14 @@ export default async function handler(
           await dao.addEvent(device_azure_name, 'DeviceDisconnected', event.eventTime as Date)
         } else if (isSystemEvent('Microsoft.Devices.DeviceTelemetry', event)) {
           const device_azure_name = event.data.systemProperties['iothub-connection-device-id']
-          const telemetry: IncomingTelemetry = JSON.parse(
-            ((event.data.body as any).data as string).replace(/ #\d+$/, ''),
-          )
+          let telemetry: IncomingTelemetry
+          try {
+            // Test messages from Azure CLI
+            telemetry = JSON.parse(((event.data.body as any).data as string).replace(/ #\d+$/, ''))
+          } catch (error) {
+            // Real messages from sensor, base64 encoded
+            telemetry = JSON.parse(Buffer.from(event.data.body as any, 'base64').toString('utf-8'))
+          }
           AzureLogger.log(
             'Received telemetry from',
             device_azure_name,

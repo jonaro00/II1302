@@ -26,6 +26,7 @@ export type TelemetrySeries = {
   lpgs: number[]
   cos: number[]
   smokes: number[]
+  recent: boolean
 }
 
 export class Telemetry extends Model {
