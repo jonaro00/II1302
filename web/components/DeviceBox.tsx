@@ -294,7 +294,7 @@ export default function DeviceBox({
             <Segment color="black" inverted style={{ flexGrow: 0 }}>
               <div>
                 <Button icon="bell" />
-                <Button icon="expand" onClick={setFocusedSensor} />
+                <Button id='focus' icon="expand" onClick={setFocusedSensor} />
                 <Button
                   icon="trash alternate"
                   negative

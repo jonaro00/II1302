@@ -121,7 +121,6 @@ export default function DeviceView({
     <div>
       <Menu secondary>
         <Container>
-          <Segment.Group horizontal>
             <Segment>
               <Modal
                 onClose={() => {
@@ -149,19 +148,6 @@ export default function DeviceView({
                 </Modal.Content>
               </Modal>
             </Segment>
-            <Segment>
-              <Button
-                icon="grid layout"
-                active={viewMode === ViewMode.Grid}
-                onClick={() => setViewMode(ViewMode.Grid)}
-              />
-              <Button
-                icon="list"
-                active={viewMode === ViewMode.List}
-                onClick={() => setViewMode(ViewMode.List)}
-              />
-            </Segment>
-          </Segment.Group>
         </Container>
       </Menu>
       {viewMode === ViewMode.Grid ? (
