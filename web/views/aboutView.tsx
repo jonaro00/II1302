@@ -52,7 +52,7 @@ export const groupInfo: Array<Profile> = [
     about:
       'I am a computer science and engineering student at KTH. As a developer I am responsible for cataloging component descriptions and making sure the systems integrate together.',
     picture:
-      'https://cdn.discordapp.com/attachments/955498757464666165/975775150094037012/IMG_20220516_170134.jpg',
+      'https://cdn.discordapp.com/attachments/976120737914040340/976120754410229760/unknown.png',
   },
   {
     name: 'Simon',
