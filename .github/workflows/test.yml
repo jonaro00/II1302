@@ -3,8 +3,16 @@ name: Test Node package
 on:
   push:
     branches: [ develop ]
+    paths-ignore:
+      - 'sensor/**'
+      - '**/*.md'
+      - '**/.gitignore'
   pull_request:
     branches: [ develop ]
+    paths-ignore:
+      - 'sensor/**'
+      - '**/*.md'
+      - '**/.gitignore'
   workflow_dispatch:
 
 jobs:
