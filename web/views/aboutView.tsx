@@ -51,7 +51,8 @@ export const groupInfo: Array<Profile> = [
     title: 'Developer 👾',
     about:
       'I am a computer science and engineering student at KTH. As a developer I am responsible for cataloging component descriptions and making sure the systems integrate together.',
-    picture: '/images/amir.jpg',
+    picture:
+      'https://cdn.discordapp.com/attachments/955498757464666165/975775150094037012/IMG_20220516_170134.jpg',
   },
   {
     name: 'Simon',
