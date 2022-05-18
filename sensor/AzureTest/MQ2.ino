@@ -11,7 +11,6 @@ MQ2 mq2(pin);
 static float *mq2Sensor() {
 mq2.begin();
 
-//float arr[3];
   
   /*
    * read the values from the sensor, it returns
@@ -31,11 +30,7 @@ mq2.begin();
  
   smoke = mq2.readSmoke();
   //values[2] = smoke;
-/*
-  arr[0] = lpg;
-  arr[1] = co;
-  arr[2] = smoke;
-*/
+
 
   return values;
 }

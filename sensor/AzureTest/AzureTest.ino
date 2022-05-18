@@ -273,13 +273,13 @@ static char* getTelemetryPayload(float *temphum, float *mq2array)
   (void)az_span_dtoa(temp_span, (double)temphum[1], 5, &temp_span);
   
   temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR(",\"lpg\":"));
-  (void)az_span_dtoa(temp_span, (double)mq2array[0], 5, &temp_span);
+  (void)az_span_dtoa(temp_span, (double)(mq2array[0], 5, &temp_span);
   
   temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR(",\"co\":"));
-  (void)az_span_dtoa(temp_span, (double)mq2array[1], 5, &temp_span);
+  (void)az_span_dtoa(temp_span, (double)(mq2array[1], 5, &temp_span);
   
   temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR(",\"smoke\":"));
-  (void)az_span_dtoa(temp_span, (double)mq2array[2], 5, &temp_span);
+  (void)az_span_dtoa(temp_span, (double)(mq2array[2], 5, &temp_span);
 
   temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR("}"));
   temp_span = az_span_copy_u8(temp_span, '\0');

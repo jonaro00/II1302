@@ -26,7 +26,6 @@ void loop()
       establishConnection();
     }
 
-
    mq2array = mq2Sensor();
    temphum = tempSensor();
    
@@ -37,5 +36,5 @@ void loop()
 
   // MQTT loop must be called to process Device-to-Cloud and Cloud-to-Device.
   mqtt_client.loop();
-  delay(5000);
+  delay(30000);
 }
