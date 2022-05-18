@@ -240,7 +240,7 @@ export default function DeviceBox({
                   />
                 </i>
               </Header>
-              <Button as={Label} onClick={() => setConfirmDeviceEditOpen(true)}>
+              <Button as={Label} onClick={() => setConfirmDeviceEditOpen(true)} data-testid="location">
                 <Icon name="point" />
                 Location: {s.location} <Icon fitted name="pencil" />
               </Button>
@@ -297,7 +297,7 @@ export default function DeviceBox({
             <Segment color="black" inverted style={{ flexGrow: 0 }}>
               <div>
                 <Button icon="bell" />
-                <Button id="focus" icon="expand" onClick={setFocusedSensor} />
+                <Button data-testid="focus" icon="expand" onClick={setFocusedSensor} />
                 <Button
                   icon="trash alternate"
                   negative
@@ -337,7 +337,7 @@ export default function DeviceBox({
                 />
               </div>
               <div>
-                <Button onClick={() => setViewingGases(!viewingGases)}>
+                <Button onClick={() => setViewingGases(!viewingGases)} data-testid="switch">
                   <Icon name="refresh" />
                   Switch graphs
                 </Button>
