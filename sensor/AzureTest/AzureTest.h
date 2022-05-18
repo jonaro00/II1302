@@ -11,6 +11,5 @@ static int connectToAzureIoTHub();
 static void establishConnection();
 static char* getTelemetryPayload(float *temphum, float *mq2array);
 static void sendTelemetry(float *temphum, float *mq2array);
-//static unsigned long next_telemetry_send_time_ms;
 static int mqtt_connected();
 static void mqtt_loop(); 

@@ -2,11 +2,10 @@
 
 SHT3x Sensor;
 
+float r[2];
 
 static float *tempSensor() {
 Sensor.Begin();
-
-float r[2];
 
   Sensor.UpdateData();
   r[0] = Sensor.GetTemperature();

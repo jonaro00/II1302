@@ -11,7 +11,6 @@ MQ2 mq2(pin);
 static float *mq2Sensor() {
 mq2.begin();
 
-float arr[3];
   
   /*
    * read the values from the sensor, it returns
@@ -22,17 +21,16 @@ float arr[3];
    */
   float* values= mq2.read(true); //set it false if you don't want to print the values to the Serial
   
-  // lpg = values[0];
+  
   lpg = mq2.readLPG();
- 
-  // co = values[1];
+  //values[0] = lpg;
+  
   co = mq2.readCO();
-  // smoke = values[2];
+  //values[1] = co;
+ 
   smoke = mq2.readSmoke();
+  //values[2] = smoke;
 
-  arr[0] = lpg;
-  arr[1] = co;
-  arr[2] = smoke;
 
   return values;
 }
