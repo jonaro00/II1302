@@ -36,5 +36,5 @@ void loop()
 
   // MQTT loop must be called to process Device-to-Cloud and Cloud-to-Device.
   mqtt_client.loop();
-  delay(30000);
+  delay(10000);
 }
