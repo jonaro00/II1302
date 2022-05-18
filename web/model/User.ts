@@ -43,7 +43,7 @@ export class User extends Model {
       {
         sequelize,
         modelName: 'user',
-        paranoid: true,
+        paranoid: false,
         freezeTableName: true,
         timestamps: true,
       },

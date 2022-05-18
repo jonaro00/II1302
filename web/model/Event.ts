@@ -38,7 +38,7 @@ export class Event extends Model {
       {
         sequelize,
         modelName: 'event',
-        paranoid: true,
+        paranoid: false,
         freezeTableName: true,
         timestamps: true,
         updatedAt: false,
