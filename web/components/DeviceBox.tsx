@@ -221,7 +221,7 @@ export default function DeviceBox({
   const [viewingGases, setViewingGases] = useState(false)
 
   return (
-    <Grid columns="equal" padded className={styles.grid} key={s.id}>
+    <Grid columns="equal" padded className={[styles.grid, viewMode===ViewMode.Focus ? styles.focus : '' ].join(' ')} key={s.id}>
       <Grid.Row className={styles.nopad} color="black">
         <Grid.Column>
           <Segment.Group horizontal>
