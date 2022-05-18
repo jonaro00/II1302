@@ -5,6 +5,7 @@
 // Arduino setup and loop main functions.
 float *mq2array;
 float *temphum;
+
 void setup()
 {
   Serial.begin(115200);
@@ -24,24 +25,16 @@ void loop()
     {
       establishConnection();
     }
-   
 
    mq2array = mq2Sensor();
-   float mq2array2[3];
-   /*
-    for(int i=0;i<3;i++)  
-    {  
-        mq2array2[i] = mq2array[i];
-        Serial.println(mq2array[i]);  
-    }  
-    */
-  temphum = tempSensor();
-  
-    sendTelemetry(temphum, mq2array);
-    next_telemetry_send_time_ms = millis() + TELEMETRY_FREQUENCY_MILLISECS;
+   temphum = tempSensor();
+   
+   sendTelemetry(temphum, mq2array);
+   next_telemetry_send_time_ms = millis() + TELEMETRY_FREQUENCY_MILLISECS;
+
   }
 
   // MQTT loop must be called to process Device-to-Cloud and Cloud-to-Device.
   mqtt_client.loop();
-  delay(5000);
+  delay(30000);
 }

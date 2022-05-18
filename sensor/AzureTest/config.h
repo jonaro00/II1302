@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MIT
 
 // Wifi
-#define IOT_CONFIG_WIFI_SSID "Simon"
-#define IOT_CONFIG_WIFI_PASSWORD "tacksimon"
+#define IOT_CONFIG_WIFI_SSID "BashariPhone"
+#define IOT_CONFIG_WIFI_PASSWORD "wifiwifiwifi2014"
 
 // Azure IoT
 #define IOT_CONFIG_IOTHUB_FQDN "spafemonitor-iot.azure-devices.net"

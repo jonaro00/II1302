@@ -71,7 +71,7 @@ export class Telemetry extends Model {
       {
         sequelize,
         modelName: 'telemetry',
-        paranoid: true,
+        paranoid: false,
         freezeTableName: true,
         timestamps: true,
         updatedAt: false,
