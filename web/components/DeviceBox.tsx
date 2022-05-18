@@ -101,8 +101,8 @@ function GasGraph(times: string[], lpg: number[], co: number[], smoke: number[])
         type: 'linear' as const,
         display: true,
         position: 'left' as const,
-        suggestedMin: 0,
-        suggestedMax: 10,
+        // suggestedMin: 0,
+        // suggestedMax: 10,
       },
     },
   }
@@ -140,15 +140,16 @@ function randHumidity() {
 }
 
 const datasetTypes = {
-  temp: { title: 'Live Temperature', unit: '°C' },
-  humidity: { title: 'Live Humidity', unit: '%' },
-  lpg: { title: 'Live LPG concentration', unit: 'ppm' },
-  co: { title: 'Live Carbon Monoxide concentration', unit: 'ppm' },
-  smoke: { title: 'Live Smoke concentration', unit: 'ppm' },
+  temp: { title: 'Live Temperature', unit: '°C', precision: 1 },
+  humidity: { title: 'Live Humidity', unit: '%', precision: 0 },
+  lpg: { title: 'Live LPG concentration', unit: 'ppm', precision: 0 },
+  co: { title: 'Live Carbon Monoxide concentration', unit: 'ppm', precision: 0 },
+  smoke: { title: 'Live Smoke concentration', unit: 'ppm', precision: 0 },
 }
 
 function LiveDataBox(type: keyof IncomingTelemetry, value?: number, recent?: boolean) {
-  const { title, unit }: { title: string; unit: string } = datasetTypes[type]
+  const { title, unit, precision }: { title: string; unit: string; precision: number } =
+    datasetTypes[type]
 
   return (
     <Grid className={[styles.nopad, styles[type], recent ? '' : styles.outdated].join(' ')}>
@@ -157,7 +158,9 @@ function LiveDataBox(type: keyof IncomingTelemetry, value?: number, recent?: boo
       </Grid.Row>
       <Grid.Row centered>
         <Statistic horizontal>
-          <Statistic.Value>{value === undefined ? '--' : value.toFixed(1)}</Statistic.Value>
+          <Statistic.Value>
+            {value === undefined || value === null ? '--' : value.toFixed(precision)}
+          </Statistic.Value>
           <Statistic.Label>{unit}</Statistic.Label>
         </Statistic>
       </Grid.Row>
@@ -294,7 +297,7 @@ export default function DeviceBox({
             <Segment color="black" inverted style={{ flexGrow: 0 }}>
               <div>
                 <Button icon="bell" />
-                <Button id='focus' icon="expand" onClick={setFocusedSensor} />
+                <Button id="focus" icon="expand" onClick={setFocusedSensor} />
                 <Button
                   icon="trash alternate"
                   negative

@@ -29,9 +29,9 @@ export default function DevicePresenter({ model }: { model: Model }) {
         times.push(t.createdAt)
         temps.push(t.temp)
         humidities.push(t.humidity)
-        lpgs.push(t.lpg)
-        cos.push(t.co)
-        smokes.push(t.smoke)
+        lpgs.push(t.lpg * 1000) // yikes
+        cos.push(t.co * 1000) // yikes
+        smokes.push(t.smoke * 1000) // yikes
       })
       o[s.id] = {
         times,
