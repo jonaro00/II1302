@@ -54,7 +54,7 @@ export class Alarm extends Model {
       {
         sequelize,
         modelName: 'alarm',
-        paranoid: true,
+        paranoid: false,
         freezeTableName: true,
         timestamps: true,
       },

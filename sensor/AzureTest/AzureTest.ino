@@ -267,7 +267,7 @@ static char* getTelemetryPayload(float *temphum, float *mq2array)
   //temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR(" }"));
  
   temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR("{\"temp\":"));
-  (void)az_span_dtoa(temp_span, (double)(temphum[0]), 5,  &temp_span);
+  (void)az_span_dtoa(temp_span, (double)temphum[0], 5,  &temp_span);
   
   temp_span = az_span_copy(temp_span, AZ_SPAN_FROM_STR(",\"humidity\":"));
   (void)az_span_dtoa(temp_span, (double)temphum[1], 5, &temp_span);

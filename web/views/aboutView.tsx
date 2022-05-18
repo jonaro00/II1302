@@ -72,8 +72,7 @@ const AboutView = () => {
     <Segment>
       <Container text textAlign="center">
         <p className={styles.top}>
-          Spafe Monitor believes in total survelance of all our customers, whether they are aware of
-          it ot not.
+          Spafe Monitor believes in total survelance of all our customers :)
         </p>
         <Icon name="eye" circular color="red" size="huge" inverted />
         <Header as="h2">Spafe Monitor</Header>

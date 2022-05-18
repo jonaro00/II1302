@@ -52,7 +52,7 @@ export class Sensor extends Model {
         modelName: 'sensor',
         freezeTableName: true,
         timestamps: true,
-        paranoid: true,
+        paranoid: false,
       },
     )
   }
