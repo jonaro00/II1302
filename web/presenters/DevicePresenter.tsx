@@ -27,7 +27,7 @@ export default function DevicePresenter({ model }: { model: Model }) {
         smokes: number[] = []
       raw_telemetry[s.id]?.forEach(t => {
         times.push(t.createdAt)
-        temps.push(t.temp)
+        temps.push(t.temp - 10) // yikes
         humidities.push(t.humidity)
         lpgs.push(t.lpg * 1000) // yikes
         cos.push(t.co * 1000) // yikes
@@ -144,8 +144,8 @@ export default function DevicePresenter({ model }: { model: Model }) {
       ),
     )
   }, [model, sensors])
-  // Fetch every 30 s.
-  useInterval(getTelemetryFetcher, 30000)
+  // Fetch every 10 s.
+  useInterval(getTelemetryFetcher, 10000)
 
   // Wait until sensors are fetched
   if (fetchedSensorsError) return <p>Failed to fetch sensors. Please try again later.</p>
