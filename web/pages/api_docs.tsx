@@ -5,9 +5,9 @@ import fs from 'fs'
 import { GetStaticProps } from 'next'
 import { Container } from 'semantic-ui-react'
 
-export const getStaticProps: GetStaticProps = async context => {
+export const getStaticProps: GetStaticProps = async () => {
   return {
-    props: { md: fs.readFileSync('pages/api/endpoints.md').toString() },
+    props: { md: fs.readFileSync('pages/api/endpoints.md').toString('utf-8') },
   }
 }
 

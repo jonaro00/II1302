@@ -82,7 +82,7 @@ function TempHumidityGraph(times: string[], temps: number[], humidities: number[
   ]
   return <Line options={options} data={{ labels: times, datasets }} />
 }
-function GasGraph(times: string[], lpg: number[], co: number[], smoke: number[]) {
+function GasGraph(times: string[], lpgs: number[], cos: number[], smokes: number[]) {
   const options = {
     responsive: true,
     interaction: {
@@ -109,21 +109,21 @@ function GasGraph(times: string[], lpg: number[], co: number[], smoke: number[])
   const datasets = [
     {
       label: 'LPG (PPM)',
-      data: lpg,
+      data: lpgs,
       borderColor: 'rgb(236, 108, 22)',
       backgroundColor: 'rgba(236, 108, 22, 0.5)',
       yAxisID: 'y',
     },
     {
       label: 'Carbon Monoxide (PPM)',
-      data: co,
+      data: cos,
       borderColor: 'rgb(156, 1, 1)',
       backgroundColor: 'rgba(156, 1, 1, 0.5)',
       yAxisID: 'y',
     },
     {
       label: 'Smoke (PPM)',
-      data: smoke,
+      data: smokes,
       borderColor: 'rgb(92, 92, 92)',
       backgroundColor: 'rgba(92, 92, 92, 0.5)',
       yAxisID: 'y',
@@ -221,7 +221,11 @@ export default function DeviceBox({
   const [viewingGases, setViewingGases] = useState(false)
 
   return (
-    <Grid columns="equal" padded className={[styles.grid, viewMode===ViewMode.Focus ? styles.focus : '' ].join(' ')} key={s.id}>
+    <Grid
+      columns="equal"
+      padded
+      className={[styles.grid, viewMode === ViewMode.Focus ? styles.focus : ''].join(' ')}
+      key={s.id}>
       <Grid.Row className={styles.nopad} color="black">
         <Grid.Column>
           <Segment.Group horizontal>
@@ -240,7 +244,10 @@ export default function DeviceBox({
                   />
                 </i>
               </Header>
-              <Button as={Label} onClick={() => setConfirmDeviceEditOpen(true)} data-testid="location">
+              <Button
+                as={Label}
+                onClick={() => setConfirmDeviceEditOpen(true)}
+                data-testid="location">
                 <Icon name="point" />
                 Location: {s.location} <Icon fitted name="pencil" />
               </Button>

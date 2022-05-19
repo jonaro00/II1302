@@ -40,7 +40,7 @@ export default function DevicePresenter({ model }: { model: Model }) {
         lpgs,
         cos,
         smokes,
-        recent: Date.now() - parseISO(times[times.length - 1]).getTime() < 60000,
+        recent: Date.now() - parseISO(times[times.length - 1]).getTime() < 90000,
       }
     })
     return o

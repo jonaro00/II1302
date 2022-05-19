@@ -2,9 +2,7 @@ import { DAO, allDBModels } from './DAO'
 
 let dao: DAO
 const testname = 'user1',
-  testpass = 'password1',
-  testid = 1,
-  sensorid = 1
+  testpass = 'password1'
 beforeAll(async () => {
   dao = await DAO.getInstance()
 })
@@ -64,7 +62,8 @@ describe('The DAO', () => {
   it('should update a sensor', async () => {
     const { id } = await dao.register({ username: testname, password: testpass })
     await dao.addSensor(id, { device_azure_name: 'azure name', location: 'sweden' })
-    await dao.updateSensor(id, sensorid, {
+    const sensor = (await dao.getSensors(id))[0]
+    await dao.updateSensor(id, sensor.id, {
       device_azure_name: 'azure name',
       location: 'germany',
     })
