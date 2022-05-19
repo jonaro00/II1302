@@ -23,7 +23,7 @@ export default function useInterval(
     // Pause the interval if ms === null
     if (ms !== null) {
       // pass the reference to the callback and call it
-      const tick = () => (savedCallback.current ? savedCallback.current() : null)
+      const tick = () => savedCallback.current?.()
       const timer = setInterval(tick, ms)
       // stop the interval
       return () => clearInterval(timer)
