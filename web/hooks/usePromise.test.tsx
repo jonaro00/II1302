@@ -3,9 +3,8 @@ import '@testing-library/jest-dom'
 import { useState } from 'react'
 import usePromise from './usePromise'
 
-const myMessage = 'Cake'
 const getResolvingPromise = (ms: number = 0) =>
-  new Promise((res, _) => setTimeout(() => res(myMessage), ms))
+  new Promise((res, _) => setTimeout(() => res('Cake'), ms))
 const getRejectingPromise = (ms: number = 0) =>
   new Promise((_, rej) => setTimeout(() => rej(new Error('Something went wrong')), ms))
 const getStallingPromise = () => new Promise(() => {})
@@ -24,7 +23,7 @@ function Component({}) {
       <button onClick={() => setPromise(getRejectingPromise(delay))}>Get error</button>
       <button onClick={() => setPromise(getStallingPromise())}>Get loading</button>
       <button onClick={() => setPromise(null)}>Reset</button>
-      <div role="treeitem">
+      <div data-testid="result">
         {!promise ? 'No data' : error ? `Error: ${error.message}` : result ? result : 'Loading...'}
       </div>
     </div>
@@ -34,13 +33,13 @@ function Component({}) {
 describe('A component using usePromise', () => {
   it('should render correctly', () => {
     render(<Component />)
-    expect(screen.getByRole('treeitem')).toHaveTextContent('No data')
+    expect(screen.getByTestId('result')).toHaveTextContent('No data')
   })
 
   it('should enter a loading state', () => {
     render(<Component />)
     fireEvent.click(screen.getByText('Get loading'))
-    expect(screen.getByRole('treeitem')).toHaveTextContent('Loading...')
+    expect(screen.getByTestId('result')).toHaveTextContent('Loading...')
   })
 
   it('should resolve and show data', async () => {
@@ -90,6 +89,6 @@ describe('A component using usePromise', () => {
     render(<Component />)
     fireEvent.click(screen.getByText('Get loading'))
     fireEvent.click(screen.getByText('Reset'))
-    screen.findByText(/Loading/)
+    await screen.findByText(/No data/)
   })
 })
