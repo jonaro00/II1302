@@ -66,6 +66,11 @@ To develop the hardware:
 - Select the correct port in (... -> ...)
 - Develop. 😎
 
+To put the board into programming mode:
+- Press the RESET button, then the FLASH button.
+- Then release RESET and finally release FLASH. 
+- After uploading you have to leave the programming mode, so press RESET shortly.
+
 ## Testing
 
 The Webpage is continuosly tested in GitHub Actions. This is the latest status:
