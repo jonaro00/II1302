@@ -56,7 +56,7 @@ The required hardware is:
 - FT232RL FTDI USB to TTL adapter (+ USB A to mini B)
 - Cables for connecting the programming pins (breadboard optional)
 
-![hardware programming](https://user-images.githubusercontent.com/54029719/168320355-70bfd431-d14e-45a8-aeb6-488fb22bafc3.png)
+![hardware programming](https://user-images.githubusercontent.com/102171209/169543060-1fcd0bf5-5d8a-4af6-afde-b08cfbedcf28.jpeg)
 
 To develop the hardware:
 
