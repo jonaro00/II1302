@@ -52,8 +52,8 @@ To develop the webpage, do the following:
 
 The required hardware is:
 
-- AZ Envy (+ USB A to micro B)
-- FT232RL FTDI USB to TTL adapter (+ USB A to mini B)
+- AZ Envy (+ USB A to micro B cable)
+- FT232RL FTDI USB to TTL adapter (+ USB A to mini B cable)
 - Cables for connecting the programming pins (breadboard optional)
 
 ![hardware programming](https://user-images.githubusercontent.com/102171209/169543060-1fcd0bf5-5d8a-4af6-afde-b08cfbedcf28.jpeg)
@@ -67,8 +67,9 @@ To develop the hardware:
 - Develop. 😎
 
 To put the board into programming mode:
-- Press the RESET button, then the FLASH button.
-- Then release RESET and finally release FLASH. 
+
+- Press and hold down the RESET button, then the FLASH button.
+- Then release RESET and finally release FLASH.
 - After uploading you have to leave the programming mode, so press RESET shortly.
 
 ## Testing
