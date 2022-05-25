@@ -37,12 +37,15 @@ The main goal is to develop a functioning system that meets the requirements. So
 
 ## Development
 
+To develop, start by cloning this repository.
+
 ### Webpage
 
 To develop the webpage, do the following:
 
 - Install Node and npm.
 - From the root directory, run `npm install`. This installs all dependencies, including those of the `web/` subpackage, into `node_modules/`.
+- Set up the files `web/.env.local` (for development), and `web/.env.test.local` (for testing) with the correct credentials. `web/.env.local.example` can be used as a template. ⚠ Do not commit your secrets.
 - `npm run dev` to start a live development server on localhost.
 - Develop. 😎
 - `npm test` to run all unit tests.
@@ -61,16 +64,27 @@ The required hardware is:
 To develop the hardware:
 
 - Install Arduino IDE.
-- Connect all hardware as shown above.
-- Select the correct board type in (... -> ... -> )
-- Select the correct port in (... -> ...)
+- Connect all hardware as shown above. The USB mini B should be connected to your computer.
+- Install any drivers needed. The board should show up on a serial port.
+- Install libraries in Arduino IDE:
+  - In Preferences, add `http://arduino.esp8266.com/stable/package_esp8266com_index.json` to Additional boards manager URLs.
+  - In Board Manager, search for and install package `esp8266` (https://github.com/esp8266/Arduino).
+  - In Library Manager, search for and install:
+    - `Azure SDK for C` (https://github.com/Azure/azure-sdk-for-c/)
+    - `PubSubClient` (https://pubsubclient.knolleary.net/)
+  - Download these repositories as zip files (Code -> Download ZIP) and add them in (Sketch -> Include Library -> Add .ZIP Library...).
+    - https://github.com/jonaro00/SHT3x
+    - https://github.com/labay11/MQ-2-sensor-library
+- Select the correct board type in (Tools -> Boards -> ESP8266 Boards -> Generic ESP8266 Module).
+- Select the correct port in (Tools -> Port -> ...).
 - Develop. 😎
-
-To put the board into programming mode:
-
-- Press and hold down the RESET button, then the FLASH button.
-- Then release RESET and finally release FLASH.
-- After uploading you have to leave the programming mode, so press RESET shortly.
+- Use the relevant `config.example.h` as a template to create a `config.h` file with correct credentials.
+- To upload the sketch:
+  - Click Upload and wait for the Output to write `Connecting.....`.
+  - Put the board into programming mode:
+    - Press and hold down the RESET button, then the FLASH button.
+    - Then release RESET and finally release FLASH.
+  - After uploading you have to leave programming mode: Press RESET shortly.
 
 ## Testing
 
