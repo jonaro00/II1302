@@ -19,7 +19,7 @@ The project will also give the group experience in projects and system developme
 
 The main goal is to develop a functioning system that meets the requirements. Some sub-goals are: a functional sensor module, integration with the cloud and a functioning web interface.
 
-## If you are interested in the project, look further at the links below:
+## More information about the project can be found at the links below
 
 - [**Project definition**](https://docs.google.com/document/d/1rXNqcs8TPbTrrVb3CHk2G23qbBTXSn_r/edit?usp=sharing&ouid=116612736843125590387&rtpof=true&sd=true)
 - [**Vision document**](https://docs.google.com/document/d/1SJ3QUOX1WJSA_hTGWOLoi91-rVT0jSy1/edit?usp=sharing&ouid=116612736843125590387&rtpof=true&sd=true)
@@ -68,13 +68,13 @@ To develop the hardware:
 - Install any drivers needed. The board should show up on a serial port.
 - Install libraries in Arduino IDE:
   - In Preferences, add `http://arduino.esp8266.com/stable/package_esp8266com_index.json` to Additional boards manager URLs.
-  - In Board Manager, search for and install package `esp8266` (https://github.com/esp8266/Arduino).
+  - In Board Manager, search for and install package `esp8266` (<https://github.com/esp8266/Arduino>).
   - In Library Manager, search for and install:
-    - `Azure SDK for C` (https://github.com/Azure/azure-sdk-for-c/)
-    - `PubSubClient` (https://pubsubclient.knolleary.net/)
+    - `Azure SDK for C` (<https://github.com/Azure/azure-sdk-for-c/>)
+    - `PubSubClient` (<https://pubsubclient.knolleary.net/>)
   - Download these repositories as zip files (Code -> Download ZIP) and add them in (Sketch -> Include Library -> Add .ZIP Library...).
-    - https://github.com/jonaro00/SHT3x
-    - https://github.com/labay11/MQ-2-sensor-library
+    - <https://github.com/jonaro00/SHT3x>
+    - <https://github.com/labay11/MQ-2-sensor-library>
 - Select the correct board type in (Tools -> Boards -> ESP8266 Boards -> Generic ESP8266 Module).
 - Select the correct port in (Tools -> Port -> ...).
 - Develop. 😎
