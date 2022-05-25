@@ -40,17 +40,44 @@
 #include <az_iot.h>
 #include <azure_ca.h>
 
-// Additional sample headers
-#include "config.h"
+// Wifi
 #include "WifiConnection.h"
 
-// Translate iot_configs.h defines into variables used by the sample
+// Configuration headers
+#include "config.h"
+
+// Translate config.h defines into variables used by the sample
 static const char* ssid = IOT_CONFIG_WIFI_SSID;
 static const char* password = IOT_CONFIG_WIFI_PASSWORD;
 static const char* host = IOT_CONFIG_IOTHUB_FQDN;
 static const char* device_id = IOT_CONFIG_DEVICE_ID;
 static const char* device_key = IOT_CONFIG_DEVICE_KEY;
 static const int port = 8883;
+
+
+// Memory allocated for the sample's variables and structures.
+static WiFiClientSecure wifi_client;
+static X509List cert((const char*)ca_pem);
+static az_iot_hub_client client;
+static char sas_token[200];
+static uint8_t signature[512];
+static unsigned char encrypted_signature[32];
+static char base64_decoded_device_key[32];
+static char telemetry_topic[128];
+static uint8_t telemetry_payload[100];
+static uint32_t telemetry_send_count = 0;
+
+// When developing for your own Arduino-based platform,
+// please follow the format '(ard;<platform>)'. 
+#define AZURE_SDK_CLIENT_USER_AGENT "c/" AZ_SDK_VERSION_STRING "(ard;esp8266)"
+
+// Utility macros and defines
+#define LED_BUILTIN 2
+#define sizeofarray(a) (sizeof(a) / sizeof(a[0]))
+#define ONE_HOUR_IN_SECS 3600
+#define NTP_SERVERS "pool.ntp.org", "time.nist.gov"
+#define MQTT_PACKET_SIZE 1024
+
 
 // Auxiliary functions
 static void initializeTime()
@@ -108,6 +135,7 @@ static void initializeClients()
     return;
   }
 
+  mqtt_client.setClient(wifi_client);
   mqtt_client.setServer(host, port);
   mqtt_client.setCallback(receivedCallback);
 }
@@ -236,9 +264,9 @@ static int connectToAzureIoTHub()
   return 0;
 }
 
-static void establishConnection()
+void establishConnection()
 {
-  connectToWiFi();
+  connectToWiFi(ssid, password);
   initializeTime();
   printCurrentTime();
   initializeClients();
@@ -287,7 +315,7 @@ static char* getTelemetryPayload(float *temphum, float *mq2array)
   return (char*)telemetry_payload;
 }
 
-static void sendTelemetry(float *temphum, float *mq2array)
+void sendTelemetry(float *temphum, float *mq2array)
 {
   digitalWrite(LED_BUILTIN, HIGH);
   Serial.print(millis());

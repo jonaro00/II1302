@@ -1,6 +1,6 @@
 #include <ESP8266WiFi.h>
 
-static void connectToWiFi()
+static void connectToWiFi(const char* ssid, const char* password)
 {
   uint8_t retries = 0;
   Serial.begin(115200);
