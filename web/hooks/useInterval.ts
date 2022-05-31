@@ -11,14 +11,14 @@ export default function useInterval(
   callback: () => void,
   ms?: number | null,
   callImmediately: boolean = true,
-) {
+): void {
   // Use a ref for callback so that it can be changed in-place, without resetting the timer
   const savedCallback = useRef<() => void>()
   // Remember the latest callback
   useEffect(() => {
     savedCallback.current = callback
     if (callImmediately) callback()
-  }, [callback, callImmediately])
+  }, [callback, callImmediately, ms])
   useEffect(() => {
     // Pause the interval if ms === null
     if (ms !== null) {
@@ -28,5 +28,5 @@ export default function useInterval(
       // stop the interval
       return () => clearInterval(timer)
     }
-  }, [callImmediately, ms])
+  }, [ms])
 }
