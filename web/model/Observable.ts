@@ -15,8 +15,8 @@ export class Observable {
     this.observers.forEach(cb => {
       try {
         cb()
-      } catch (error) {
-        // prevent one observer error from stopping the other callbacks to happen
+      } catch (e) {
+        /* prevent one observer error from stopping the other callbacks to happen */
       }
     })
   }

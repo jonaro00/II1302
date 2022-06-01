@@ -77,7 +77,7 @@ export class Model extends Observable {
   public async signOut(): Promise<string> {
     const { url } = await signOut({ redirect: false, callbackUrl: '/' })
     this.clear()
-    return url as string
+    return url
   }
 
   public setSensors(sensors: SensorType[]) {

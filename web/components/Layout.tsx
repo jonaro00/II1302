@@ -1,12 +1,12 @@
 import Head from 'next/head'
-import React from 'react'
+import { ReactNode } from 'react'
 
 export default function Layout({
   children,
   title,
   description = 'Temperature monitoring and more',
 }: {
-  children: React.ReactNode
+  children: ReactNode
   title?: string
   description?: string
 }) {

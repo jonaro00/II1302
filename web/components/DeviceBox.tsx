@@ -108,21 +108,21 @@ function GasGraph(times: string[], lpgs: number[], cos: number[], smokes: number
   }
   const datasets = [
     {
-      label: 'LPG (PPM)',
+      label: 'LPG (ppm)',
       data: lpgs,
       borderColor: 'rgb(236, 108, 22)',
       backgroundColor: 'rgba(236, 108, 22, 0.5)',
       yAxisID: 'y',
     },
     {
-      label: 'Carbon Monoxide (PPM)',
+      label: 'Carbon Monoxide (ppm)',
       data: cos,
       borderColor: 'rgb(156, 1, 1)',
       backgroundColor: 'rgba(156, 1, 1, 0.5)',
       yAxisID: 'y',
     },
     {
-      label: 'Smoke (PPM)',
+      label: 'Smoke (ppm)',
       data: smokes,
       borderColor: 'rgb(92, 92, 92)',
       backgroundColor: 'rgba(92, 92, 92, 0.5)',

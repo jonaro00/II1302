@@ -16,12 +16,8 @@ export default function usePromise<T>(promise: Promise<T> | null): [T | null, Er
     setError(null)
     let cancelled = false
     promise
-      ?.then((data: T) => {
-        if (!cancelled) setData(data)
-      })
-      .catch((error: Error) => {
-        if (!cancelled) setError(error)
-      })
+      ?.then((data: T) => cancelled || setData(data))
+      .catch((error: Error) => cancelled || setError(error))
     return () => {
       cancelled = true
     }
